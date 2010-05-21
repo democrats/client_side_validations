@@ -11,7 +11,7 @@ begin
     gem.homepage = "http://github.com/bcardarella/ar_client_side_validations"
     gem.authors = ["Brian Cardarella"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
-    gem.gemspec.add_dependency 'validation_reflection'
+    gem.add_dependency 'validation_reflection'
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
