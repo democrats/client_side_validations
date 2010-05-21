@@ -1,3 +1,11 @@
+require 'rubygems'
+unless defined?(ActiveRecord)
+  unless require 'active_record'
+    raise 'ActiveRecord Not Found'
+  end
+end
+require 'validation_reflection'
+
 module DNCLabs
   module ValidationsToJSON
     def validation_to_json(_attr, _options = {})
@@ -90,10 +98,6 @@ module DNCLabs
 
 end
 
-if defined?(ActiveRecord)
-  ActiveRecord::Base.class_eval do
-    include DNCLabs::ValidationsToJSON
-  end
-else
-  raise "ActiveRecord Not Found"
+ActiveRecord::Base.class_eval do
+  include DNCLabs::ValidationsToJSON
 end

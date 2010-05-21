@@ -5,13 +5,13 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "ar_client_side_validations"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{Client Side Validation}
+    gem.description = %Q{ActiveRecord 2.x Client Side Validations}
     gem.email = "cardarellab@dnc.org"
     gem.homepage = "http://github.com/bcardarella/ar_client_side_validations"
     gem.authors = ["Brian Cardarella"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
-    gem.add_development_dependency "cucumber", ">= 0"
+    gem.gemspec.add_dependency 'validation_reflection'
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new

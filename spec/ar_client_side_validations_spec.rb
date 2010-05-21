@@ -1,7 +1,4 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
-require 'rubygems'
-require 'active_record'
-require 'validation_reflection'
 require 'ar_client_side_validations'
 
 describe "Validations to JSON" do
