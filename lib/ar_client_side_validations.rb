@@ -1,9 +1,4 @@
 require 'rubygems'
-unless defined?(ActiveRecord)
-  unless require 'active_record'
-    raise 'ActiveRecord Not Found'
-  end
-end
 require 'validation_reflection'
 
 module DNCLabs

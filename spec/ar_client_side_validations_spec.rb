@@ -1,3 +1,5 @@
+require 'rubygems'
+require 'active_record'
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 require 'ar_client_side_validations'
 
@@ -6,15 +8,10 @@ describe "Validation to hash" do
   before do
     class Klass < ActiveRecord::Base
       def self.columns() @columns ||= []; end
-
+      
       def self.column(name, sql_type = nil, default = nil, null = true)
         columns << ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, sql_type.to_s, null)
       end
-
-      column :string, :string
-      column :string_2, :string
-      
-      column :integer, :integer
     end
   end
   
@@ -227,11 +224,6 @@ describe "Validations to JSON" do
       def self.column(name, sql_type = nil, default = nil, null = true)
         columns << ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, sql_type.to_s, null)
       end
-
-      column :string, :string
-      column :string_2, :string
-      
-      column :integer, :integer
     end
   end
   
