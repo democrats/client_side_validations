@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ar_client_side_validations}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brian Cardarella"]
@@ -24,12 +24,13 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "ar_client_side_validations.gemspec",
+     "assets/javascript/ar_client_side_validations.js",
      "lib/ar_client_side_validations.rb",
      "spec/ar_client_side_validations_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb"
   ]
-  s.homepage = %q{http://github.com/bcardarella/ar_client_side_validations}
+  s.homepage = %q{http://github.com/dnclabs/ar_client_side_validations}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.6}
@@ -45,14 +46,14 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_development_dependency(%q<rspec>, [">= 1.2.9"])
-      s.add_runtime_dependency(%q<validation_reflection>, [">= 0"])
+      s.add_runtime_dependency(%q<validation_reflection>, [">= 0.3.6"])
     else
       s.add_dependency(%q<rspec>, [">= 1.2.9"])
-      s.add_dependency(%q<validation_reflection>, [">= 0"])
+      s.add_dependency(%q<validation_reflection>, [">= 0.3.6"])
     end
   else
     s.add_dependency(%q<rspec>, [">= 1.2.9"])
-    s.add_dependency(%q<validation_reflection>, [">= 0"])
+    s.add_dependency(%q<validation_reflection>, [">= 0.3.6"])
   end
 end
 
