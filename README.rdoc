@@ -1,6 +1,6 @@
 = ar_client_side_validations
 
-Description goes here.
+ActiveRecord Client Side Validations
 
 == Note on Patches/Pull Requests
  
@@ -14,4 +14,4 @@ Description goes here.
 
 == Copyright
 
-Copyright (c) 2010 Brian Cardarella. See LICENSE for details.
+Copyright (c) 2010 Democratic National Committee. See LICENSE for details.
