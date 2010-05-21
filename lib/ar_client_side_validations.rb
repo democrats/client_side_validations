@@ -8,7 +8,15 @@ require 'validation_reflection'
 
 module DNCLabs
   module ValidationsToJSON
-    def validation_to_json(_attr, _options = {})
+    def validations_to_json(*attrs)
+      hash = Hash.new { |h, attribute| h[attribute] = [] }
+      attrs.each do |attr|
+        hash[attr] << self.validation_to_hash(attr)
+      end
+      hash.to_json
+    end
+    
+    def validation_to_hash(_attr, _options = {})
       validation_hash = {}
       self.class.reflect_on_validations_for(_attr).each do |validation|
         message = get_validation_message(validation, _options[:locale])
@@ -30,7 +38,7 @@ module DNCLabs
         end
       end
 
-      validation_hash.to_json
+      validation_hash
     end
 
     private
