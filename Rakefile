@@ -8,10 +8,10 @@ begin
     gem.summary = %Q{Client Side Validation}
     gem.description = %Q{ActiveRecord 2.x Client Side Validations}
     gem.email = "cardarellab@dnc.org"
-    gem.homepage = "http://github.com/bcardarella/ar_client_side_validations"
+    gem.homepage = "http://github.com/dnclabs/ar_client_side_validations"
     gem.authors = ["Brian Cardarella"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
-    gem.add_dependency 'validation_reflection'
+    gem.add_dependency 'validation_reflection', '>= 0.3.6'
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
