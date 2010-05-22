@@ -1,7 +1,7 @@
-require 'rubygems'
-require 'active_record'
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
-require 'ar_client_side_validations'
+gem 'activerecord', '~> 2.0'
+require 'active_record'
+require 'client_side_validations'
 
 describe "Validation to hash" do
   

@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'validation_reflection'
 
 module DNCLabs
