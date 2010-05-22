@@ -22,15 +22,15 @@ describe "Validation to hash" do
   it "should support validate_presence_of" do
     Klass.class_eval { validates_presence_of :string }
     instance      = Klass.new
-    expected_hash = { "required" => { "message" => "can't be blank"} }
+    expected_hash = { "validates_presence_of" => { "message" => "can't be blank"} }
     result_hash   = instance.validation_to_hash(:string)
     result_hash.should == expected_hash
   end
   
-  it "should support format of" do
+  it "should support validates_format_of of" do
     Klass.class_eval { validates_format_of :string, :with => /\A\d\Z/i }
     instance      = Klass.new
-    expected_hash = { "format" => { "message" => "is invalid", "with" => "^\\d$" } }
+    expected_hash = { "validates_format_of" => { "message" => "is invalid", "with" => "^\\d$" } }
     result_hash   = instance.validation_to_hash(:string)
     result_hash.should == expected_hash
   end
@@ -41,8 +41,8 @@ describe "Validation to hash" do
       validates_format_of :string_2, :with => /\d/
     end
     instance        = Klass.new
-    expected_hash_1 = { "format" => { "message" => "is invalid", "with" => "^\\d$" } }
-    expected_hash_2 = { "format" => { "message" => "is invalid", "with" => "\\d" } }
+    expected_hash_1 = { "validates_format_of" => { "message" => "is invalid", "with" => "^\\d$" } }
+    expected_hash_2 = { "validates_format_of" => { "message" => "is invalid", "with" => "\\d" } }
     result_hash_1   = instance.validation_to_hash(:string)
     result_hash_2   = instance.validation_to_hash(:string_2)
     result_hash_1.should == expected_hash_1
@@ -52,7 +52,7 @@ describe "Validation to hash" do
   it "should support minimum length of" do
     Klass.class_eval { validates_length_of :string, :minimum => 10 }
     instance      = Klass.new
-    expected_hash = { "minlength" => { "message" => "is too short (minimum is 10 characters)", "value" => 10 } }
+    expected_hash = { "validates_length_of" => { "message" => "is too short (minimum is 10 characters)", "value" => 10 } }
     result_hash   = instance.validation_to_hash(:string)
     result_hash.should == expected_hash
   end
@@ -60,7 +60,7 @@ describe "Validation to hash" do
   it "should support maximum length of" do
     Klass.class_eval { validates_length_of :string, :maximum => 10 }
     instance      = Klass.new
-    expected_hash = { "maxlength" => { "message" => "is too long (maximum is 10 characters)", "value" => 10 } }
+    expected_hash = { "validates_length_of" => { "message" => "is too long (maximum is 10 characters)", "value" => 10 } }
     result_hash   = instance.validation_to_hash(:string)
     result_hash.should == expected_hash
   end
@@ -81,7 +81,7 @@ describe "Validation to hash" do
     end
     
     instance        = Klass.new
-    expected_hash_1 = { "required" => { "message" => "can't be blank" } }
+    expected_hash_1 = { "validates_presence_of" => { "message" => "can't be blank" } }
     result_hash_1   = instance.validation_to_hash(:string)
     result_hash_1.should == expected_hash_1
     
@@ -97,7 +97,7 @@ describe "Validation to hash" do
   it "should support validating the numericality of" do
     Klass.class_eval { validates_numericality_of :integer }
     instance      = Klass.new
-    expected_hash = { "digits" => { "message" => "is not a number" } }
+    expected_hash = { "validates_numericality_of" => { "message" => "is not a number" } }
     result_hash   = instance.validation_to_hash(:integer)
     result_hash.should == expected_hash
   end
@@ -105,7 +105,7 @@ describe "Validation to hash" do
   it "should strip out the AR callback options" do
     Klass.class_eval { validates_presence_of :string, :on => :create }
     instance      = Klass.new
-    expected_hash = { "required" => { "message" => "can't be blank"} }
+    expected_hash = { "validates_presence_of" => { "message" => "can't be blank"} }
     result_hash   = instance.validation_to_hash(:string)
     result_hash.should == expected_hash
   end
@@ -117,8 +117,8 @@ describe "Validation to hash" do
     end
     
     instance      = Klass.new
-    expected_hash = { "required" => { "message" => "can't be blank" },
-                      "digits"   => { "message" => "is not a number" } }
+    expected_hash = { "validates_presence_of" => { "message" => "can't be blank" },
+                      "validates_numericality_of"   => { "message" => "is not a number" } }
     result_hash   = instance.validation_to_hash(:integer)
     result_hash.should == expected_hash
   end
@@ -139,14 +139,14 @@ describe "Validation to hash" do
     
     it 'should have a message of "String" for #string' do
       instance      = Klass.new
-      expected_hash = { "required" => { "message" => "String" } }
+      expected_hash = { "validates_presence_of" => { "message" => "String" } }
       result_hash   = instance.validation_to_hash(:string)
       result_hash.should == expected_hash
     end
 
     it 'should have a message of "String_2" for #string_2' do
       instance      = Klass.new
-      expected_hash = { "required" => { "message" => "String_2" } }
+      expected_hash = { "validates_presence_of" => { "message" => "String_2" } }
       result_hash   = instance.validation_to_hash(:string_2)
       result_hash.should == expected_hash
     end
@@ -167,14 +167,14 @@ describe "Validation to hash" do
     
     it 'should result in "String-es" for Spanish translations' do
       instance      = Klass.new
-      expected_hash = { "required" => { "message" => "String-es" } }
+      expected_hash = { "validates_presence_of" => { "message" => "String-es" } }
       result_hash   = instance.validation_to_hash(:string, :locale => :es)
       result_hash.should == expected_hash
     end
     
     it 'should result in "String-es" for Spanish translations when passed string "es" instead of symbol' do
       instance      = Klass.new
-      expected_hash = { "required" => { "message" => "String-es" } }
+      expected_hash = { "validates_presence_of" => { "message" => "String-es" } }
       result_hash   = instance.validation_to_hash(:string, :locale => "es")
       result_hash.should == expected_hash
     end
@@ -237,7 +237,7 @@ describe "Validations to JSON" do
     end
     
     instance      = Klass.new
-    expected_json = {:string => [{ "required" => { "message" => "can't be blank" } }]}.to_json
+    expected_json = {:string => [{ "validates_presence_of" => { "message" => "can't be blank" } }]}.to_json
     result_json   = instance.validations_to_json(:string)
     result_json.should == expected_json
   end
@@ -249,7 +249,7 @@ describe "Validations to JSON" do
     end
     
     instance      = Klass.new
-    expected_json = {:number => [{ "required" => { "message" => "can't be blank" }, "digits" => { "message" => "is not a number" } }]}.to_json
+    expected_json = {:number => [{ "validates_presence_of" => { "message" => "can't be blank" }, "validates_numericality_of" => { "message" => "is not a number" } }]}.to_json
     result_json   = instance.validations_to_json(:number)
     result_json.should == expected_json
   end
@@ -261,8 +261,8 @@ describe "Validations to JSON" do
     end
     
     instance      = Klass.new
-    expected_json = {:string => [{ "required" => { "message" => "can't be blank" } }],
-                     :string_2 => [{ "required" => { "message" => "can't be blank" } }]}.to_json
+    expected_json = {:string => [{ "validates_presence_of" => { "message" => "can't be blank" } }],
+                     :string_2 => [{ "validates_presence_of" => { "message" => "can't be blank" } }]}.to_json
     result_json   = instance.validations_to_json(:string, :string_2)
     result_json.should == expected_json
   end
@@ -276,8 +276,8 @@ describe "Validations to JSON" do
     end
     
     instance      = Klass.new
-    expected_json = {:number_1 => [{ "required" => { "message" => "can't be blank" }, "digits" => { "message" => "is not a number" } }],
-                     :number_2 => [{ "required" => { "message" => "can't be blank" }, "digits" => { "message" => "is not a number" } }]}.to_json
+    expected_json = {:number_1 => [{ "validates_presence_of" => { "message" => "can't be blank" }, "validates_numericality_of" => { "message" => "is not a number" } }],
+                     :number_2 => [{ "validates_presence_of" => { "message" => "can't be blank" }, "validates_numericality_of" => { "message" => "is not a number" } }]}.to_json
     result_json   = instance.validations_to_json(:number_1, :number_2)
     result_json.should == expected_json
   end
