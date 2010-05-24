@@ -1,10 +1,4 @@
-require 'rubygems'
-
-# if defined?(ActiveRecord)
-#   if ActiveRecord::VERSION::MAJOR == 2
-    require 'adapters/active_record_2'
-#   end
-# end
+require 'rubygems' unless defined?(Gem)
 
 module DNCLabs
   module ClientSideValidations
@@ -17,13 +11,25 @@ module DNCLabs
     end
     
     def validation_to_hash(_attr, _options = {})
-      @dnc_csv_adapter ||= DNCLabs::ClientSideValidations::Adapters::ActiveRecord2.new(self)
+      @dnc_csv_adapter ||= Adapter.new(self)
       @dnc_csv_adapter.validation_to_hash(_attr, _options)
-    end
-    
+    end 
   end
 end
 
-ActiveRecord::Base.class_eval do
+if defined?(ActiveModel)
+  require 'adapters/active_model'
+  require 'active_support/json/encoding'
+  DNCLabs::ClientSideValidations::Adapter = DNCLabs::ClientSideValidations::Adapters::ActiveModel
+  klass = ActiveModel::Validations
+elsif defined?(ActiveRecord)
+  if ActiveRecord::VERSION::MAJOR == 2
+    require 'adapters/active_record_2'
+    DNCLabs::ClientSideValidations::Adapter = DNCLabs::ClientSideValidations::Adapters::ActiveRecord2
+    klass = ActiveRecord::Base
+  end
+end
+
+klass.class_eval do
   include DNCLabs::ClientSideValidations
 end
