@@ -16,7 +16,7 @@ module DNCLabs
             message = get_validation_message(validation, _options[:locale])
             validation.options.delete(:message)
             options = get_validation_options(validation.options)
-            method  = validation.macro.to_s
+            method  = get_validation_method(validation.macro)
             if conditional_method = options['if']
               if base.instance_eval(conditional_method.to_s)
                 options.delete('if')
@@ -76,6 +76,19 @@ module DNCLabs
             options['value'] = options.delete('maximum')
           end    
           options
+        end
+        
+        def get_validation_method(method)
+          case method.to_s
+          when 'validates_presence_of'
+            'presence'
+          when 'validates_format_of'
+            'format'
+          when 'validates_numericality_of'
+            'numericality'
+          when 'validates_length_of'
+            'length'
+          end
         end
       end
     end

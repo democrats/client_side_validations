@@ -82,16 +82,7 @@ module DNCLabs
         end
         
         def get_validation_method(kind)
-          case kind
-          when :presence
-            'validates_presence_of'
-          when :numericality
-            'validates_numericality_of'
-          when :length
-            'validates_length_of'
-          when :format
-            'validates_format_of'
-          end
+          kind.to_s
         end
         
         def remove_reserved_conditionals(*conditionals)
