@@ -19,7 +19,9 @@ end
 
 if defined?(ActiveModel)
   require 'adapters/active_model'
-  require 'active_support/json/encoding'
+  unless Object.respond_to?(:to_json)
+    require 'active_support/json/encoding'
+  end
   DNCLabs::ClientSideValidations::Adapter = DNCLabs::ClientSideValidations::Adapters::ActiveModel
   klass = ActiveModel::Validations
 elsif defined?(ActiveRecord)
