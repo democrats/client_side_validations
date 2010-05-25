@@ -3,12 +3,12 @@
 		<link type="text/css" rel="stylesheet" href="/Users/bcardarella/.rvm/gems/ree-1.8.7-2010.01/gems/jspec-4.3.1/lib/jspec.css" />
 		<script src="/Users/bcardarella/.rvm/gems/ree-1.8.7-2010.01/gems/jspec-4.3.1/lib/jspec.js"></script>
 		<script src="/Users/bcardarella/.rvm/gems/ree-1.8.7-2010.01/gems/jspec-4.3.1/lib/jspec.xhr.js"></script>
-		<script src="../lib/yourlib.js"></script>
+		<script src="../lib/jquery.client_side_validations.js"></script>
 		<script src="unit/spec.helper.js"></script>
 		<script>
 			function runSuites() {
 				JSpec
-				.exec('unit/spec.js')
+				.exec('unit/jquery.client_side_validations.spec.js')
 				.run({ fixturePath: 'fixtures' })
 				.report()
 			}

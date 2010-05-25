@@ -5,6 +5,6 @@ require('unit/spec.helper')
 require('yourlib')
 
 JSpec
-  .exec('spec/unit/spec.js')
+  .exec('spec/unit/jquery.client_side_validations.spec.js')
   .run({ reporter: JSpec.reporters.Terminal, fixturePath: 'spec/fixtures', failuresOnly: true })
   .report()
