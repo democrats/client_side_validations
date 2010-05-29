@@ -224,7 +224,7 @@ describe "Validations to JSON" do
     end
     
     instance      = Klass.new
-    expected_json = {:string => [{ "presence" => { "message" => "can't be blank" } }]}.to_json
+    expected_json = {:string => { "presence" => { "message" => "can't be blank" } } }.to_json
     result_json   = instance.validations_to_json(:string)
     result_json.should == expected_json
   end
@@ -236,7 +236,7 @@ describe "Validations to JSON" do
     end
     
     instance      = Klass.new
-    expected_json = {:number => [{ "presence" => { "message" => "can't be blank" }, "numericality" => { "message" => "is not a number" } }]}.to_json
+    expected_json = {:number => { "presence" => { "message" => "can't be blank" }, "numericality" => { "message" => "is not a number" } } }.to_json
     result_json   = instance.validations_to_json(:number)
     result_json.should == expected_json
   end
@@ -248,8 +248,8 @@ describe "Validations to JSON" do
     end
     
     instance      = Klass.new
-    expected_json = {:string => [{ "presence" => { "message" => "can't be blank" } }],
-                     :string_2 => [{ "presence" => { "message" => "can't be blank" } }]}.to_json
+    expected_json = {:string => { "presence" => { "message" => "can't be blank" } },
+                     :string_2 => { "presence" => { "message" => "can't be blank" } } }.to_json
     result_json   = instance.validations_to_json(:string, :string_2)
     result_json.should == expected_json
   end
@@ -263,8 +263,8 @@ describe "Validations to JSON" do
     end
     
     instance      = Klass.new
-    expected_json = {:number_1 => [{ "presence" => { "message" => "can't be blank" }, "numericality" => { "message" => "is not a number" } }],
-                     :number_2 => [{ "presence" => { "message" => "can't be blank" }, "numericality" => { "message" => "is not a number" } }]}.to_json
+    expected_json = {:number_1 => { "presence" => { "message" => "can't be blank" }, "numericality" => { "message" => "is not a number" } },
+                     :number_2 => { "presence" => { "message" => "can't be blank" }, "numericality" => { "message" => "is not a number" } } }.to_json
     result_json   = instance.validations_to_json(:number_1, :number_2)
     result_json.should == expected_json
   end

@@ -3,9 +3,9 @@ require 'rubygems' unless defined?(Gem)
 module DNCLabs
   module ClientSideValidations
     def validations_to_json(*attrs)
-      hash = Hash.new { |h, attribute| h[attribute] = [] }
+      hash = Hash.new { |h, attribute| h[attribute] = {} }
       attrs.each do |attr|
-        hash[attr] << validation_to_hash(attr)
+        hash[attr].merge!(validation_to_hash(attr))
       end
       hash.to_json
     end
