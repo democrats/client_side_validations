@@ -72,12 +72,6 @@ module DNCLabs
           if options['with'].kind_of?(Regexp)
             options['with'] = options['with'].inspect.to_s.sub("\\A","^").sub("\\Z","$").sub(%r{^/},"").sub(%r{/i?$}, "")
           end
-          if options['minimum']
-            options['value'] = options.delete('minimum')
-          end
-          if options['maximum']
-            options['value'] = options.delete('maximum')
-          end    
           options
         end
         
