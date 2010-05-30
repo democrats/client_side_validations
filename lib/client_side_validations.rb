@@ -13,7 +13,7 @@ module DNCLabs
     def validation_to_hash(_attr, _options = {})
       @dnc_csv_adapter ||= Adapter.new(self)
       @dnc_csv_adapter.validation_to_hash(_attr, _options)
-    end 
+    end
   end
 end
 
