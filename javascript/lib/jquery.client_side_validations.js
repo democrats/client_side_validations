@@ -1,3 +1,10 @@
+/* Additional jQueryValidator methods */
+
+jQuery.validator.addMethod("format", function(value, element, params) { 
+    var pattern = new RegExp(params, "i");
+    return this.optional(element) || pattern.test(value); 
+}, jQuery.validator.format("Invalid format."));
+
 function jQueryValidateAdapter(object, validations) {
   rules    = {}
   messages = {}
@@ -15,6 +22,17 @@ function jQueryValidateAdapter(object, validations) {
         case 'format':
           value = validations[attr][validation]['with'];
           break;
+        case 'numericality':
+          rule  = 'digits';
+          value = true;
+        case 'length':
+          if('minimum' in validations[attr][validation]) {
+            rule  = 'minlength';
+            value = validations[attr][validation]['minimum'];
+          } else if('maximum' in validations[attr][validation]) {
+            rule  = 'maxlength';
+            value = validations[attr][validation]['maximum'];
+          }
         default:
       }
       if(rule == null) {
