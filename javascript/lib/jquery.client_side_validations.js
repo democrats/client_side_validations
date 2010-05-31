@@ -1,10 +1,12 @@
 /* Additional jQueryValidator methods */
 
 if (typeof(jQuery) != "undefined") {
-  jQuery.validator.addMethod("format", function(value, element, params) { 
-      var pattern = new RegExp(params, "i");
-      return this.optional(element) || pattern.test(value); 
-  }, jQuery.validator.format("Invalid format."));
+  if (typeof($('').validate) != "undefined") {
+    jQuery.validator.addMethod("format", function(value, element, params) { 
+        var pattern = new RegExp(params, "i");
+        return this.optional(element) || pattern.test(value); 
+    }, jQuery.validator.format("Invalid format."));
+  }
 }
 
 function ClientSideValidation(object, uri, adapter) {
