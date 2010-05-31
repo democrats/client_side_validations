@@ -4,11 +4,11 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "ar_client_side_validations"
-    gem.summary = %Q{Client Side Validation}
-    gem.description = %Q{ActiveRecord 2.x Client Side Validations}
+    gem.name = "client_side_validations"
+    gem.summary = %Q{Client Side Validations}
+    gem.description = %Q{ORM and Framework agnostic Client Side Validations}
     gem.email = "cardarellab@dnc.org"
-    gem.homepage = "http://github.com/dnclabs/ar_client_side_validations"
+    gem.homepage = "http://github.com/dnclabs/client_side_validations"
     gem.authors = ["Brian Cardarella"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
     gem.add_dependency 'validation_reflection', '>= 0.3.6'
