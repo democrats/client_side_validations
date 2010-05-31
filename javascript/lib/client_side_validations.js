@@ -9,7 +9,7 @@ if (typeof(jQuery) != "undefined") {
   }
 }
 
-function ClientSideValidation(id, url, adapter) {
+function ClientSideValidations(id, url, adapter) {
   this.id      = id;
   this.url     = url;
   this.adapter = adapter;
