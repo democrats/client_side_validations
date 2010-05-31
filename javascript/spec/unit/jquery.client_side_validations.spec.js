@@ -1,6 +1,10 @@
 describe 'jQuery Client Side Validations'
   describe 'adapters'
     describe 'jquery.validate'
+      before
+        client = new ClientSideValidation('object', 'http://someurl.com/books.js', 'jquery.validate');
+      end
+      
       describe 'required'
         before
           validations = {
@@ -8,7 +12,7 @@ describe 'jQuery Client Side Validations'
               "presence": { "message":"can't be blank" }
             }
           }
-          result = jQueryValidateAdapter('object', validations);
+          result = client.adapt_validations(validations);
         end
       
         it 'should translate the rule'
@@ -27,7 +31,7 @@ describe 'jQuery Client Side Validations'
               "format": { "message":"is invalid", "with":/\d/ }
             }
           }
-          result = jQueryValidateAdapter('object', validations)
+          result = client.adapt_validations(validations)
         end
         
         it 'should translate the rule'
@@ -46,7 +50,7 @@ describe 'jQuery Client Side Validations'
               "numericality": { "message":"is not a number" }
             }
           }
-          result = jQueryValidateAdapter('object', validations)
+          result = client.adapt_validations(validations)
         end
         
         it 'should translate the rule'
@@ -65,7 +69,7 @@ describe 'jQuery Client Side Validations'
               "length": { "message":"is too short (minimum is 10 characters)", "minimum":10 }
             }
           }
-          result = jQueryValidateAdapter('object', validations)
+          result = client.adapt_validations(validations)
         end
         
         it 'should translate the rule'
@@ -84,7 +88,7 @@ describe 'jQuery Client Side Validations'
               "length": { "message":"is too short (maximum is 10 characters)", "maximum":10 }
             }
           }
-          result = jQueryValidateAdapter('object', validations)
+          result = client.adapt_validations(validations)
         end
         
         it 'should translate the rule'
