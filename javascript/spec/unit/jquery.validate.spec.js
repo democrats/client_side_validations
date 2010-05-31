@@ -97,4 +97,50 @@ describe 'jquery.validate adapter'
       result.messages['object[string]']['maxlength'].should.equal "is too short (maximum is 10 characters)"
     end
   end
+  
+  describe 'multiple attributes'
+    before
+      validations = {
+        "number_1": { 
+          "presence": { "message":"can't be blank" }
+        },
+        "number_2": { 
+          "presence": { "message":"can't be blank" }
+        }
+      }
+      result = client.adapt_validations(validations)
+    end
+    
+    it 'should translate the rules for both attributes'
+      result.rules['object[number_1]']['required'].should.be_true
+      result.rules['object[number_2]']['required'].should.be_true
+    end
+    
+    it 'should translate the messages for both attributes'
+      result.messages['object[number_1]']['required'].should.eql("can't be blank")
+      result.messages['object[number_2]']['required'].should.eql("can't be blank")
+    end
+  end
+
+  describe 'multiple rules'
+    before
+      validations = {
+        "number": { 
+          "presence": { "message":"can't be blank" },
+          "numericality": { "message":"is not a number" }
+        }
+      }
+      result = client.adapt_validations(validations)
+    end
+    
+    it 'should translate the rules for both attributes'
+      result.rules['object[number]']['required'].should.be_true
+      result.rules['object[number]']['digits'].should.be_true
+    end
+    
+    it 'should translate the messages for both attributes'
+      result.messages['object[number]']['required'].should.eql("can't be blank")
+      result.messages['object[number]']['digits'].should.eql("is not a number")
+    end
+  end
 end
