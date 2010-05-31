@@ -9,9 +9,9 @@ if (typeof(jQuery) != "undefined") {
   }
 }
 
-function ClientSideValidation(object, uri, adapter) {
-  this.object  = object;
-  this.uri     = uri;
+function ClientSideValidation(id, url, adapter) {
+  this.id      = id;
+  this.url     = url;
   this.adapter = adapter;
 
   this.adapt_validations = function(validations) {
@@ -20,7 +20,7 @@ function ClientSideValidation(object, uri, adapter) {
       rules    = {}
       messages = {}
       for(var attr in this.validations) {
-        name = this.object + '[' + attr + ']';
+        name           = this.id + '[' + attr + ']';
         rules[name]    = {};
         messages[name] = {};
         for(var validation in this.validations[attr]) {
@@ -65,7 +65,7 @@ function ClientSideValidation(object, uri, adapter) {
     
     switch(this.adapter) {
       case 'jquery.validate':
-        return this.jQueryValidateAdapter(this.object, this.validations);
+        return this.jQueryValidateAdapter();
       default:
     }
   };
