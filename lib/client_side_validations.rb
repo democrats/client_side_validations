@@ -32,6 +32,12 @@ elsif defined?(ActiveRecord)
   end
 end
 
+if defined?(ActionPack)
+  if ActionPack::VERSION::MAJOR == 2
+    require 'adapters/action_view_2'
+  end
+end
+
 klass.class_eval do
   include DNCLabs::ClientSideValidations
 end
