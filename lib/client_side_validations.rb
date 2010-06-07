@@ -42,8 +42,6 @@ end
 
 # Template
 
-if defined?(ActionPack)
-  if ActionPack::VERSION::MAJOR == 2
-    require 'adapters/action_view_2'
-  end
+if defined?(ActionView)
+  require 'adapters/action_view_2'
 end
