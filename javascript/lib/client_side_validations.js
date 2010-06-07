@@ -9,24 +9,24 @@ if (typeof(jQuery) != "undefined") {
   }
 }
 
-(function($) {
 $.extend($.fn, {
   clientSideValidations: function(url, adapter) {
-    if (/new/.test(this.id)) {
-      var id = /new_(\w+)/.exec(this.id)[1]
-    } else if (/edit/.test(this.id)) {
-      var id = /edit_(\w+)_\d+/.exec(this.id)[1]
+    var form = this;
+    var id = form[0].id;
+    if (/new/.test(id)) {
+      id = /new_(\w+)/.exec(id)[1]
+    } else if (/edit/.test(id)) {
+      id = /edit_(\w+)_\d+/.exec(id)[1]
     }
     var client = new ClientSideValidations(id, adapter)
     $.getJSON(url, function(json) {
       var validations = client.adaptValidations(json);
-      this.validate({
+      form.validate({
         rules:    validations.rules,
         messages: validations.messages
       });
     });
   }
-});
 });
 
 ClientSideValidations = function(id, adapter) {
