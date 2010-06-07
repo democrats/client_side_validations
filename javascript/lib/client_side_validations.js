@@ -83,7 +83,7 @@ $.extend($.fn, {
       this.validate({
         rules:    validations.rules,
         messages: validations.messages
-      });        
+      });
     });
   };
 });
