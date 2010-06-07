@@ -17,6 +17,9 @@ module DNCLabs
   end
 end
 
+
+# ORM
+
 if defined?(ActiveModel)
   require 'adapters/active_model'
   unless Object.respond_to?(:to_json)
@@ -32,12 +35,15 @@ elsif defined?(ActiveRecord)
   end
 end
 
+klass.class_eval do
+  include DNCLabs::ClientSideValidations
+end
+
+
+# Template
+
 if defined?(ActionPack)
   if ActionPack::VERSION::MAJOR == 2
     require 'adapters/action_view_2'
   end
-end
-
-klass.class_eval do
-  include DNCLabs::ClientSideValidations
 end
