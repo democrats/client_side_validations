@@ -14,7 +14,7 @@ function ClientSideValidations(id, url, adapter) {
   this.url     = url;
   this.adapter = adapter;
 
-  this.adapt_validations = function(validations) {
+  this.adaptValidations = function(validations) {
     this.validations = validations;
     this.jQueryValidateAdapter = function() {
       rules    = {}

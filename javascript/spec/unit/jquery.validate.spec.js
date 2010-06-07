@@ -10,7 +10,7 @@ describe 'jquery.validate adapter'
           "presence": { "message":"can't be blank" }
         }
       }
-      result = client.adapt_validations(validations);
+      result = client.adaptValidations(validations);
     end
   
     it 'should translate the rule'
@@ -29,7 +29,7 @@ describe 'jquery.validate adapter'
           "format": { "message":"is invalid", "with":/\d/ }
         }
       }
-      result = client.adapt_validations(validations)
+      result = client.adaptValidations(validations)
     end
     
     it 'should translate the rule'
@@ -48,7 +48,7 @@ describe 'jquery.validate adapter'
           "numericality": { "message":"is not a number" }
         }
       }
-      result = client.adapt_validations(validations)
+      result = client.adaptValidations(validations)
     end
     
     it 'should translate the rule'
@@ -67,7 +67,7 @@ describe 'jquery.validate adapter'
           "length": { "message":"is too short (minimum is 10 characters)", "minimum":10 }
         }
       }
-      result = client.adapt_validations(validations)
+      result = client.adaptValidations(validations)
     end
     
     it 'should translate the rule'
@@ -86,7 +86,7 @@ describe 'jquery.validate adapter'
           "length": { "message":"is too short (maximum is 10 characters)", "maximum":10 }
         }
       }
-      result = client.adapt_validations(validations)
+      result = client.adaptValidations(validations)
     end
     
     it 'should translate the rule'
@@ -108,7 +108,7 @@ describe 'jquery.validate adapter'
           "presence": { "message":"can't be blank" }
         }
       }
-      result = client.adapt_validations(validations)
+      result = client.adaptValidations(validations)
     end
     
     it 'should translate the rules for both attributes'
@@ -130,7 +130,7 @@ describe 'jquery.validate adapter'
           "numericality": { "message":"is not a number" }
         }
       }
-      result = client.adapt_validations(validations)
+      result = client.adaptValidations(validations)
     end
     
     it 'should translate the rules for both attributes'
