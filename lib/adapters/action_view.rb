@@ -1,7 +1,7 @@
 module DNCLabs
   module ClientSideValidations
     module Adapters
-      module ActionView2
+      module ActionView
         module BaseMethods
   
           def client_side_validations(object_name, options = {})
@@ -32,9 +32,9 @@ module DNCLabs
 end
 
 ActionView::Base.class_eval do
-  include DNCLabs::ClientSideValidations::Adapters::ActionView2::BaseMethods
+  include DNCLabs::ClientSideValidations::Adapters::ActionView::BaseMethods
 end
 
 ActionView::Helpers::FormBuilder.class_eval do
-  include DNCLabs::ClientSideValidations::Adapters::ActionView2::FormBuilderMethods
+  include DNCLabs::ClientSideValidations::Adapters::ActionView::FormBuilderMethods
 end

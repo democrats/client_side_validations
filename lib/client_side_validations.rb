@@ -43,5 +43,5 @@ end
 # Template
 
 if defined?(ActionView)
-  require 'adapters/action_view_2'
+  require 'adapters/action_view'
 end
