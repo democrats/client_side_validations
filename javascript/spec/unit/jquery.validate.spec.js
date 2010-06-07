@@ -1,6 +1,6 @@
 describe 'jquery.validate adapter'
   before
-    client = new ClientSideValidations('object', 'http://someurl.com/books.js', 'jquery.validate');
+    client = new ClientSideValidations('object', 'jquery.validate');
   end
   
   describe 'required'

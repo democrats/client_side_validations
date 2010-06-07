@@ -9,13 +9,11 @@ if (typeof(jQuery) != "undefined") {
   }
 }
 
-function ClientSideValidations(id, url, adapter) {
-  this.id      = id;
-  this.url     = url;
-  this.adapter = adapter;
-
-  this.adaptValidations = function(validations) {
-    this.validations = validations;
+ClientSideValidations = function(id, adapter) {
+  this.id                = id;
+  this.adapter           = adapter;
+  this.adaptValidations  = function(validations) {
+    this.validations           = validations;
     this.jQueryValidateAdapter = function() {
       rules    = {}
       messages = {}
@@ -70,3 +68,23 @@ function ClientSideValidations(id, url, adapter) {
     }
   };
 }
+
+(function($) {
+$.extend($.fn, {
+  clientSideValidations: function(url, adapter) {
+    if (/new/.test(this.id)) {
+      var id = /new_(\w+)/.exec(this.id)[1]
+    } else if (/edit/.test(this.id)) {
+      var id = /edit_(\w+)_\d+/.exec(this.id)[1]
+    }
+    var client = new ClientSideValidations(id, adapter)
+    $.getJSON(url, function(json) {
+      var validations = client.adaptValidations(json);
+      this.validate({
+        rules:    validations.rules,
+        messages: validations.messages
+      });        
+    });
+  };
+});
+});
