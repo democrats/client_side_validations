@@ -9,6 +9,7 @@ The concept is simple:
 4. client_side_validations.js converts the JSON for a given validation plugin and binds the validator to the form
 
 Currently the following validations are supported:
+
 * validates_presence_of
 * validates_format_of
 * validates_numericality_of
