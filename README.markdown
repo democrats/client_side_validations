@@ -1,5 +1,5 @@
 # Client Side Validations
-Now you can easily drop in client side validations in any Rails app. It will use validations defined in a given ActiveRecord for use with a Javascript form validator. (currently only [jquery.validate](http://bassistance.de/jquery-plugins/jquery-plugin-validation/) is supported)
+Now you can easily drop in client side validations in any Rails app. It will use validations defined in a given ActiveRecord (or ActiveModel) class for use with a Javascript form validator. (currently only [jquery.validate](http://bassistance.de/jquery-plugins/jquery-plugin-validation/) is supported)
 
 The concept is simple:
 
@@ -7,6 +7,12 @@ The concept is simple:
 2. Provide a publicly available route that render client_side_validations from the instance of the model
 3. The validations are sent to the client in JSON
 4. client_side_validations.js converts the JSON for a given validation plugin and binds the validator to the form
+
+Currently the following validations are supported:
+* validates_presence_of
+* validates_format_of
+* validates_numericality_of
+* validates_length_of
 
 ## Installation
 > gem install client_side_validations
@@ -59,7 +65,7 @@ You currently need both jQuery and the jQuery Validate plugin loaded before you 
     ...
    
 ### View
-Call client_side_validations from your FormBuilder block and pass the url of action defined in the controller
+Call client_side_validations from your FormBuilder block and pass the url of the action defined in the controller
     ...
     
     <% form_for @book do |b| %>
@@ -73,6 +79,4 @@ Call client_side_validations from your FormBuilder block and pass the url of act
    
 That should be it!
 
-
-#### Copyright
 Copyright (c) 2010 Democratic National Committee. See LICENSE for details.
