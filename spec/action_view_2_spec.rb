@@ -10,15 +10,9 @@ describe 'ActionView 2.x Form Helper' do
     
     context 'only the url' do
       before do
-        @object_name = 'object'
-        @url         = '/objects/new.json'
-        @expected_javascript = <<-JS
-      <script type="text/javascript">
-        $(document).ready(function() {
-          $('##{@object_name}').clientSideValidations('#{@url}', 'jquery.validate');
-        })
-      </script>
-    JS
+        @object_name         = 'object'
+        @url                 = '/objects/new.json'
+        @expected_javascript = %{<script type="text/javascript">$(document).ready(function(){$('##{@object_name}').clientSideValidations('#{@url}','jquery.validate');});</script>}
         subject.should_receive(:dom_id).and_return(@object_name)
       end
       
@@ -30,16 +24,10 @@ describe 'ActionView 2.x Form Helper' do
     
     context 'a different adapter' do
       before do
-        @object_name = 'object'
-        @url         = '/objects/new.json'
-        @adapter     = 'some.other.adapter'
-        @expected_javascript = <<-JS
-      <script type="text/javascript">
-        $(document).ready(function() {
-          $('##{@object_name}').clientSideValidations('#{@url}', '#{@adapter}');
-        })
-      </script>
-    JS
+        @object_name         = 'object'
+        @url                 = '/objects/new.json'
+        @adapter             = 'some.other.adapter'
+        @expected_javascript = %{<script type="text/javascript">$(document).ready(function(){$('##{@object_name}').clientSideValidations('#{@url}','#{@adapter}');});</script>}
         subject.should_receive(:dom_id).and_return(@object_name)
       end
       
@@ -53,13 +41,6 @@ describe 'ActionView 2.x Form Helper' do
       before do
         @object_name = 'object'
         @adapter     = 'some.other.adapter'
-        @expected_javascript = <<-JS
-      <script type="text/javascript">
-        $(document).ready(function() {
-          $('##{@object_name}').clientSideValidations('#{@url}', '#{@some_other_adapter}');
-        })
-      </script>
-    JS
       end
       
       it 'should raise an error' do

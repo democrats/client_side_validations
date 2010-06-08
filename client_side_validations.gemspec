@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{client_side_validations}
-  s.version = "0.5.0"
+  s.version = "0.6.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brian Cardarella"]
@@ -14,7 +14,8 @@ Gem::Specification.new do |s|
   s.email = %q{cardarellab@dnc.org}
   s.extra_rdoc_files = [
     "LICENSE",
-     "README.rdoc"
+     "README.rdoc",
+     "TODO"
   ]
   s.files = [
     ".document",
@@ -22,7 +23,9 @@ Gem::Specification.new do |s|
      "LICENSE",
      "README.rdoc",
      "Rakefile",
+     "TODO",
      "VERSION",
+     "client_side_validations.gemspec",
      "javascript/jspec/commands/example_command.rb",
      "javascript/jspec/rhino.js",
      "javascript/jspec/unit/jquery.validate.spec.js",
@@ -30,11 +33,12 @@ Gem::Specification.new do |s|
      "javascript/lib/client_side_validations.js",
      "javascript/vendor/jspec.js",
      "javascript/vendor/jspec.xhr.js",
-     "lib/adapters/action_view_2.rb",
+     "lib/adapters/action_view.rb",
      "lib/adapters/active_model.rb",
      "lib/adapters/active_record_2.rb",
      "lib/client_side_validations.rb",
      "spec/action_view_2_spec.rb",
+     "spec/action_view_3_spec.rb",
      "spec/active_model_3_spec.rb",
      "spec/active_record_2_spec.rb",
      "spec/spec.opts",
@@ -49,6 +53,7 @@ Gem::Specification.new do |s|
   s.summary = %q{Client Side Validations}
   s.test_files = [
     "spec/action_view_2_spec.rb",
+     "spec/action_view_3_spec.rb",
      "spec/active_model_3_spec.rb",
      "spec/active_record_2_spec.rb",
      "spec/spec_helper.rb",
