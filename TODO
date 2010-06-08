@@ -1,2 +1,2 @@
 - Add Rails Generators
-- Check ActionView code against Rails 3
+- Accept options in helper to extend the given validation plugin
