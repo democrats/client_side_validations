@@ -31,34 +31,45 @@ This will copy client_side_validations.js to "public/javascripts"
 Currently only [jquery.validate](http://bassistance.de/jquery-plugins/jquery-plugin-validation/) is supported so you will need to download [jQuery](http://docs.jquery.com/Downloading_jQuery) and the jQuery Validate plugin to "public/javascripts"
 
 ### Model
-   class Book < ActiveRecord::Base
+Validate your models as you normally would
+
+    class Book < ActiveRecord::Base
       validates_presence_of :author
-   end
+    end
 
 ### Controller
-   ...
-   
-   def new
-     @book = Book.new
+The controller action just needs to render the validations in JSON. From an instance of the model.
+    ...
+    
+    def new
+      @book = Book.new
      
-     respond_to do |format|
-       format.html
-       format.json { render :json => @book.validations_to_json(:author) }
-     end
-   end
+      respond_to do |format|
+        format.html
+        format.json { render :json => @book.validations_to_json(:author) }
+      end
+    end
+    
+    ...
    
 ### Layout
-   ...
-   <%= javascript_include_tag 'jquery', 'jquery.validate', 'client_side_validations' %>
-   ...
+You currently need both jQuery and the jQuery Validate plugin loaded before you load Client Side Validations
+    ...
+    <%= javascript_include_tag 'jquery', 'jquery.validate', 'client_side_validations' %>
+    ...
    
 ### View
-   <% form_for @book do |b| %>
-      <%= f.label :author %></br>
-      <%= f.text_field :author %></br>
-      <%= f.client_side_validations :url => new_book_path(:format => :json) %>
-      <%= submit_tag 'Create' %>
-   <% end %>
+Call client_side_validations from your FormBuilder block and pass the url of action defined in the controller
+    ...
+    
+    <% form_for @book do |b| %>
+       <%= f.label :author %></br>
+       <%= f.text_field :author %></br>
+       <%= f.client_side_validations :url => new_book_path(:format => :json) %>
+       <%= submit_tag 'Create' %>
+    <% end %>
+    
+    ...
    
 That should be it!
 
