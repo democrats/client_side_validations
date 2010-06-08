@@ -1,7 +1,0 @@
-= client_side_validations
-
-Client Side Validations
-
-== Copyright
-
-Copyright (c) 2010 Democratic National Committee. See LICENSE for details.

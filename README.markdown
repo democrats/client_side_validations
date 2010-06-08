@@ -1,0 +1,67 @@
+# Client Side Validations
+Now you can easily drop in client side validations in any Rails app. It will use validations defined in a given ActiveRecord for use with a Javascript form validator. (currently only [jquery.validate](http://bassistance.de/jquery-plugins/jquery-plugin-validation/) is supported)
+
+The concept is simple:
+
+1. Define validations in the model as you normally would
+2. Provide a publicly available route that render client_side_validations from the instance of the model
+3. The validations are sent to the client in JSON
+4. client_side_validations.js converts the JSON for a given validation plugin and binds the validator to the form
+
+## Installation
+> gem install client_side_validations
+
+## Rails 2
+Add "config.gem :client_side_validations" to the "config/environment.rb" file
+
+Then run the generator:
+   > script/generate client_side_validations
+
+This will copy client_side_validations.js to "public/javascripts"
+
+## Rails 3
+Add "gem 'client_side_validations" to the Gemfile
+
+Then run the generator:
+   > rails g client_side_validations
+
+This will copy client_side_validations.js to "public/javascripts"
+
+## Configuration
+Currently only [jquery.validate](http://bassistance.de/jquery-plugins/jquery-plugin-validation/) is supported so you will need to download [jQuery](http://docs.jquery.com/Downloading_jQuery) and the jQuery Validate plugin to "public/javascripts"
+
+### Model
+   class Book < ActiveRecord::Base
+      validates_presence_of :author
+   end
+
+### Controller
+   ...
+   
+   def new
+     @book = Book.new
+     
+     respond_to do |format|
+       format.html
+       format.json { render :json => @book.validations_to_json(:author) }
+     end
+   end
+   
+### Layout
+   ...
+   <%= javascript_include_tag 'jquery', 'jquery.validate', 'client_side_validations' %>
+   ...
+   
+### View
+   <% form_for @book do |b| %>
+      <%= f.label :author %></br>
+      <%= f.text_field :author %></br>
+      <%= f.client_side_validations :url => new_book_path(:format => :json) %>
+      <%= submit_tag 'Create' %>
+   <% end %>
+   
+That should be it!
+
+
+#### Copyright
+Copyright (c) 2010 Democratic National Committee. See LICENSE for details.
