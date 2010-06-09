@@ -1,5 +1,3 @@
-/* Additional jQueryValidator methods */
-
 if (typeof(jQuery) != "undefined") {
   if (typeof($('').validate) != "undefined") {
     jQuery.validator.addMethod("format", function(value, element, params) { 
@@ -10,9 +8,11 @@ if (typeof(jQuery) != "undefined") {
 }
 
 $.extend($.fn, {
-  clientSideValidations: function(url, adapter) {
-    var form = this;
-    var id = form[0].id;
+  clientSideValidations: function() {
+    var form    = this;
+    var url     = this[0]['data-csv-url'];
+    var id      = form[0].id;
+    var adapter = form[0]['data-csv-adapter'] || 'jquery.validate';
     if (/new/.test(id)) {
       id = /new_(\w+)/.exec(id)[1]
     } else if (/edit/.test(id)) {
@@ -27,6 +27,10 @@ $.extend($.fn, {
       });
     });
   }
+});
+
+$(document).ready(function() {
+  $('form[data-csv-url]').clientSideValidations();
 });
 
 ClientSideValidations = function(id, adapter) {

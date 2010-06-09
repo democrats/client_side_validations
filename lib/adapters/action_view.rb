@@ -3,16 +3,31 @@ module DNCLabs
     module Adapters
       module ActionView
         module BaseMethods
-  
-          def client_side_validations(object_name, options = {})
-            url     = options.delete(:url)
-            raise "No URL Specified!" unless url
-            adapter = options.delete(:adapter) || 'jquery.validate'
-            js = %{<script type="text/javascript">$(document).ready(function(){$('##{dom_id(options[:object])}').clientSideValidations('#{url}','#{adapter}');});</script>}
-            if js.respond_to?(:html_safe)
-              js.html_safe
-            else
-              js
+          
+          def self.included(base)
+            form_method = base.instance_method(:form_for)
+            base.class_eval do
+              define_method(:form_for) do |record_or_name_or_array, *args, &proc|
+                options = args.extract_options!
+                options.symbolize_keys!
+                if validations = options.delete(:validations)
+                  validations.symbolize_keys!
+                  unless options.key?(:html)
+                    options[:html] = {}
+                  end
+                  
+                  if validations[:url]
+                    options[:html]['data-csv-url'] = validations[:url]
+                  else
+                    raise "No URL Given"
+                  end
+                  if validations[:adapter]
+                    options[:html]['data-csv-adapter'] = validations[:adapter]
+                  end
+                end
+                args << options
+                form_method.bind(self).call(record_or_name_or_array, *args, &proc)
+              end
             end
           end
           
