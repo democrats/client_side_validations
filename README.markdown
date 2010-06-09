@@ -70,8 +70,8 @@ Have a form ask for client side validations by passing :validate to form_for and
     ...
     
     <% form_for @book, :validations => { :url => new_book_path(:format => :json) } do |b| %>
-       <%= f.label :author %></br>
-       <%= f.text_field :author %></br>
+       <%= b.label :author %></br>
+       <%= b.text_field :author %></br>
        <%= submit_tag 'Create' %>
     <% end %>
     
