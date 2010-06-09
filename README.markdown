@@ -66,7 +66,7 @@ You currently need both jQuery and the jQuery Validate plugin loaded before you 
     ...
    
 ### View
-Call client_side_validations by passing :validate to form_for and pass the url of the action defined in the controller
+Have a form ask for client side validations by passing :validate to form_for and pass the url of the action defined in the controller
     ...
     
     <% form_for @book, :validations => { :url => new_book_path(:format => :json) } do |b| %>
