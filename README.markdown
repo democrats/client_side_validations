@@ -82,4 +82,5 @@ Have a form ask for client side validations by passing :validate to form_for and
 That should be it!
 
 Written by Brian Cardarella
+
 Copyright (c) 2010 Democratic National Committee. See LICENSE for details.
