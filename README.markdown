@@ -1,6 +1,8 @@
 # Client Side Validations
 Now you can easily drop in client side validations in any Rails app. It will use validations defined in a given ActiveRecord (or ActiveModel) class for use with a Javascript form validator. (currently only [jquery.validate](http://bassistance.de/jquery-plugins/jquery-plugin-validation/) is supported)
 
+For Rails 2 and Rails 3 example apps please see [client_side_validations_example](http://github.com/dnclabs/client_side_validations_examples)
+
 The concept is simple:
 
 1. Define validations in the model as you normally would
@@ -79,4 +81,5 @@ Have a form ask for client side validations by passing :validate to form_for and
    
 That should be it!
 
+Written by Brian Cardarella
 Copyright (c) 2010 Democratic National Committee. See LICENSE for details.
