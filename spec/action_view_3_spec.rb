@@ -22,31 +22,24 @@ describe 'ActionView 3.x Form Helper' do
       end
     end
 
-    context 'only the url' do
+    context 'with validations' do
       before do
-        @result = subject.form_for('book', :url => '/books', :validations => { :url => '/books/new.json' }) { }
+        @result = subject.form_for('book', :url => '/books', :validations => true) { }
       end
 
       it 'should generate the proper javascript' do
-        @result.should == %{<form action="/books" data-csv-url="/books/new.json" method="post"></form>}
+        @result.should == %{<form action="/books" method="post" object-csv="book"></form>}
       end
     end
 
-    context 'only the url' do
+    context 'with validations overridden for a class' do
       before do
-        @result = subject.form_for('book', :url => '/books', :validations => { :url => '/books/new.json', :adapter => 'jquery.validate' }) { }
+        class TestBook; end
+        @result = subject.form_for('book', :url => '/books', :validations => TestBook) { }
       end
-
+      
       it 'should generate the proper javascript' do
-        @result.should == %{<form action="/books" data-csv-adapter="jquery.validate" data-csv-url="/books/new.json" method="post"></form>}
-      end
-    end
-
-    context 'not including the :url' do
-      it 'should raise an error' do
-        expect {
-          subject.form_for('book', :url => '/books', :validations => { :adapter => 'jquery.validate' }) { }
-        }.to raise_error
+        @result.should == %{<form action="/books" method="post" object-csv="test_book"></form>}
       end
     end
   end

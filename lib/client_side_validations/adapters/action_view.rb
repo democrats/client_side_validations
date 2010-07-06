@@ -11,19 +11,22 @@ module DNCLabs
                 options = args.extract_options!
                 options.symbolize_keys!
                 if validations = options.delete(:validations)
-                  validations.symbolize_keys!
                   unless options.key?(:html)
                     options[:html] = {}
                   end
                   
-                  if validations[:url]
-                    options[:html]['data-csv-url'] = validations[:url]
+                  unless validations == true
+                    object = validations.to_s.underscore
                   else
-                    raise "No URL Given"
+                    case record_or_name_or_array
+                    when String, Symbol
+                      object = record_or_name_or_array.to_s
+                    else
+                      object = record_or_name_or_array.class.to_s.underscore
+                    end
                   end
-                  if validations[:adapter]
-                    options[:html]['data-csv-adapter'] = validations[:adapter]
-                  end
+                  
+                  options[:html]['object-csv'] = object
                 end
                 args << options
                 form_method.bind(self).call(record_or_name_or_array, *args, &proc)

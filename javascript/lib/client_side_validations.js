@@ -10,7 +10,8 @@ if (typeof(jQuery) != "undefined") {
 $.extend($.fn, {
   clientSideValidations: function() {
     var form    = this;
-    var url     = this[0]['data-csv-url'];
+    var object  = this[0]['object-csv'];
+    var url     = '/' + object + '/validations.json'
     var id      = form[0].id;
     var adapter = form[0]['data-csv-adapter'] || 'jquery.validate';
     if (/new/.test(id)) {
@@ -30,7 +31,7 @@ $.extend($.fn, {
 });
 
 $(document).ready(function() {
-  $('form[data-csv-url]').clientSideValidations();
+  $('form[object-csv]').clientSideValidations();
 });
 
 ClientSideValidations = function(id, adapter) {

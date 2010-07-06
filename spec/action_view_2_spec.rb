@@ -25,35 +25,27 @@ describe 'ActionView 2.x Form Helper' do
       end
     end
     
-    context 'only the url' do
+    context 'with validations default' do
       before do
-        subject.form_for('book', :url => '/books', :validations => { :url => '/books/new.json' }) { }
+        subject.form_for('book', :url => '/books', :validations => true) { }
         @result = subject.output_buffer
       end
       
       it 'should generate the proper javascript' do
-        @result.should == %{<form action="/books" data-csv-url="/books/new.json" method="post"></form>}
-      end
-    end
-    
-    context 'only the url' do
-      before do
-        subject.form_for('book', :url => '/books', :validations => { :url => '/books/new.json', :adapter => 'jquery.validate' }) { }
-        @result = subject.output_buffer
-      end
-      
-      it 'should generate the proper javascript' do
-        @result.should == %{<form action="/books" data-csv-adapter="jquery.validate" data-csv-url="/books/new.json" method="post"></form>}
+        @result.should == %{<form action="/books" method="post" object-csv="book"></form>}
       end
     end
 
-    context 'not including the :url' do
-      it 'should raise an error' do
-        expect {
-          subject.form_for('book', :url => '/books', :validations => { :adapter => 'jquery.validate' }) { }
-        }.to raise_error
+    context 'with validations overridden for a class' do
+      before do
+        class TestBook; end
+        subject.form_for('book', :url => '/books', :validations => TestBook) { }
+        @result = subject.output_buffer
+      end
+      
+      it 'should generate the proper javascript' do
+        @result.should == %{<form action="/books" method="post" object-csv="test_book"></form>}
       end
     end
-    
   end
 end
