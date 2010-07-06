@@ -65,9 +65,7 @@ module DNCLabs
 
         def get_validation_options(options)
           options = options.stringify_keys
-          if options.delete('on') == :create
-            options.delete('if')
-          end
+          options.delete('on') == :create
           options.delete('tokenizer')
           options.delete('only_integer')
           options.delete('allow_nil')
@@ -84,6 +82,7 @@ module DNCLabs
         def remove_reserved_conditionals(*conditionals)
           conditionals.flatten!
           conditionals.delete_if { |conditional| conditional =~ /@_/ }
+          conditionals.delete_if { |conditional| conditional =~ /validation_context/ }
           conditionals.first
         end
       end
