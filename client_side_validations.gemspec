@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{client_side_validations}
-  s.version = "2.0.0"
+  s.version = "2.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brian Cardarella"]
-  s.date = %q{2010-06-09}
+  s.date = %q{2010-07-06}
   s.description = %q{ORM and Framework agnostic Client Side Validations}
   s.email = %q{cardarellab@dnc.org}
   s.extra_rdoc_files = [
@@ -18,64 +18,38 @@ Gem::Specification.new do |s|
      "TODO"
   ]
   s.files = [
-    ".document",
-     ".gitignore",
-     "LICENSE",
+    "LICENSE",
      "README.markdown",
-     "Rakefile",
-     "TODO",
-     "VERSION",
-     "client_side_validations.gemspec",
      "generators/client_side_validations/client_side_validations_generator.rb",
-     "javascript/jspec/commands/example_command.rb",
-     "javascript/jspec/rhino.js",
-     "javascript/jspec/unit/jquery.validate.spec.js",
-     "javascript/jspec/unit/spec.helper.js",
      "javascript/lib/client_side_validations.js",
-     "javascript/vendor/jspec.js",
-     "javascript/vendor/jspec.xhr.js",
-     "lib/adapters/action_view.rb",
-     "lib/adapters/active_model.rb",
-     "lib/adapters/active_record_2.rb",
      "lib/client_side_validations.rb",
-     "lib/generators/client_side_validations_generator.rb",
-     "spec/action_view_2_spec.rb",
-     "spec/action_view_3_spec.rb",
-     "spec/active_model_3_spec.rb",
-     "spec/active_record_2_spec.rb",
-     "spec/spec.opts",
-     "spec/spec_helper.rb",
-     "spec/support/required_gems.rb",
-     "tasks/spec.rake"
+     "lib/client_side_validations/adapters/action_view.rb",
+     "lib/client_side_validations/adapters/active_model.rb",
+     "lib/client_side_validations/adapters/active_record_2.rb",
+     "lib/client_side_validations/orm.rb",
+     "lib/client_side_validations/template.rb",
+     "lib/generators/client_side_validations_generator.rb"
   ]
   s.homepage = %q{http://github.com/dnclabs/client_side_validations}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.6}
   s.summary = %q{Client Side Validations}
-  s.test_files = [
-    "spec/action_view_2_spec.rb",
-     "spec/action_view_3_spec.rb",
-     "spec/active_model_3_spec.rb",
-     "spec/active_record_2_spec.rb",
-     "spec/spec_helper.rb",
-     "spec/support/required_gems.rb"
-  ]
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_development_dependency(%q<rspec>, [">= 1.2.9"])
       s.add_runtime_dependency(%q<validation_reflection>, [">= 0.3.6"])
+      s.add_runtime_dependency(%q<json>, ["= 1.4.3"])
     else
-      s.add_dependency(%q<rspec>, [">= 1.2.9"])
       s.add_dependency(%q<validation_reflection>, [">= 0.3.6"])
+      s.add_dependency(%q<json>, ["= 1.4.3"])
     end
   else
-    s.add_dependency(%q<rspec>, [">= 1.2.9"])
     s.add_dependency(%q<validation_reflection>, [">= 0.3.6"])
+    s.add_dependency(%q<json>, ["= 1.4.3"])
   end
 end
 
