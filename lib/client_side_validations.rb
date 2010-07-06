@@ -3,22 +3,23 @@ require 'json'
 
 class ClientSideValidations
   def initialize(app)
-    @app    = app
+    @app = app
   end
   
   def call(env)
     case env['PATH_INFO']
     when %r{/(\w+)/validations.json}
       resource = $1
-      body = get_validations(resource)
+      body     = get_validations(resource)
       [200, {'Content-Type' => 'application/json', 'Content-Length' => "#{body.length}"}, body]
-    when %r{/(\w+)/validations/uniqueness/(\w+)}
+      
+    when %r{/(\w+)/validations/uniqueness/(\w+).json}
       resource  = $1
       attribute = $2
       value     = env['QUERY_STRING'].split('=').last
-      body = {"unique" => is_unique?(resource, attribute, value) }.to_json
-      
+      body      = {"unique" => is_unique?(resource, attribute, value) }.to_json
       [200, {'Content-Type' => 'application/json', 'Content-Length' => "#{body.length}"}, body]
+      
     else
       @app.call(env)
     end

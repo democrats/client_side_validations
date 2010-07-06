@@ -34,13 +34,13 @@ describe 'Client Side Validations Middleware' do
     describe 'uniqueness' do
       it 'should generate a uniqueness path for the book resource' do
         Book.stubs(:find_by_name).returns(nil)
-        get '/book/validations/uniqueness/name', { :value => 'Test' }
+        get '/book/validations/uniqueness/name.json', { :value => 'Test' }
         Crack::JSON.parse(last_response.body).should == {"unique" => true}
       end
 
       it 'should generate a uniqueness path for the partner_user resource' do
         PartnerUser.stubs(:find_by_name).returns("Found a record")
-        get '/partner_user/validations/uniqueness/name', { :value => 'Test' }
+        get '/partner_user/validations/uniqueness/name.json', { :value => 'Test' }
         Crack::JSON.parse(last_response.body).should == {"unique" => false}
       end
     end
