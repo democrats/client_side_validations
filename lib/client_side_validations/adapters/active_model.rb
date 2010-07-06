@@ -45,9 +45,9 @@ module DNCLabs
             I18n.translate('errors.messages.invalid', :locale => locale)
           when :length
             if count = validation.options[:minimum]
-              I18n.translate('errors.messages.too_short', :locale => locale).sub('{{count}}', count.to_s)
+              I18n.translate('errors.messages.too_short', :locale => locale).sub('%{count}', count.to_s)
             elsif count = validation.options[:maximum]
-              I18n.translate('errors.messages.too_long', :locale => locale).sub('{{count}}', count.to_s)
+              I18n.translate('errors.messages.too_long', :locale => locale).sub('%{count}', count.to_s)
             end
           when :numericality
             I18n.translate('errors.messages.not_a_number', :locale => locale)
@@ -65,7 +65,9 @@ module DNCLabs
 
         def get_validation_options(options)
           options = options.stringify_keys
-          options.delete('on')
+          if options.delete('on') == :create
+            options.delete('if')
+          end
           options.delete('tokenizer')
           options.delete('only_integer')
           options.delete('allow_nil')
