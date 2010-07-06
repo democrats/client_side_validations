@@ -20,7 +20,7 @@ Currently the following validations are supported:
 ## Installation
 > gem install client_side_validations
 
-## Rails 2
+### Rails 2
 Add "config.gem :client_side_validations" to the "config/environment.rb" file
 
 Then run the generator:
@@ -28,7 +28,7 @@ Then run the generator:
 
 This will copy client_side_validations.js to "public/javascripts"
 
-## Rails 3
+### Rails 3
 Add "gem 'client_side_validations" to the Gemfile
 
 Then run the generator:
@@ -39,6 +39,21 @@ This will copy client_side_validations.js to "public/javascripts"
 ## Configuration
 Currently only [jquery.validate](http://bassistance.de/jquery-plugins/jquery-plugin-validation/) is supported so you will need to download [jQuery](http://docs.jquery.com/Downloading_jQuery) and the jQuery Validate plugin to "public/javascripts"
 
+### Rack
+The following routes will be reserved for client side validations:
+/singular_model_name/validations.json
+/singular_model_name/validations/uniqueness/attribute_name
+
+Add the middleware to your stack:
+
+config/environment.rb for Rails 2.x
+
+config/application.rb for Rails 3.x
+
+    ...
+    config.middleware.use 'ClientSideValidations'
+    ...
+
 ### Model
 Validate your models as you normally would
 
@@ -46,19 +61,16 @@ Validate your models as you normally would
       validates_presence_of :author
     end
 
-### Rack
-The following routes will be reserved for client side validations:
-/singular_model_name/validations.json
-/singular_model_name/validations/uniqueness/attribute_name
-
 ### Layout
 You currently need both jQuery and the jQuery Validate plugin loaded before you load Client Side Validations
+
     ...
     <%= javascript_include_tag 'jquery', 'jquery.validate', 'client_side_validations' %>
     ...
    
 ### View
 Have a form ask for client side validations by passing :validate => true
+
     ...
     
     <% form_for @book, :validations => true do |b| %>
@@ -74,7 +86,7 @@ That should be it!
 ## Advanced Options
 
 ### Model
-If you want to define only specific fields for client side validations just override the validation_fields method
+If you want to define only specific fields for client side validations just override the validation_fields method on each model
 
     class Book < ActiveRecord::Base
       validatese_presence_of :author
