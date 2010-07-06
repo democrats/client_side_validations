@@ -1,9 +1,9 @@
 module DNCLabs
   module ClientSideValidations
-    def validations_to_json(*attrs)
-      hash = Hash.new { |h, attribute| h[attribute] = {} }
-      attrs.each do |attr|
-        hash[attr].merge!(validation_to_hash(attr))
+    def validations_to_json
+      hash = Hash.new { |h, field| h[field] = {} }
+      validation_fields.each do |field|
+        hash[field].merge!(validation_to_hash(field))
       end
       hash.to_json
     end
@@ -11,6 +11,10 @@ module DNCLabs
     def validation_to_hash(_attr, _options = {})
       @dnc_csv_adapter ||= Adapter.new(self)
       @dnc_csv_adapter.validation_to_hash(_attr, _options)
+    end
+    
+    def validation_fields
+      []
     end
   end
 end

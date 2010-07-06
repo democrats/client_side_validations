@@ -221,11 +221,17 @@ describe "Validations to JSON" do
   it "should support a sinlgle validation" do
     Klass.class_eval do
       validates_presence_of :string
+      
+      private
+      
+      def validation_fields
+        [:string]
+      end
     end
     
     instance      = Klass.new
     expected_json = {:string => { "presence" => { "message" => "can't be blank" } } }.to_json
-    result_json   = instance.validations_to_json(:string)
+    result_json   = instance.validations_to_json
     result_json.should == expected_json
   end
 
@@ -233,24 +239,36 @@ describe "Validations to JSON" do
     Klass.class_eval do
       validates_presence_of :number
       validates_numericality_of :number
+      
+      private
+      
+      def validation_fields
+        [:number]
+      end
     end
     
     instance      = Klass.new
     expected_json = {:number => { "presence" => { "message" => "can't be blank" }, "numericality" => { "message" => "is not a number" } } }.to_json
-    result_json   = instance.validations_to_json(:number)
+    result_json   = instance.validations_to_json
     result_json.should == expected_json
   end
   
   it "should support single validations on different fields" do
     Klass.class_eval do
-      validates_presence_of :string
+      validates_presence_of :string_1
       validates_presence_of :string_2
+      
+      private
+      
+      def validation_fields
+        [:string_1, :string_2]
+      end
     end
     
     instance      = Klass.new
-    expected_json = {:string => { "presence" => { "message" => "can't be blank" } },
+    expected_json = {:string_1 => { "presence" => { "message" => "can't be blank" } },
                      :string_2 => { "presence" => { "message" => "can't be blank" } } }.to_json
-    result_json   = instance.validations_to_json(:string, :string_2)
+    result_json   = instance.validations_to_json
     result_json.should == expected_json
   end
   
@@ -260,12 +278,18 @@ describe "Validations to JSON" do
       validates_numericality_of :number_1
       validates_presence_of     :number_2
       validates_numericality_of :number_2
+      
+      private
+      
+      def validation_fields
+        [:number_1, :number_2]
+      end
     end
     
     instance      = Klass.new
     expected_json = {:number_1 => { "presence" => { "message" => "can't be blank" }, "numericality" => { "message" => "is not a number" } },
                      :number_2 => { "presence" => { "message" => "can't be blank" }, "numericality" => { "message" => "is not a number" } } }.to_json
-    result_json   = instance.validations_to_json(:number_1, :number_2)
+    result_json   = instance.validations_to_json
     result_json.should == expected_json
   end
 end
