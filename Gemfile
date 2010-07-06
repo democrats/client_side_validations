@@ -5,8 +5,8 @@ gem 'json'
 
 group :test do
   gem 'rspec'
-  # gem 'activerecord', '2.3.8'
-  # gem 'activemodel', 3.0.0.beta.4'
+  gem 'activerecord', '2.3.8'
+  gem 'activemodel', '3.0.0.beta4'
   gem 'crack'
   gem 'bourne'
   gem 'rack-test'
