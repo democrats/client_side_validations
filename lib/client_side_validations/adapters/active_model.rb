@@ -35,6 +35,10 @@ module DNCLabs
           validation_hash
         end
         
+        def validation_fields
+          base._validators.keys
+        end
+        
         private
 
         def get_validation_message(validation, locale)

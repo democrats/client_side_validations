@@ -35,6 +35,10 @@ module DNCLabs
           validation_hash
         end
         
+        def validation_fields
+          base.class.reflect_on_all_validations.map { |v| v.name }
+        end
+        
         private
 
         def get_validation_message(validation, locale)

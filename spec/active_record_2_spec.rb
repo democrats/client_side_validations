@@ -4,22 +4,25 @@ require 'active_record'
 require 'client_side_validations'
 
 describe 'Validations' do
-  describe 'to hash' do
-  
-    before do
-      class Klass < ActiveRecord::Base
-        def self.columns() @columns ||= []; end
+  before do
+    class Klass < ActiveRecord::Base
+      def self.table_exists?
+        false
+      end
       
-        def self.column(name, sql_type = nil, default = nil, null = true)
-          columns << ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, sql_type.to_s, null)
-        end
+      def self.columns() @columns ||= []; end
+    
+      def self.column(name, sql_type = nil, default = nil, null = true)
+        columns << ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, sql_type.to_s, null)
       end
     end
+  end
+
+  after do
+    Object.send(:remove_const, :Klass)
+  end
   
-    after do
-      Object.send(:remove_const, :Klass)
-    end
-  
+  describe 'to hash' do
     it "should support validate_presence_of" do
       Klass.class_eval { validates_presence_of :string }
       instance      = Klass.new
@@ -218,29 +221,9 @@ describe 'Validations' do
   end
 
   describe 'to JSON' do
-    before do
-      class Klass < ActiveRecord::Base
-        def self.columns() @columns ||= []; end
-
-        def self.column(name, sql_type = nil, default = nil, null = true)
-          columns << ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, sql_type.to_s, null)
-        end
-      end
-    end
-  
-    after do
-      Object.send(:remove_const, :Klass)
-    end
-
     it "should support a sinlgle validation" do
       Klass.class_eval do
         validates_presence_of :string
-        
-        private
-        
-        def validation_fields
-          [:string]
-        end
       end
     
       instance      = Klass.new
@@ -253,12 +236,6 @@ describe 'Validations' do
       Klass.class_eval do
         validates_presence_of :number
         validates_numericality_of :number
-        
-        private
-        
-        def validation_fields
-          [:number]
-        end
       end
     
       instance      = Klass.new
@@ -271,12 +248,6 @@ describe 'Validations' do
       Klass.class_eval do
         validates_presence_of :string_1
         validates_presence_of :string_2
-        
-        private
-        
-        def validation_fields
-          [:string_1, :string_2]
-        end
       end
     
       instance      = Klass.new
@@ -292,12 +263,6 @@ describe 'Validations' do
         validates_numericality_of :number_1
         validates_presence_of     :number_2
         validates_numericality_of :number_2
-        
-        private
-        
-        def validation_fields
-          [:number_1, :number_2]
-        end
       end
     
       instance      = Klass.new
@@ -305,6 +270,20 @@ describe 'Validations' do
                        :number_2 => { "presence" => { "message" => "can't be blank" }, "numericality" => { "message" => "is not a number" } } }.to_json
       result_json   = instance.validations_to_json
       result_json.should == expected_json
+    end
+  end
+  
+  describe 'fields' do
+    it 'should only return field names that have validations' do
+      Klass.class_eval do
+        validates_presence_of     :number_1
+        validates_numericality_of :number_2
+      end
+      
+      instance        = Klass.new
+      expected_fields = [:number_1, :number_2]
+      result_fields   = instance.validation_fields
+      result_fields.should == expected_fields
     end
   end
 end
