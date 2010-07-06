@@ -10,10 +10,10 @@ if (typeof(jQuery) != "undefined") {
 $.extend($.fn, {
   clientSideValidations: function() {
     var form    = this;
-    var object  = this[0]['object-csv'];
+    var object  = form.attr('object-csv');
     var url     = '/' + object + '/validations.json'
     var id      = form[0].id;
-    var adapter = form[0]['data-csv-adapter'] || 'jquery.validate';
+    var adapter = 'jquery.validate';
     if (/new/.test(id)) {
       id = /new_(\w+)/.exec(id)[1]
     } else if (/edit/.test(id)) {
