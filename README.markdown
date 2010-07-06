@@ -40,16 +40,10 @@ This will copy client_side_validations.js to "public/javascripts"
 Currently only [jquery.validate](http://bassistance.de/jquery-plugins/jquery-plugin-validation/) is supported so you will need to download [jQuery](http://docs.jquery.com/Downloading_jQuery) and the jQuery Validate plugin to "public/javascripts"
 
 ### Model
-Validate your models as you normally would and define which attributes will be available for client side validation
+Validate your models as you normally would
 
     class Book < ActiveRecord::Base
       validates_presence_of :author
-      
-      private
-      
-      def validation_fields
-        [:author]
-      end
     end
 
 ### Rack
@@ -68,14 +62,31 @@ Have a form ask for client side validations by passing :validate => true
     ...
     
     <% form_for @book, :validations => true do |b| %>
-       <%= b.label :author %></br>
-       <%= b.text_field :author %></br>
-       <%= submit_tag 'Create' %>
+      <%= b.label :author %></br>
+      <%= b.text_field :author %></br>
+      <%= submit_tag 'Create' %>
     <% end %>
     
     ...
    
 That should be it!
+
+## Advanced Options
+
+### Model
+If you want to define only specific fields for client side validations just override the validation_fields method
+
+    class Book < ActiveRecord::Base
+      validatese_presence_of :author
+      validates_presence_of :body
+      
+      private
+      
+      def validation_fields
+        [:author]
+      end
+    end
+    
 
 Written by Brian Cardarella
 
