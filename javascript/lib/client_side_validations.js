@@ -1,38 +1,32 @@
 if (typeof(jQuery) != "undefined") {
-  if (typeof($('').validate) != "undefined") {
-    jQuery.validator.addMethod("format", function(value, element, params) { 
-        var pattern = new RegExp(params, "i");
-        return this.optional(element) || pattern.test(value); 
-    }, jQuery.validator.format("Invalid format."));
-  }
-}
 
-$.extend($.fn, {
-  clientSideValidations: function() {
-    var form    = this;
-    var object  = form.attr('object-csv');
-    var url     = '/' + object + '/validations.json'
-    var id      = form[0].id;
-    var adapter = 'jquery.validate';
-    if (/new/.test(id)) {
-      id = /new_(\w+)/.exec(id)[1]
-    } else if (/edit/.test(id)) {
-      id = /edit_(\w+)_\d+/.exec(id)[1]
-    }
-    var client = new ClientSideValidations(id, adapter)
-    $.getJSON(url, function(json) {
-      var validations = client.adaptValidations(json);
-      form.validate({
-        rules:    validations.rules,
-        messages: validations.messages
+  $.extend($.fn, {
+    clientSideValidations: function() {
+      var form    = this;
+      var object  = form.attr('object-csv');
+      var url     = '/' + object + '/validations.json'
+      var id      = form[0].id;
+      var adapter = 'jquery.validate';
+      if (/new/.test(id)) {
+        id = /new_(\w+)/.exec(id)[1]
+      } else if (/edit/.test(id)) {
+        id = /edit_(\w+)_\d+/.exec(id)[1]
+      }
+      var client = new ClientSideValidations(id, adapter)
+      $.getJSON(url, function(json) {
+        var validations = client.adaptValidations(json);
+        form.validate({
+          rules:    validations.rules,
+          messages: validations.messages
+        });
       });
-    });
-  }
-});
+    }
+  });
 
-$(document).ready(function() {
-  $('form[object-csv]').clientSideValidations();
-});
+  $(document).ready(function() {
+    $('form[object-csv]').clientSideValidations();
+  });
+}
 
 ClientSideValidations = function(id, adapter) {
   this.id                = id;

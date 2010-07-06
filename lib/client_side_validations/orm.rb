@@ -8,7 +8,7 @@ module DNCLabs
       hash.to_json
     end
     
-    def validation_to_hash(_attr, _options = {})
+    def validation_to_hash(attr, options = {})
       @dnc_csv_adapter ||= Adapter.new(self)
       @dnc_csv_adapter.validation_to_hash(_attr, _options)
     end

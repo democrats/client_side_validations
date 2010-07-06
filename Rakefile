@@ -31,7 +31,23 @@ Spec::Rake::SpecTask.new(:rcov) do |spec|
 end
 
 task :spec => :check_dependencies
-task :default => :spec
+desc 'Default: run the specs.'
+task :default do
+  puts 'Javascript'
+  system('jspec run javascript/jspec/rhino.js --rhino')
+  
+  puts 'ActiveRecord 2.x'
+  system('spec spec/active_record_2_spec.rb')
+  
+  puts 'ActiveModel 3.x'
+  system('spec spec/active_model_3_spec.rb')
+  
+  puts 'ActionView 2.x'
+  system('spec spec/action_view_2_spec.rb')
+
+  puts 'ActionView 3.x'
+  system('spec spec/action_view_3_spec.rb')
+end
 
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
