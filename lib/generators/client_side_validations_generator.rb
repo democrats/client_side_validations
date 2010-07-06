@@ -3,7 +3,7 @@ require 'rails/generators'
 class ClientSideValidationsGenerator < Rails::Generators::Base
   
   def self.source_root
-    File.join(File.dirname(__FILE__), '../../jaascript/lib')
+    File.join(File.dirname(__FILE__), '../../javascript/lib')
   end
   
   def install_client_side_validations
