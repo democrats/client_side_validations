@@ -5,8 +5,8 @@ For Rails 2 and Rails 3 example apps please see [client_side_validations_example
 
 The concept is simple:
 
-1. Define validations in the model as you normally would
-2. Provide a publicly available route that render client_side_validations from the instance of the model
+1. Include the middleware
+2. Define validations in the model as you normally would
 3. The validations are sent to the client in JSON
 4. client_side_validations.js converts the JSON for a given validation plugin and binds the validator to the form
 
@@ -41,6 +41,7 @@ Currently only [jquery.validate](http://bassistance.de/jquery-plugins/jquery-plu
 
 ### Rack
 The following routes will be reserved for client side validations:
+
 /singular_model_name/validations.json
 /singular_model_name/validations/uniqueness/attribute_name
 
