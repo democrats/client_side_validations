@@ -285,5 +285,17 @@ describe 'Validations' do
       result_fields   = instance.validation_fields
       result_fields.should == expected_fields
     end
+    
+    it 'should only return a single field name if assigned multiple validations' do
+      Klass.class_eval do
+        validates_presence_of     :number_1
+        validates_numericality_of :number_1
+      end
+      
+      instance        = Klass.new
+      expected_fields = [:number_1]
+      result_fields   = instance.validation_fields
+      result_fields.should == expected_fields
+    end
   end
 end

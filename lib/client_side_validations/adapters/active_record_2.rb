@@ -36,7 +36,7 @@ module DNCLabs
         end
         
         def validation_fields
-          base.class.reflect_on_all_validations.map { |v| v.name }
+          base.class.reflect_on_all_validations.map { |v| v.name }.uniq
         end
         
         private

@@ -40,27 +40,23 @@ This will copy client_side_validations.js to "public/javascripts"
 Currently only [jquery.validate](http://bassistance.de/jquery-plugins/jquery-plugin-validation/) is supported so you will need to download [jQuery](http://docs.jquery.com/Downloading_jQuery) and the jQuery Validate plugin to "public/javascripts"
 
 ### Model
-Validate your models as you normally would
+Validate your models as you normally would and define which attributes will be available for client side validation
 
     class Book < ActiveRecord::Base
       validates_presence_of :author
-    end
-
-### Controller
-The controller action just needs to render the validations in JSON. From an instance of the model.
-    ...
-    
-    def new
-      @book = Book.new
-     
-      respond_to do |format|
-        format.html
-        format.json { render :json => @book.validations_to_json(:author) }
+      
+      private
+      
+      def validation_fields
+        [:author]
       end
     end
-    
-    ...
-   
+
+### Rack
+The following routes will be reserved for client side validations:
+/singular_model_name/validations.json
+/singular_model_name/validations/uniqueness/attribute_name
+
 ### Layout
 You currently need both jQuery and the jQuery Validate plugin loaded before you load Client Side Validations
     ...
@@ -68,10 +64,10 @@ You currently need both jQuery and the jQuery Validate plugin loaded before you 
     ...
    
 ### View
-Have a form ask for client side validations by passing :validate to form_for and pass the url of the action defined in the controller
+Have a form ask for client side validations by passing :validate => true
     ...
     
-    <% form_for @book, :validations => { :url => new_book_path(:format => :json) } do |b| %>
+    <% form_for @book, :validations => true do |b| %>
        <%= b.label :author %></br>
        <%= b.text_field :author %></br>
        <%= submit_tag 'Create' %>
