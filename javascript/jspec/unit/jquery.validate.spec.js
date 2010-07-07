@@ -109,7 +109,7 @@ describe 'jquery.validate adapter'
     end
     
     it 'should translate the rule'
-      result.rules['object[string]']['remote'].should.eql({url:'/validations/uniqueness.json'})
+      result.rules['object[string]']['remote'].should.eql({url:'/validations/uniqueness.json',data:{}})
     end
   
     it 'should translate the message'

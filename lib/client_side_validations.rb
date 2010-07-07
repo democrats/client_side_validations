@@ -8,7 +8,9 @@ class ClientSideValidations
   end
   
   def call(env)
-    params = CGI::parse(env['QUERY_STRING'])
+    # By default CGI::parse will instantize a hash that defaults nil elements to [].
+    # We need to override this
+    params = {}.merge!(CGI::parse(env['QUERY_STRING']))
     case env['PATH_INFO']
     when %r{^/validations.json}
       body = get_validations(params['model'][0])
@@ -17,7 +19,10 @@ class ClientSideValidations
       field               = params.keys.first
       resource, attribute = field.split(/[^\w]/)
       value               = params[field][0]
-      body                = is_unique?(resource, attribute, value).to_s
+      # Because params returns an array for each field value we want to always grab
+      # the first element of the array for id, even if it is nil
+      id                  = [params["#{resource}[id]"]].flatten.first
+      body                = is_unique?(resource, attribute, value, id).to_s
       [200, {'Content-Type' => 'application/json', 'Content-Length' => "#{body.length}"}, body]
     else
       @app.call(env)
@@ -30,8 +35,24 @@ class ClientSideValidations
     constantize_resource(resource).new.validations_to_json
   end
   
-  def is_unique?(resource, attribute, value)
-    constantize_resource(resource).send("find_by_#{attribute}", value) == nil
+  def is_unique?(resource, attribute, value, id = nil)
+    klass    = constantize_resource(resource)
+    instance = nil
+    if id
+      if instance = klass.find(id)
+        if instance.send(attribute) == value
+          return true
+        else
+          instance = nil
+        end
+      end
+    end
+    
+    unless instance
+      instance = klass.send("find_by_#{attribute}", value)
+    end
+    
+    instance == nil
   end
   
   def constantize_resource(resource)
