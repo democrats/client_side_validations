@@ -6,7 +6,7 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name        = "client_side_validations"
     gem.summary     = %Q{Client Side Validations}
-    gem.description = %Q{ORM and Framework agnostic Client Side Validations}
+    gem.description = %Q{Client Side Validations for Rails 2.x and 3.x}
     gem.email       = "cardarellab@dnc.org"
     gem.homepage    = "http://github.com/dnclabs/client_side_validations"
     gem.authors     = ["Brian Cardarella"]
