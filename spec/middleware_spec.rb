@@ -20,13 +20,13 @@ describe 'Client Side Validations Middleware' do
     describe 'rules' do
       it 'should generate a rules path for the book resource' do
         Book.any_instance.stubs(:validations_to_json).returns("VALIDATIONS_TO_JSON")
-        get '/book/validations.json'
+        get '/validations.json', { 'model' => 'book' }
         last_response.body.should == "VALIDATIONS_TO_JSON"
       end
     
       it 'should generate a rules path for the partner_user resource' do
         PartnerUser.any_instance.stubs(:validations_to_json).returns("VALIDATIONS_TO_JSON")
-        get '/partner_user/validations.json'
+        get '/validations.json', { 'model' => 'partner_user' }
         last_response.body.should == "VALIDATIONS_TO_JSON"
       end
     end
@@ -34,14 +34,14 @@ describe 'Client Side Validations Middleware' do
     describe 'uniqueness' do
       it 'should generate a uniqueness path for the book resource' do
         Book.stubs(:find_by_name).returns(nil)
-        get '/book/validations/uniqueness/name.json', { :value => 'Test' }
-        Crack::JSON.parse(last_response.body).should == {"unique" => true}
+        get '/validations/uniqueness.json', { 'book[name]' => 'Test' }
+        last_response.body.should == 'true'
       end
 
       it 'should generate a uniqueness path for the partner_user resource' do
         PartnerUser.stubs(:find_by_name).returns("Found a record")
-        get '/partner_user/validations/uniqueness/name.json', { :value => 'Test' }
-        Crack::JSON.parse(last_response.body).should == {"unique" => false}
+        get '/validations/uniqueness.json', { 'partner_user[name]' => 'Test' }
+        last_response.body.should == 'false'
       end
     end
   end

@@ -98,6 +98,25 @@ describe 'jquery.validate adapter'
     end
   end
   
+  describe 'uniqueness'
+    before
+      validations = {
+        "string": {
+          "uniqueness": { "message": "has already been taken" }
+        }
+      }
+      result = client.adaptValidations(validations)
+    end
+    
+    it 'should translate the rule'
+      result.rules['object[string]']['remote'].should.eql({url:'/validations/uniqueness.json'})
+    end
+  
+    it 'should translate the message'
+      result.messages['object[string]']['remote'].should.equal "has already been taken"
+    end
+  end
+  
   describe 'multiple attributes'
     before
       validations = {

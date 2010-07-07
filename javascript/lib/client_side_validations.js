@@ -1,10 +1,14 @@
 if (typeof(jQuery) != "undefined") {
-
+  jQuery.validator.addMethod("format", function(value, element, params) { 
+    var pattern = new RegExp(params, "i");
+    return this.optional(element) || pattern.test(value); 
+  }, jQuery.validator.format("Invalid format."));
+  
   $.extend($.fn, {
     clientSideValidations: function() {
       var form    = this;
       var object  = form.attr('object-csv');
-      var url     = '/' + object + '/validations.json'
+      var url     = '/validations.json?model=' + object;
       var id      = form[0].id;
       var adapter = 'jquery.validate';
       if (/new/.test(id)) {
@@ -63,6 +67,13 @@ ClientSideValidations = function(id, adapter) {
                 value = this.validations[attr][validation]['maximum'];
               }
               break;
+            case 'uniqueness':
+              rule  = 'remote';
+              value = {
+                url: '/validations/uniqueness.json'
+              }
+              break;
+
             default:
           }
           if(rule == null) {

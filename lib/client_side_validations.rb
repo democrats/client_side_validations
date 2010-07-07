@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'json'
+require 'cgi'
 
 class ClientSideValidations
   def initialize(app)
@@ -7,19 +8,17 @@ class ClientSideValidations
   end
   
   def call(env)
+    params = CGI::parse(env['QUERY_STRING'])
     case env['PATH_INFO']
-    when %r{/(\w+)/validations.json}
-      resource = $1
-      body     = get_validations(resource)
+    when %r{^/validations.json}
+      body = get_validations(params['model'][0])
       [200, {'Content-Type' => 'application/json', 'Content-Length' => "#{body.length}"}, body]
-      
-    when %r{/(\w+)/validations/uniqueness/(\w+).json}
-      resource  = $1
-      attribute = $2
-      value     = env['QUERY_STRING'].split('=').last
-      body      = {"unique" => is_unique?(resource, attribute, value) }.to_json
+    when %r{^/validations/uniqueness.json}
+      field               = params.keys.first
+      resource, attribute = field.split(/[^\w]/)
+      value               = params[field][0]
+      body                = is_unique?(resource, attribute, value).to_s
       [200, {'Content-Type' => 'application/json', 'Content-Length' => "#{body.length}"}, body]
-      
     else
       @app.call(env)
     end
@@ -36,8 +35,9 @@ class ClientSideValidations
   end
   
   def constantize_resource(resource)
-    eval(resource.split('_').map{|word| word.capitalize}.join)
+    eval(resource.split('_').map{ |word| word.capitalize}.join)
   end
+  
 end
 
 require 'client_side_validations/orm'

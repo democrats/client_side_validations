@@ -16,6 +16,9 @@ Currently the following validations are supported:
 * validates_format_of
 * validates_numericality_of
 * validates_length_of
+* validates_uniqueness_of
+
+The uniqueness validation works for both ActiveRecord and Mongoid.
 
 ## Installation
 > gem install client_side_validations
@@ -42,8 +45,8 @@ Currently only [jquery.validate](http://bassistance.de/jquery-plugins/jquery-plu
 ### Rack
 The following routes will be reserved for client side validations:
 
-/singular_model_name/validations.json
-/singular_model_name/validations/uniqueness/attribute_name
+/validations.json
+/validations/uniqueness.json
 
 Add the middleware to your stack:
 

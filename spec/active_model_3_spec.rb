@@ -1,6 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 require 'active_model'
 require 'client_side_validations'
+gem 'activerecord', '~> 3.0'
+require 'active_record'
+require 'mongoid'
 
 describe 'Validations' do
   before do
@@ -89,7 +92,7 @@ describe 'Validations' do
       result_hash_3.should == expected_hash_3
     end
   
-    it "should support validating the validates_numericality_of of" do
+    it "should support validating the validates_numericality_of" do
       Klass.class_eval { validates_numericality_of :integer }
       instance      = Klass.new
       expected_hash = { "numericality" => { "message" => "is not a number" } }
@@ -283,6 +286,56 @@ describe 'Validations' do
       expected_fields = [:number_1]
       result_fields   = instance.validation_fields
       result_fields.should == expected_fields
+    end
+  end
+end
+
+describe 'Uniqueness' do
+  context 'ActiveRecord' do
+    before do
+      class Klass < ActiveRecord::Base
+        def self.table_exists?
+          false
+        end
+      
+        def self.columns() @columns ||= []; end
+    
+        def self.column(name, sql_type = nil, default = nil, null = true)
+          columns << ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, sql_type.to_s, null)
+        end
+      end
+    end
+  
+    after do
+      Object.send(:remove_const, :Klass)
+    end
+  
+    it 'should support validate_uniqueness_of' do
+      Klass.class_eval { validates_uniqueness_of :string }
+      instance = Klass.new
+      expected_hash = { "uniqueness" => { "message" => "has already been taken" } }
+      result_hash   = instance.validation_to_hash(:string)
+      result_hash.should == expected_hash
+    end
+  end
+  
+  context 'Mongoid' do
+    before do
+      class Klass
+        include Mongoid::Document
+      end
+    end
+    
+    after do
+      Object.send(:remove_const, :Klass)
+    end
+    
+    it 'should support validate_uniqueness_of' do
+      Klass.class_eval { validates_uniqueness_of :string }
+      instance = Klass.new
+      expected_hash = { "uniqueness" => { "message" => "is already taken" } }
+      result_hash   = instance.validation_to_hash(:string)
+      result_hash.should == expected_hash
     end
   end
 end

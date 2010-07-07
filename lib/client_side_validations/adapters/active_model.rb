@@ -55,6 +55,12 @@ module DNCLabs
             end
           when :numericality
             I18n.translate('errors.messages.not_a_number', :locale => locale)
+          when :uniqueness
+            if defined?(ActiveRecord) && base.kind_of?(ActiveRecord::Base)
+              I18n.translate('activerecord.errors.messages.taken', :locale => locale)
+            elsif defined?(Mongoid) && base.class.included_modules.include?(Mongoid::Document)
+              I18n.translate('errors.messages.taken', :locale => locale)
+            end
           end
 
           message = validation.options[:message]
@@ -73,6 +79,7 @@ module DNCLabs
           options.delete('tokenizer')
           options.delete('only_integer')
           options.delete('allow_nil')
+          options.delete('case_sensitive')
           if options['with'].kind_of?(Regexp)
             options['with'] = options['with'].inspect.to_s.sub("\\A","^").sub("\\Z","$").sub(%r{^/},"").sub(%r{/i?$}, "")
           end

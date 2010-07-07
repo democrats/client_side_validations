@@ -55,6 +55,8 @@ module DNCLabs
             end
           when 'validates_numericality_of'
             I18n.translate('activerecord.errors.messages.not_a_number', :locale => locale)
+          when 'validates_uniqueness_of'
+            I18n.translate('activerecord.errors.messages.taken', :locale => locale)
           end
 
           message = validation.options[:message]
@@ -86,6 +88,8 @@ module DNCLabs
             'numericality'
           when 'validates_length_of'
             'length'
+          when 'validates_uniqueness_of'
+            'uniqueness'
           end
         end
       end

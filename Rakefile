@@ -10,7 +10,6 @@ begin
     gem.email       = "cardarellab@dnc.org"
     gem.homepage    = "http://github.com/dnclabs/client_side_validations"
     gem.authors     = ["Brian Cardarella"]
-    # gem.add_development_dependency "rspec", ">= 1.2.9"
     gem.add_dependency 'validation_reflection', '>= 0.3.6'
     gem.add_dependency 'json', '1.4.3'
     gem.files       = Dir.glob("lib/**/*") + Dir.glob("javascript/lib/**/*") + Dir.glob("generators/**/*") + %w(LICENSE README.markdown)
@@ -21,24 +20,8 @@ rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
 
-require 'spec/rake/spectask'
-Spec::Rake::SpecTask.new(:spec) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.spec_files = FileList['spec/**/*_spec.rb']
-end
-
-Spec::Rake::SpecTask.new(:rcov) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.pattern = 'spec/**/*_spec.rb'
-  spec.rcov    = true
-end
-
-task :spec => :check_dependencies
-desc 'Default: run the specs.'
-task :default do
-  puts 'Javascript'
-  system('jspec run javascript/jspec/rhino.js --rhino')
-  
+desc 'RSpec tests'
+task :rspec do
   puts 'ActiveRecord 2.x'
   system('spec spec/active_record_2_spec.rb')
   
@@ -50,16 +33,19 @@ task :default do
 
   puts 'ActionView 3.x'
   system('spec spec/action_view_3_spec.rb')
+  
+  puts 'Middleware'
+  system('spec spec/middleware_spec.rb')
 end
 
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
-
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = "client_side_validations #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+desc 'Default: the full test suite.'
+task :default do
+  system('rake jspec')
+  system('rake rspec')
 end
 
-Dir['tasks/**/*.rake'].each { |t| load t }
+desc 'JSpec tests'
+task :jspec do
+  puts 'Javascript'
+  system('jspec run javascript/jspec/rhino.js --rhino')
+end
