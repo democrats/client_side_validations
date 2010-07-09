@@ -44,9 +44,10 @@ This will copy client_side_validations.js to "public/javascripts"
 Currently only [jquery.validate](http://bassistance.de/jquery-plugins/jquery-plugin-validation/) is supported so you will need to download [jQuery](http://docs.jquery.com/Downloading_jQuery) and the jQuery Validate plugin to "public/javascripts"
 
 ### Rack
-The following routes will be reserved for client side validations:
+If you want to validate_uniqueness_of a call to the server must be made. You can do this by simply drop in the ClidenSideValidations Rack middleware.
 
-/validations.json
+The following route will be reserved for client side validations:
+
 /validations/uniqueness.json
 
 Add the middleware to your stack:
@@ -56,7 +57,7 @@ config/environment.rb for Rails 2.x
 config/application.rb for Rails 3.x
 
     ...
-    config.middleware.use 'ClientSideValidations'
+    config.middleware.use 'ClientSideValidations::Uniqueness'
     ...
 
 ### Model

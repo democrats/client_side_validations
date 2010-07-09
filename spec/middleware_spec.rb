@@ -8,27 +8,13 @@ describe 'Client Side Validations Middleware' do
   
   def app
     app = Proc.new {|env| [200,{},"successfully hit rails app"]}
-    ClientSideValidations.new(app)
+    ClientSideValidations::Uniqueness.new(app)
   end
   
   context 'multiple resources' do
     before do
       class Book; end
       class PartnerUser; end
-    end
-    
-    describe 'rules' do
-      it 'should generate a rules path for the book resource' do
-        Book.any_instance.stubs(:validations_to_json).returns("VALIDATIONS_TO_JSON")
-        get '/validations.json', { 'model' => 'book' }
-        last_response.body.should == "VALIDATIONS_TO_JSON"
-      end
-    
-      it 'should generate a rules path for the partner_user resource' do
-        PartnerUser.any_instance.stubs(:validations_to_json).returns("VALIDATIONS_TO_JSON")
-        get '/validations.json', { 'model' => 'partner_user' }
-        last_response.body.should == "VALIDATIONS_TO_JSON"
-      end
     end
     
     describe 'uniqueness' do
