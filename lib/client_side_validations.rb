@@ -41,7 +41,7 @@ class ClientSideValidations
     instance = klass.send("find_by_#{attribute}", value)
     
     if instance
-      return instance.id == id
+      return instance.id.to_i == id.to_i
     else
       return true
     end
