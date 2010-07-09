@@ -19,7 +19,7 @@ module DNCLabs
                     object = validations.to_s.underscore
                     rules  = validations.new.validations_to_json
                   else
-                    object, rules = csv_get_object_and_rules(record_or_name_or_array)
+                    object, rules = csv_get_object_and_validation_rules(record_or_name_or_array)
                   end
                   
                   options[:html]['object-csv'] = object
@@ -27,7 +27,7 @@ module DNCLabs
                 args << options
                 result = form_method.bind(self).call(record_or_name_or_array, *args, &proc)
                 if object && rules
-                  script = %{<script type='text/javascript'>var #{object}_rules=#{rules}</script>}
+                  script = %{<script type='text/javascript'>var #{object}_validation_rules=#{rules}</script>}
                   # output_buffer should be nil in Rails 3...
                   if rails3?
                     result += script.html_safe
@@ -50,13 +50,13 @@ module DNCLabs
             !version.blank? && version >= 3
           end
           
-          def csv_get_object_and_rules(record_or_name_or_array)
+          def csv_get_object_and_validation_rules(record_or_name_or_array)
             case record_or_name_or_array
             when String, Symbol
               object = record_or_name_or_array.to_s
               rules  = object.camelize.constantize.new.validations_to_json
             when Array
-              object, rules = csv_get_object_and_rules(record_or_name_or_array.last)
+              object, rules = csv_get_object_and_validation_rules(record_or_name_or_array.last)
             else
               object = record_or_name_or_array.class.to_s.underscore
               rules  = record_or_name_or_array.validations_to_json

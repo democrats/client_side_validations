@@ -6,7 +6,7 @@ require 'action_controller'
 require 'client_side_validations'
 
 share_examples_for 'extended form_for' do
-  let(:book_rules) { %{<script type='text/javascript'>var book_rules={}</script>} }
+  let(:book_validation_rules) { %{<script type='text/javascript'>var book_validation_rules={}</script>} }
   context 'normal form_for options' do
     before do
       subject.form_for(book, :url => '/books') { }
@@ -25,7 +25,7 @@ share_examples_for 'extended form_for' do
     end
 
     it 'should generate the proper javascript' do
-      @result.should == %{<form action="/books" #{extra}method="post" object-csv="book">#{content}</form>#{book_rules}}
+      @result.should == %{<form action="/books" #{extra}method="post" object-csv="book">#{content}</form>#{book_validation_rules}}
     end
   end
 
@@ -38,7 +38,7 @@ share_examples_for 'extended form_for' do
     end
   
     it 'should generate the proper javascript' do
-      @result.should == %{<form action="/books" #{extra}method="post" object-csv="test_book">#{content}</form><script type='text/javascript'>var test_book_rules={}</script>}
+      @result.should == %{<form action="/books" #{extra}method="post" object-csv="test_book">#{content}</form><script type='text/javascript'>var test_book_validation_rules={}</script>}
     end
   end
 end
