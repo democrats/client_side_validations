@@ -17,6 +17,7 @@ Currently the following validations are supported:
 * validates_numericality_of
 * validates_length_of
 * validates_uniqueness_of
+* validates_confirmation_of
 
 The uniqueness validation works for both ActiveRecord and Mongoid.
 

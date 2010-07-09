@@ -84,6 +84,10 @@ ClientSideValidations = function(id, adapter, object_id) {
                 }
               }
               break;
+            case 'confirmation':
+              rule           = 'equalTo';
+              value          = "[name='" + this.id + "[" + attr + "_confirmation]"  + "']";
+              break;
 
             default:
           }

@@ -61,6 +61,8 @@ module DNCLabs
             elsif defined?(Mongoid) && base.class.included_modules.include?(Mongoid::Document)
               I18n.translate('errors.messages.taken', :locale => locale)
             end
+          when :confirmation
+            I18n.translate('errors.messages.confirmation', :locale => locale)
           end
 
           message = validation.options[:message]

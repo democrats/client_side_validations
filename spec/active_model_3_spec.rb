@@ -99,6 +99,14 @@ describe 'Validations' do
       result_hash   = instance.validation_to_hash(:integer)
       result_hash.should == expected_hash
     end
+    
+    it 'should support validates_confirmation_of' do
+      Klass.class_eval { validates_confirmation_of :string }
+      instance      = Klass.new
+      expected_hash = { "confirmation" => { "message" => "doesn't match confirmation" } }
+      result_hash   = instance.validation_to_hash(:string)
+      result_hash.should == expected_hash
+    end
   
     it "should strip out the AR callback options" do
       Klass.class_eval { validates_presence_of :string, :on => :create }
@@ -272,7 +280,7 @@ describe 'Validations' do
     
       instance        = Klass.new
       expected_fields = [:number_1, :number_2]
-      result_fields   = instance.validation_fields
+      result_fields   = instance.validation_fields.map { |k| k.to_s }.sort.map { |k| k.to_sym }
       result_fields.should == expected_fields
     end
     

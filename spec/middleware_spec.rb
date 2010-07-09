@@ -40,7 +40,9 @@ describe 'Client Side Validations Middleware' do
         end
 
         it 'should generate a uniqueness path for the partner_user resource' do
-          PartnerUser.stubs(:find_by_name).returns("Found a record")
+          @partner_user = mock("Partner_instance")
+          @partner_user.stubs(:id).returns(1)
+          PartnerUser.stubs(:find_by_name).returns(@partner_user)
           get '/validations/uniqueness.json', { 'partner_user[name]' => 'Test' }
           last_response.body.should == 'false'
         end
