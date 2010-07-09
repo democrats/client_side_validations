@@ -29,10 +29,10 @@ module DNCLabs
                 if object && rules
                   script = %{<script type='text/javascript'>var #{object}_rules=#{rules}</script>}
                   # output_buffer should be nil in Rails 3...
-                  if output_buffer.present?
-                    concat(script)
-                  else
+                  if rails3?
                     result += script.html_safe
+                  else
+                    concat(script)
                   end
                 end
                 result
@@ -41,6 +41,14 @@ module DNCLabs
           end
           
           private
+          
+          def rails3?
+            version=
+              if defined?(ActionPack::VERSION::MAJOR)
+                ActionPack::VERSION::MAJOR
+              end
+            !version.blank? && version >= 3
+          end
           
           def csv_get_object_and_rules(record_or_name_or_array)
             case record_or_name_or_array
