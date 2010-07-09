@@ -38,21 +38,13 @@ class ClientSideValidations
   def is_unique?(resource, attribute, value, id = nil)
     klass    = constantize_resource(resource)
     instance = nil
-    if id
-      if instance = klass.find(id)
-        if instance.send(attribute) == value
-          return true
-        else
-          instance = nil
-        end
-      end
-    end
+    instance = klass.send("find_by_#{attribute}", value)
     
-    unless instance
-      instance = klass.send("find_by_#{attribute}", value)
+    if instance
+      return instance.id == id
+    else
+      return true
     end
-    
-    instance == nil
   end
   
   def constantize_resource(resource)

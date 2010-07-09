@@ -51,8 +51,8 @@ describe 'Client Side Validations Middleware' do
           @id   = '1'
           @book = Book.new
           @book.stubs(:name).returns('Test')
-          Book.stubs(:find).returns(@book)
-          Book.stubs(:find_by_name)
+          @book.stubs(:id).returns(@id)
+          Book.stubs(:find_by_name).returns(@book)
           get 'validations/uniqueness.json', { 'book[name]' => 'Test', 'book[id]' => @id }
         end
         
@@ -60,16 +60,12 @@ describe 'Client Side Validations Middleware' do
           last_response.body.should == 'true'
         end
         
-        it 'should not find by name' do
-          Book.should_not have_received(:find_by_name)
+        it 'should find by name' do
+          Book.should have_received(:find_by_name)
         end
         
-        it 'should find by id' do
-          Book.should have_received(:find).with(@id)
-        end
-        
-        it 'should compare name' do
-          @book.should have_received(:name)
+        it 'should compare id' do
+          @book.should have_received(:id)
         end
       end
     end
