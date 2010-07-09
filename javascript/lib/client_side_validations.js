@@ -22,13 +22,22 @@ if (typeof(jQuery) != "undefined") {
         id = /edit_(\w+)_\d+/.exec(id)[1]
       }
       var client = new ClientSideValidations(id, adapter, object_id)
-      $.getJSON(url, function(json) {
+      if (eval('typeof(' + object + '_rules)')) {
+        var json = eval(object + '_rules');
         var validations = client.adaptValidations(json);
         form.validate({
           rules:    validations.rules,
           messages: validations.messages
         });
-      });
+      } else {
+        $.getJSON(url, function(json) {
+          var validations = client.adaptValidations(json);
+          form.validate({
+            rules:    validations.rules,
+            messages: validations.messages
+          });
+        });
+      }
     }
   });
 

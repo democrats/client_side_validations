@@ -6,6 +6,7 @@ require 'action_controller'
 require 'client_side_validations'
 
 share_examples_for 'extended form_for' do
+  let(:book_rules) { %{<script type='text/javascript'>var book_rules={}</script>} }
   context 'normal form_for options' do
     before do
       @result = subject.form_for(book, :url => '/books') { }
@@ -22,40 +23,45 @@ share_examples_for 'extended form_for' do
     end
 
     it 'should generate the proper javascript' do
-      @result.should == %{<form action="/books" #{extra}method="post" object-csv="book">#{content}</form>}
+      @result.should == %{<form action="/books" #{extra}method="post" object-csv="book">#{content}</form>#{book_rules}}
     end
   end
 
   context 'with validations overridden for a class' do
     before do
       class TestBook; end
+      TestBook.any_instance.stubs(:validations_to_json).returns('{}')
       @result = subject.form_for(book, :url => '/books', :validations => TestBook) { }
     end
   
     it 'should generate the proper javascript' do
-      @result.should == %{<form action="/books" #{extra}method="post" object-csv="test_book">#{content}</form>}
+      @result.should == %{<form action="/books" #{extra}method="post" object-csv="test_book">#{content}</form><script type='text/javascript'>var test_book_rules={}</script>}
     end
   end
 end
 
 describe 'ActionView 3.x Form Helper' do
   context 'ActionView::Base' do
+    before do
+      class Book; end
+      Book.any_instance.stubs(:validations_to_json).returns('{}')
+    end
+
     subject do
       view = ActionView::Base.new
       view.stubs(:protect_against_forgery?).returns(false)
       view
     end
     
-    context 'non record' do
+    context 'name' do
       let(:book)    { 'book' }
       let(:extra)   { nil }
       let(:content) { nil }
       it_should_behave_like 'extended form_for'
     end
-        
+    
     context 'record' do
       before do
-        class Book; end
         model_name = 'Book'
         model_name.stubs(:singular).returns('book')
         Book.stubs(:model_name).returns(model_name)
@@ -85,6 +91,17 @@ describe 'ActionView 3.x Form Helper' do
         let(:content) { %{<div style="margin:0;padding:0;display:inline"><input name="_method" type="hidden" value="put" /></div>} }
         it_should_behave_like 'extended form_for'
       end
+
+      context 'array' do
+        before do
+          @book.stubs(:to_key).returns(nil)
+        end
+        let(:book)    { [@book] }
+        let(:extra)   { %{class="new_book" id="new_book" } }
+        let(:content) { nil }
+        it_should_behave_like 'extended form_for'
+      end
+
     end
 
   end

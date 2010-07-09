@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{client_side_validations}
-  s.version = "2.2.0"
+  s.version = "2.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brian Cardarella"]
-  s.date = %q{2010-07-07}
-  s.description = %q{ORM and Framework agnostic Client Side Validations}
+  s.date = %q{2010-07-09}
+  s.description = %q{Client Side Validations for Rails 2.x and 3.x}
   s.email = %q{cardarellab@dnc.org}
   s.extra_rdoc_files = [
     "LICENSE",
