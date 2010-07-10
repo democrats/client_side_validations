@@ -3,6 +3,14 @@ require 'json'
 require 'cgi'
 
 module ClientSideValidations
+  def self.default_options=(options)
+    @default_options = options
+  end
+  
+  def self.default_options
+    @default_options
+  end
+  
   class Uniqueness
     def initialize(app)
       @app = app

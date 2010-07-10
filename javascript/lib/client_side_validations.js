@@ -17,13 +17,17 @@ if (typeof(jQuery) != "undefined") {
         id        = /edit_(\w+)_\d+/.exec(id)[1]
         object_id = /edit_\w+_(\d+)/.exec(id)[1]
       }
-      var client      = new ClientSideValidations(id, adapter, object_id)
-      var json        = eval(object + '_validation_rules');
-      var validations = client.adaptValidations(json);
-      form.validate({
-        rules:    validations.rules,
-        messages: validations.messages
-      });
+      if (eval("typeof(" + object + "_validation_options)") != "undefined") {
+        var options = eval(object + '_validation_options');
+      } else {
+        var options = { }
+      }
+      var client          = new ClientSideValidations(id, adapter, object_id)
+      var rules           = eval(object + '_validation_rules');
+      var validations     = client.adaptValidations(rules);
+      options['rules']    = validations.rules;
+      options['messages'] = validations.messages;
+      form.validate(options);
     }
   });
 

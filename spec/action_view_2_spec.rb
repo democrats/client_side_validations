@@ -6,7 +6,7 @@ require 'action_controller'
 require 'client_side_validations'
 
 share_examples_for 'extended form_for' do
-  let(:book_validation_rules) { %{<script type='text/javascript'>var book_validation_rules={}</script>} }
+  let(:book_inline_extras) { %{<script type='text/javascript'>var book_validation_rules={};</script>} }
   context 'normal form_for options' do
     before do
       subject.form_for(book, :url => '/books') { }
@@ -25,7 +25,7 @@ share_examples_for 'extended form_for' do
     end
 
     it 'should generate the proper javascript' do
-      @result.should == %{<form action="/books" #{extra}method="post" object-csv="book">#{content}</form>#{book_validation_rules}}
+      @result.should == %{<form action="/books" #{extra}method="post" object-csv="book">#{content}</form>#{book_inline_extras}}
     end
   end
 
@@ -38,9 +38,42 @@ share_examples_for 'extended form_for' do
     end
   
     it 'should generate the proper javascript' do
-      @result.should == %{<form action="/books" #{extra}method="post" object-csv="test_book">#{content}</form><script type='text/javascript'>var test_book_validation_rules={}</script>}
+      @result.should == %{<form action="/books" #{extra}method="post" object-csv="test_book">#{content}</form><script type='text/javascript'>var test_book_validation_rules={};</script>}
     end
   end
+
+  context 'options' do
+    before do
+      ClientSideValidations.stubs(:default_options).returns({ :test => %{"This"} })
+      @options = 'var book_validation_options={test:"This"};'
+    end
+    let(:book_inline_extras_options) { book_inline_extras.gsub('</script>', "#{@options}</script>")}
+    
+    context 'using the default options' do
+      before do
+        subject.form_for(book, :url => '/books', :validations => true) { }
+        @result = subject.output_buffer
+      end
+      
+      it 'should generate book_options JSON object' do
+        @result.should == %{<form action="/books" #{extra}method="post" object-csv="book">#{content}</form>#{book_inline_extras_options}}
+      end
+    end
+    
+    context 'overriding the default options' do
+      before do
+        subject.form_for(book, :url => '/books', :validations => { :options => { :test => %{"That"} }}) { }
+        @result  = subject.output_buffer
+        @options = 'var book_validation_options={test:"That"};'
+      end
+      let(:book_inline_extras_options) { book_inline_extras.gsub('</script>', "#{@options}</script>")}
+      
+      it 'should generate book_options JSON object' do
+        @result.should == %{<form action="/books" #{extra}method="post" object-csv="book">#{content}</form>#{book_inline_extras_options}}
+      end
+    end
+  end
+  
 end
 
 describe 'ActionView 2.x Form Helper' do
