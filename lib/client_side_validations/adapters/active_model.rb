@@ -11,24 +11,26 @@ module DNCLabs
         def validation_to_hash(_attr, _options = {})
           validation_hash = {}
           base._validators[_attr.to_sym].each do |validation|
-            message = get_validation_message(validation, _options[:locale])
-            validation.options.delete(:message)
-            options = get_validation_options(validation.options)
-            method  = get_validation_method(validation.kind)
-            if conditional_method = remove_reserved_conditionals(options['if'])
-              if base.instance_eval(conditional_method.to_s)
+            if can_validate?(validation)
+              message = get_validation_message(validation, _options[:locale])
+              validation.options.delete(:message)
+              options = get_validation_options(validation.options)
+              method  = get_validation_method(validation.kind)
+              if conditional_method = remove_reserved_conditionals(options['if'])
+                if base.instance_eval(conditional_method.to_s)
+                  options.delete('if')
+                  validation_hash[method] = { 'message' => message }.merge(options)
+                end
+              elsif conditional_method = options['unless']
+                unless base.instance_eval(conditional_method.to_s)
+                  options.delete('unless')
+                  validation_hash[method] = { 'message' => message }.merge(options)
+                end
+              else
                 options.delete('if')
-                validation_hash[method] = { 'message' => message }.merge(options)
-              end
-            elsif conditional_method = options['unless']
-              unless base.instance_eval(conditional_method.to_s)
                 options.delete('unless')
                 validation_hash[method] = { 'message' => message }.merge(options)
               end
-            else
-              options.delete('if')
-              options.delete('unless')
-              validation_hash[method] = { 'message' => message }.merge(options)
             end
           end
 
@@ -40,6 +42,17 @@ module DNCLabs
         end
         
         private
+        
+        def can_validate?(validation)
+          if on = validation.options.delete(:on)
+            on = on.to_sym
+            (on == :save) ||
+            (on == :create && base.new_record?) ||
+            (on == :update && !base.new_record?)
+          else
+            true
+          end
+        end
 
         def get_validation_message(validation, locale)
           default = case validation.kind

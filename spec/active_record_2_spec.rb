@@ -5,17 +5,7 @@ require 'client_side_validations'
 
 describe 'Validations' do
   before do
-    class Klass < ActiveRecord::Base
-      def self.table_exists?
-        false
-      end
-      
-      def self.columns() @columns ||= []; end
-    
-      def self.column(name, sql_type = nil, default = nil, null = true)
-        columns << ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, sql_type.to_s, null)
-      end
-    end
+    define_abstract_ar(:Klass, ActiveRecord::Base)
   end
 
   after do
@@ -314,4 +304,51 @@ describe 'Validations' do
       result_fields.should == expected_fields
     end
   end
+  
+  describe 'conditional' do
+    before do
+      define_abstract_ar(:Klass2, ActiveRecord::Base)
+    end
+    
+    after do
+      Object.send(:remove_const, :Klass2)
+    end
+
+    context ':on =>' do
+      before do
+        Klass.class_eval do
+          validates_presence_of :string_1, :on => :create
+          validates_presence_of :string_2, :on => :update
+          def new_record?
+            true
+          end
+        end
+        
+        Klass2.class_eval do
+          validates_presence_of :string_1, :on => :create
+          validates_presence_of :string_2, :on => :update
+          def new_record?
+            false
+          end
+        end
+      end
+      
+      it ':create' do
+        instance_1 = Klass.new
+        instance_2 = Klass2.new
+        
+        instance_1.validation_to_hash(:string_1).should_not be_empty
+        instance_2.validation_to_hash(:string_1).should be_empty
+      end
+      
+      it ':update' do
+        instance_1 = Klass.new
+        instance_2 = Klass2.new
+        
+        instance_1.validation_to_hash(:string_2).should be_empty
+        instance_2.validation_to_hash(:string_2).should_not be_empty
+      end
+    end
+  end
+  
 end
