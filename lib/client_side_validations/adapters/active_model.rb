@@ -11,25 +11,25 @@ module DNCLabs
         def validation_to_hash(_attr, _options = {})
           validation_hash = {}
           base._validators[_attr.to_sym].each do |validation|
-            if can_validate?(validation)
+            if can_validate?(validation) && supported_validation?(validation)
               message = get_validation_message(validation, _options[:locale])
               validation.options.delete(:message)
               options = get_validation_options(validation.options)
               method  = get_validation_method(validation.kind)
-              if conditional_method = remove_reserved_conditionals(options['if'])
+              if conditional_method = remove_reserved_conditionals(options[:if])
                 if base.instance_eval(conditional_method.to_s)
-                  options.delete('if')
-                  validation_hash[method] = { 'message' => message }.merge(options)
+                  options.delete(:if)
+                  validation_hash[method] = { 'message' => message }.merge(options.stringify_keys)
                 end
-              elsif conditional_method = options['unless']
+              elsif conditional_method = options[:unless]
                 unless base.instance_eval(conditional_method.to_s)
-                  options.delete('unless')
-                  validation_hash[method] = { 'message' => message }.merge(options)
+                  options.delete(:unless)
+                  validation_hash[method] = { 'message' => message }.merge(options.stringify_keys)
                 end
               else
-                options.delete('if')
-                options.delete('unless')
-                validation_hash[method] = { 'message' => message }.merge(options)
+                options.delete(:if)
+                options.delete(:unless)
+                validation_hash[method] = { 'message' => message }.merge(options.stringify_keys)
               end
             end
           end
@@ -42,6 +42,11 @@ module DNCLabs
         end
         
         private
+        
+        def supported_validation?(validation)
+          [:presence, :format, :length, :numericality, :uniqueness,
+            :confirmation ].include?(validation.kind.to_sym)
+        end
         
         def can_validate?(validation)
           if on = validation.options[:on]
@@ -89,14 +94,14 @@ module DNCLabs
         end
 
         def get_validation_options(options)
-          options = options.stringify_keys
-          options.delete('on') == :create
-          options.delete('tokenizer')
-          options.delete('only_integer')
-          options.delete('allow_nil')
-          options.delete('case_sensitive')
-          if options['with'].kind_of?(Regexp)
-            options['with'] = options['with'].inspect.to_s.sub("\\A","^").sub("\\Z","$").sub(%r{^/},"").sub(%r{/i?$}, "")
+          options.symbolize_keys!
+          options.delete(:on) == :create
+          options.delete(:tokenizer)
+          options.delete(:only_integer)
+          options.delete(:allow_nil)
+          options.delete(:case_sensitive)
+          if options[:with].kind_of?(Regexp)
+            options[:with] = options[:with].inspect.to_s.sub("\\A","^").sub("\\Z","$").sub(%r{^/},"").sub(%r{/i?$}, "")
           end
           options
         end

@@ -352,3 +352,25 @@ describe 'Validations' do
   end
   
 end
+
+describe 'Unsupported validations' do
+  before do
+    define_abstract_ar(:Klass, ActiveRecord::Base)
+    @attr      = :string
+    kind       = :unsupported
+    options    = { }
+    validation = mock("Validation")
+    validation.stubs(:name).returns(@attr)
+    validation.stubs(:options).returns(options)
+    validation.stubs(:macro).returns(kind)
+    Klass.stubs(:reflect_on_validations_for).returns([validation])
+  end
+  
+  after do
+    Object.send(:remove_const, :Klass)
+  end
+  
+  it 'should not add unsupported validations' do
+    Klass.new.validation_to_hash(:string).should == { }
+  end
+end

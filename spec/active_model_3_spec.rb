@@ -79,6 +79,7 @@ describe 'Validations' do
       end
     
       instance        = Klass.new
+
       expected_hash_1 = { "presence" => { "message" => "can't be blank" } }
       result_hash_1   = instance.validation_to_hash(:string)
       result_hash_1.should == expected_hash_1
@@ -390,5 +391,28 @@ describe 'Uniqueness' do
       result_hash   = instance.validation_to_hash(:string)
       result_hash.should == expected_hash
     end
+  end
+end
+
+describe 'Unsupported validations' do
+  before do
+    class Klass
+      include ActiveModel::Validations
+    end
+    @attr      = :string
+    kind       = :unsupported
+    options    = { }
+    validation = mock("Validation")
+    validation.stubs(:options).returns(options)
+    validation.stubs(:kind).returns(kind)
+    Klass.any_instance.stubs(:_validators).returns({ @attr => [validation] })
+  end
+  
+  after do
+    Object.send(:remove_const, :Klass)
+  end
+  
+  it 'should not add unsupported validations' do
+    Klass.new.validation_to_hash(:string).should == { }
   end
 end
