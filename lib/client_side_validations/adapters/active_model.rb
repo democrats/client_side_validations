@@ -44,7 +44,7 @@ module DNCLabs
         private
         
         def can_validate?(validation)
-          if on = validation.options.delete(:on)
+          if on = validation.options[:on]
             on = on.to_sym
             (on == :save) ||
             (on == :create && base.new_record?) ||

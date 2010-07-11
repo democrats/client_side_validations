@@ -8,21 +8,20 @@ if (typeof(jQuery) != "undefined") {
     clientSideValidations: function() {
       var form      = this;
       var object    = form.attr('object-csv');
-      var id        = form[0].id;
+      var form_id   = form[0].id;
       var object_id = null;
       var adapter   = 'jquery.validate';
-      if (/new/.test(id)) {
-        id = /new_(\w+)/.exec(id)[1]
-      } else if (/edit/.test(id)) {
-        id        = /edit_(\w+)_\d+/.exec(id)[1]
-        object_id = /edit_\w+_(\d+)/.exec(id)[1]
+
+      if (/edit/.test(form_id)) {
+        object_id = /edit_\w+_(\d+)/.exec(form_id)[1];
       }
+      
       if (eval("typeof(" + object + "_validation_options)") != "undefined") {
         var options = eval(object + '_validation_options');
       } else {
         var options = { }
       }
-      var client          = new ClientSideValidations(id, adapter, object_id)
+      var client          = new ClientSideValidations(object, adapter, object_id)
       var rules           = eval(object + '_validation_rules');
       var validations     = client.adaptValidations(rules);
       options['rules']    = validations.rules;
