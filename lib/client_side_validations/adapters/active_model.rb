@@ -17,6 +17,13 @@ module DNCLabs
         
         private
 
+        def build_validation_hash(validation, message_key = 'message')
+          if validation.kind == :inclusion || validation.kind == :exclusion
+            validation.options[:in] = validation.options[:in].to_a
+          end
+          super
+        end
+
         def supported_validation?(validation)
           SupportedValidations.include?(validation.kind.to_sym)
         end
@@ -45,6 +52,10 @@ module DNCLabs
             I18n.translate('errors.messages.confirmation')
           when :acceptance
             I18n.translate('errors.messages.accepted')
+          when :inclusion
+            I18n.translate('errors.messages.inclusion')
+          when :exclusion
+            I18n.translate('errors.messages.exclusion')
           end
 
           message = validation.options.delete(:message)

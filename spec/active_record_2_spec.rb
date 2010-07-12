@@ -128,6 +128,38 @@ describe 'Validations' do
       result_hash   = instance.validation_to_hash(:string)
       result_hash.should == expected_hash
     end
+
+    it 'should support validates_inclusion_of' do
+      Klass.class_eval { validates_inclusion_of :string, :in => ['hey'] }
+      instance      = Klass.new
+      expected_hash = { "inclusion" => { "message" => "is not included in the list", "in" => ['hey'] } }
+      result_hash   = instance.validation_to_hash(:string)
+      result_hash.should == expected_hash
+    end
+
+    it 'should support validates_inclusion_of with a range' do
+      Klass.class_eval { validates_inclusion_of :number, :in => (1..2) }
+      instance      = Klass.new
+      expected_hash = { "inclusion" => { "message" => "is not included in the list", "in" => [1,2] } }
+      result_hash   = instance.validation_to_hash(:number)
+      result_hash.should == expected_hash
+    end
+
+    it 'should support validates_exclusion_of' do
+      Klass.class_eval { validates_exclusion_of :string, :in => ['hey'] }
+      instance      = Klass.new
+      expected_hash = { "exclusion" => { "message" => "is reserved", "in" => ['hey'] } }
+      result_hash   = instance.validation_to_hash(:string)
+      result_hash.should == expected_hash
+    end
+
+    it 'should support validates_exclusion_of with a range' do
+      Klass.class_eval { validates_exclusion_of :number, :in => (1..2) }
+      instance      = Klass.new
+      expected_hash = { "exclusion" => { "message" => "is reserved", "in" => [1,2] } }
+      result_hash   = instance.validation_to_hash(:number)
+      result_hash.should == expected_hash
+    end
   
     it "should strip out the AR callback options" do
       Klass.class_eval { validates_presence_of :string, :on => :create }

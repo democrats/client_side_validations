@@ -181,6 +181,44 @@ describe 'jquery.validate adapter'
     end
   end
 
+  describe 'inclusion'
+    before
+      validations = {
+        "string": {
+          "inclusion": { "message": "is not included in the list", "in": [1,2,3] }
+        }
+      }
+      result = client.adaptValidations(validations)
+    end
+    
+    it 'should translate the rule'
+      result.rules['object[string]']['inclusion'].should.eql([1,2,3])
+    end
+  
+    it 'should translate the message'
+      result.messages['object[string]']['inclusion'].should.equal "is not included in the list"
+    end
+  end
+
+  describe 'exclusion'
+    before
+      validations = {
+        "string": {
+          "exclusion": { "message": "is reserved", "in": [1,2,3] }
+        }
+      }
+      result = client.adaptValidations(validations)
+    end
+    
+    it 'should translate the rule'
+      result.rules['object[string]']['exclusion'].should.eql([1,2,3])
+    end
+  
+    it 'should translate the message'
+      result.messages['object[string]']['exclusion'].should.equal "is reserved"
+    end
+  end
+
   describe 'multiple attributes'
     before
       validations = {

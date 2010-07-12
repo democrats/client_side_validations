@@ -12,19 +12,22 @@ module DNCLabs
           end
         end
         
-        def build_validation_hash(validation, message_key = 'message')
-          if range = (validation.options.delete(:within) || validation.options.delete(:in))
-            validation.options[:minimum] = range.first
-            validation.options[:maximum] = range.last
-          end
-          super
-        end
-        
         def validation_fields
           base.class.reflect_on_all_validations.map { |v| v.name }.uniq
         end
         
         private
+        
+        def build_validation_hash(validation, message_key = 'message')
+          if validation.macro == :validates_length_of &&
+            (range = (validation.options.delete(:within) || validation.options.delete(:in)))
+            validation.options[:minimum] = range.first
+            validation.options[:maximum] = range.last
+          elsif validation.macro == :validates_inclusion_of || validation.macro == :validates_exclusion_of
+            validation.options[:in] = validation.options[:in].to_a
+          end
+          super
+        end
         
         def supported_validation?(validation)
           SupportedValidations.include?(validation.macro.to_s.match(/\w+_(\w+)_\w+/)[1].to_sym)
@@ -50,6 +53,10 @@ module DNCLabs
             I18n.translate('activerecord.errors.messages.confirmation')
           when :validates_acceptance_of
             I18n.translate('activerecord.errors.messages.accepted')
+          when :validates_inclusion_of
+            I18n.translate('activerecord.errors.messages.inclusion')
+          when :validates_exclusion_of
+            I18n.translate('activerecord.errors.messages.exclusion')
           end
           
           message = validation.options.delete(:message)

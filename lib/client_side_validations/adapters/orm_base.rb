@@ -18,7 +18,7 @@ module DNCLabs
         private
 
         SupportedValidations = [:presence, :format, :length, :numericality, :uniqueness,
-          :confirmation, :acceptance]
+          :confirmation, :acceptance, :inclusion, :exclusion]
         
         def build_validation_hash(validation, message_key = 'message')
           if can_validate?(validation)

@@ -5,8 +5,35 @@ if (typeof(jQuery) != "undefined") {
   }, jQuery.validator.format("Invalid format."));
 
   jQuery.validator.addMethod("acceptance", function(value, element, params) { 
-    return element.checked; 
-  }, jQuery.validator.format("Invalid format."));
+    return this.optional(element) || element.checked; 
+  }, jQuery.validator.format("Was not accepted."));
+
+  jQuery.validator.addMethod("inclusion", function(value, element, params) { 
+    if (this.optional(element)) {
+      return true;
+    } else {
+      
+      for (var i=0, len=params.length; i<len; ++i ) {
+        if (value == String(params[i])) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }, jQuery.validator.format("Not included in list."));
+
+  jQuery.validator.addMethod("exclusion", function(value, element, params) { 
+    if (this.optional(element)) {
+      return true;
+    } else {
+      for (var i=0, len=params.length; i<len; ++i ) {
+        if (value == String(params[i])) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }, jQuery.validator.format("Is reserved."));
   
   $.extend($.fn, {
     clientSideValidations: function() {
@@ -102,6 +129,14 @@ ClientSideValidations = function(id, adapter, object_id) {
             case 'acceptance':
               rule  = 'acceptance';
               value = true;
+              break;
+            case 'inclusion':
+              rule  = 'inclusion';
+              value = this.validations[attr][validation]['in']
+              break;
+            case 'exclusion':
+              rule  = 'exclusion';
+              value = this.validations[attr][validation]['in']
               break;
 
             default:
