@@ -3,6 +3,10 @@ if (typeof(jQuery) != "undefined") {
     var pattern = new RegExp(params, "i");
     return this.optional(element) || pattern.test(value); 
   }, jQuery.validator.format("Invalid format."));
+
+  jQuery.validator.addMethod("acceptance", function(value, element, params) { 
+    return element.checked; 
+  }, jQuery.validator.format("Invalid format."));
   
   $.extend($.fn, {
     clientSideValidations: function() {
@@ -21,11 +25,12 @@ if (typeof(jQuery) != "undefined") {
       } else {
         var options = { }
       }
-      var client          = new ClientSideValidations(object, adapter, object_id)
-      var rules           = eval(object + '_validation_rules');
-      var validations     = client.adaptValidations(rules);
-      options['rules']    = validations.rules;
-      options['messages'] = validations.messages;
+      var client       = new ClientSideValidations(object, adapter, object_id)
+      var rules        = eval(object + '_validation_rules');
+      var validations  = client.adaptValidations(rules);
+      options.rules    = validations.rules;
+      options.messages = validations.messages;
+      options.ignore   = ':hidden';
       form.validate(options);
     }
   });
@@ -85,6 +90,10 @@ ClientSideValidations = function(id, adapter, object_id) {
             case 'confirmation':
               rule  = 'equalTo';
               value = "[name='" + this.id + "[" + attr + "_confirmation]"  + "']";
+              break;
+            case 'acceptance':
+              rule  = 'acceptance';
+              value = true;
               break;
 
             default:

@@ -46,7 +46,7 @@ module DNCLabs
         def supported_validation?(validation)
           [:validates_presence_of, :validates_format_of, :validates_length_of,
            :validates_numericality_of, :validates_uniqueness_of,
-           :validates_confirmation_of].include?(validation.macro.to_sym)
+           :validates_confirmation_of, :validates_acceptance_of].include?(validation.macro.to_sym)
         end
         
         def can_validate?(validation)
@@ -78,6 +78,8 @@ module DNCLabs
             I18n.translate('activerecord.errors.messages.taken', :locale => locale)
           when :validates_confirmation_of
             I18n.translate('activerecord.errors.messages.confirmation', :locale => locale)
+          when :validates_acceptance_of
+            I18n.translate('activerecord.errors.messages.accepted', :locale => locale)
           end
 
           message = validation.options[:message]
@@ -113,6 +115,8 @@ module DNCLabs
             :uniqueness
           when :validates_confirmation_of
             :confirmation
+          when :validates_acceptance_of
+            :acceptance
           end
           
           method.to_s

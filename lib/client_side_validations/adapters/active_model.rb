@@ -45,7 +45,7 @@ module DNCLabs
         
         def supported_validation?(validation)
           [:presence, :format, :length, :numericality, :uniqueness,
-            :confirmation ].include?(validation.kind.to_sym)
+            :confirmation, :acceptance ].include?(validation.kind.to_sym)
         end
         
         def can_validate?(validation)
@@ -81,6 +81,8 @@ module DNCLabs
             end
           when :confirmation
             I18n.translate('errors.messages.confirmation', :locale => locale)
+          when :acceptance
+            I18n.translate('errors.messages.accepted', :locale => locale)
           end
 
           message = validation.options[:message]
@@ -100,6 +102,7 @@ module DNCLabs
           options.delete(:only_integer)
           options.delete(:allow_nil)
           options.delete(:case_sensitive)
+          options.delete(:accept)
           if options[:with].kind_of?(Regexp)
             options[:with] = options[:with].inspect.to_s.sub("\\A","^").sub("\\Z","$").sub(%r{^/},"").sub(%r{/i?$}, "")
           end

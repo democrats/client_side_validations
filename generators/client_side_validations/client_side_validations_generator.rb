@@ -10,6 +10,7 @@ class ClientSideValidationsGenerator < Rails::Generator::Base
     record do |c|
       c.directory('public/javascripts')
       c.file('client_side_validations.js', 'public/javascripts/client_side_validations.js')
+      c.file('jquery.validate.js', 'public/javascript/jquery.validate.js')
     end
   end
   

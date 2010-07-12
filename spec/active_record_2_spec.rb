@@ -104,6 +104,14 @@ describe 'Validations' do
       result_hash.should == expected_hash
     end
     
+    it 'should support validates_acceptance_of' do
+      Klass.class_eval { validates_acceptance_of :string }
+      instance      = Klass.new
+      expected_hash = { "acceptance" => { "message" => "must be accepted" } }
+      result_hash   = instance.validation_to_hash(:string)
+      result_hash.should == expected_hash
+    end
+
     it 'should support validates_confirmation_of' do
       Klass.class_eval { validates_confirmation_of :string }
       instance      = Klass.new

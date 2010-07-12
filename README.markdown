@@ -32,6 +32,8 @@ Then run the generator:
 
 This will copy client_side_validations.js to "public/javascripts"
 
+**This version of ClientSideValidations will also copy a patched version of jquery.validate.js to "public/javascript"**
+
 ### Rails 3
 Add "gem 'client_side_validations" to the Gemfile
 
@@ -40,7 +42,10 @@ Then run the generator:
 
 This will copy client_side_validations.js to "public/javascripts"
 
+**This version of ClientSideValidations will also copy a patched version of jquery.validate.js to "public/javascript"**
+
 ## Configuration
+#### *NOTE* This version of ClientSideValidations has a patched version of jquery.validate that will install automatically with the generator. *Do not* download the version listed below.
 Currently only [jquery.validate](http://bassistance.de/jquery-plugins/jquery-plugin-validation/) is supported so you will need to download [jQuery](http://docs.jquery.com/Downloading_jQuery) and the jQuery Validate plugin to "public/javascripts"
 
 ### Rack
