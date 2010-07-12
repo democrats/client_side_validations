@@ -13,7 +13,7 @@ module DNCLabs
         end
         
         def build_validation_hash(validation, message_key = 'message')
-          if range = validation.options.delete(:within)
+          if range = (validation.options.delete(:within) || validation.options.delete(:in))
             validation.options[:minimum] = range.first
             validation.options[:maximum] = range.last
           end
