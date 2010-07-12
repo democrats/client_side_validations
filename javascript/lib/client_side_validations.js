@@ -5,7 +5,7 @@ if (typeof(jQuery) != "undefined") {
   }, jQuery.validator.format("Invalid format."));
 
   jQuery.validator.addMethod("acceptance", function(value, element, params) { 
-    return this.optional(element) || element.checked; 
+    return element.checked; 
   }, jQuery.validator.format("Was not accepted."));
 
   jQuery.validator.addMethod("inclusion", function(value, element, params) { 

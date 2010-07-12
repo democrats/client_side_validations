@@ -19,6 +19,8 @@ Currently the following validations are supported:
 * validates_uniqueness_of
 * validates_confirmation_of
 * validatse_acceptance_of
+* validates_inclusion_of
+* validates_exclusion_of
 
 The uniqueness validation works for both ActiveRecord and Mongoid.
 
