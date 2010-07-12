@@ -8,8 +8,8 @@ module DNCLabs
       hash.to_json
     end
     
-    def validation_to_hash(field, options = {})
-      dnc_csv_adapter.validation_to_hash(field, options)
+    def validation_to_hash(field)
+      dnc_csv_adapter.validation_to_hash(field)
     end
     
     def validation_fields

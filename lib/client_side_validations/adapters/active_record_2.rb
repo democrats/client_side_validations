@@ -1,40 +1,23 @@
 require 'validation_reflection'
+require 'client_side_validations/adapters/orm_base'
 
 module DNCLabs
   module ClientSideValidations
     module Adapters
-      class ActiveRecord2
-        attr_accessor :base
-        
-        def initialize(base)
-          self.base = base
+      class ActiveRecord2 < ORMBase
+
+        def validation_to_hash(attr)
+          base.class.reflect_on_validations_for(attr).inject({}) do |hash, validation|
+            hash.merge!(build_validation_hash(validation.clone))
+          end
         end
         
-        def validation_to_hash(attr, options = {})
-          validation_hash = {}
-          base.class.reflect_on_validations_for(attr).each do |validation|
-            if can_validate?(validation) && supported_validation?(validation)
-              message = get_validation_message(validation, options[:locale])
-              validation.options.delete(:message)
-              options = get_validationoptions(validation.options)
-              method  = get_validation_method(validation.macro)
-              if conditional_method = options[:if]
-                if base.instance_eval(conditional_method.to_s)
-                  options.delete(:if)
-                  validation_hash[method] = { 'message' => message }.merge(options.stringify_keys)
-                end
-              elsif conditional_method = options[:unless]
-                unless base.instance_eval(conditional_method.to_s)
-                  options.delete(:unless)
-                  validation_hash[method] = { 'message' => message }.merge(options.stringify_keys)
-                end
-              else
-                validation_hash[method] = { 'message' => message }.merge(options.stringify_keys)
-              end
-            end
+        def build_validation_hash(validation, message_key = 'message')
+          if range = validation.options.delete(:within)
+            validation.options[:minimum] = range.first
+            validation.options[:maximum] = range.last
           end
-
-          validation_hash
+          super
         end
         
         def validation_fields
@@ -55,54 +38,49 @@ module DNCLabs
             (on == :save) ||
             (on == :create && base.new_record?) ||
             (on == :update && !base.new_record?)
+          elsif if_condition = validation.options[:if]
+            base.instance_eval(if_condition.to_s)
+          elsif unless_condition = validation.options[:unless]
+            !base.instance_eval(unless_condition.to_s)
           else
             true
           end
         end
 
-        def get_validation_message(validation, locale)
+        def get_validation_message(validation)
           default = case validation.macro.to_sym
           when :validates_presence_of
-            I18n.translate('activerecord.errors.messages.blank', :locale => locale)
+            I18n.translate('activerecord.errors.messages.blank')
           when :validates_format_of
-            I18n.translate('activerecord.errors.messages.invalid', :locale => locale)
+            I18n.translate('activerecord.errors.messages.invalid')
           when :validates_length_of
             if count = validation.options[:minimum]
-              I18n.translate('activerecord.errors.messages.too_short', :locale => locale).sub('{{count}}', count.to_s)
+              I18n.translate('activerecord.errors.messages.too_short').sub('{{count}}', count.to_s)
             elsif count = validation.options[:maximum]
-              I18n.translate('activerecord.errors.messages.too_long', :locale => locale).sub('{{count}}', count.to_s)
+              I18n.translate('activerecord.errors.messages.too_long').sub('{{count}}', count.to_s)
             end
           when :validates_numericality_of
-            I18n.translate('activerecord.errors.messages.not_a_number', :locale => locale)
+            I18n.translate('activerecord.errors.messages.not_a_number')
           when :validates_uniqueness_of
-            I18n.translate('activerecord.errors.messages.taken', :locale => locale)
+            I18n.translate('activerecord.errors.messages.taken')
           when :validates_confirmation_of
-            I18n.translate('activerecord.errors.messages.confirmation', :locale => locale)
+            I18n.translate('activerecord.errors.messages.confirmation')
           when :validates_acceptance_of
-            I18n.translate('activerecord.errors.messages.accepted', :locale => locale)
+            I18n.translate('activerecord.errors.messages.accepted')
           end
-
-          message = validation.options[:message]
+          
+          message = validation.options.delete(:message)
           if message.kind_of?(String)
             message
           elsif message.kind_of?(Symbol)
-            I18n.translate("activerecord.errors.models.#{base.class.to_s.downcase}.attributes.#{validation.name}.#{message}", :locale => locale)
+            I18n.translate("activerecord.errors.models.#{base.class.to_s.downcase}.attributes.#{validation.name}.#{message}")
           else
             default
           end
         end
 
-        def get_validationoptions(options)
-          options.symbolize_keys!
-          options.delete(:on)
-          if options[:with].kind_of?(Regexp)
-            options[:with] = options[:with].inspect.to_s.sub("\\A","^").sub("\\Z","$").sub(%r{^/},"").sub(%r{/i?$}, "")
-          end
-          options
-        end
-        
-        def get_validation_method(method)
-          method = case method.to_sym
+        def get_validation_method(validation)
+          method = case validation.macro.to_sym
           when :validates_presence_of
             :presence
           when :validates_format_of

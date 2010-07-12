@@ -59,6 +59,15 @@ describe 'Validations' do
       result_hash.should == expected_hash
     end
     
+    it "should support range validates_length_of of" do
+      Klass.class_eval { validates_length_of :string, :within => 5..10 }
+      instance      = Klass.new
+      expected_hash = { "length" => { "message_min" => "is too short (minimum is 5 characters)", "minimum" => 5,
+                                      "message_max" => "is too long (maximum is 10 characters)", "maximum" => 10 } }
+      result_hash   = instance.validation_to_hash(:string)
+      result_hash.should == expected_hash
+    end
+    
     it 'should support validate_uniqueness_of' do
       Klass.class_eval { validates_uniqueness_of :string }
       instance = Klass.new
@@ -177,23 +186,25 @@ describe 'Validations' do
         Klass.class_eval do
           validates_presence_of :string, :message => :presence
         end
+        I18n.locale = 'es'
       end
     
       after do
         remove_translation(:es, :klass)
+        I18n.locale = 'en'
       end
     
       it 'should result in "String-es" for Spanish translations' do
         instance      = Klass.new
         expected_hash = { "presence" => { "message" => "String-es" } }
-        result_hash   = instance.validation_to_hash(:string, :locale => :es)
+        result_hash   = instance.validation_to_hash(:string)
         result_hash.should == expected_hash
       end
     
       it 'should result in "String-es" for Spanish translations when passed string "es" instead of symbol' do
         instance      = Klass.new
         expected_hash = { "presence" => { "message" => "String-es" } }
-        result_hash   = instance.validation_to_hash(:string, :locale => "es")
+        result_hash   = instance.validation_to_hash(:string)
         result_hash.should == expected_hash
       end
     end

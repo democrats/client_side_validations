@@ -97,6 +97,32 @@ describe 'jquery.validate adapter'
       result.messages['object[string]']['maxlength'].should.equal "is too short (maximum is 10 characters)"
     end
   end
+
+  describe 'range of length'
+    before
+      validations = {
+        "string": {
+          "length": {
+            "message_max":"is too short (maximum is 10 characters)",
+            "message_min":"is too short (minimum is 5 characters)",
+            "maximum":10,
+            "minimum":5
+            }
+        }
+      }
+      result = client.adaptValidations(validations)
+    end
+    
+    it 'should translate the rule'
+      result.rules['object[string]']['maxlength'].should.eql(10)
+      result.rules['object[string]']['minlength'].should.eql(5)
+    end
+    
+    it 'should translate the message'
+      result.messages['object[string]']['maxlength'].should.equal "is too short (maximum is 10 characters)"
+      result.messages['object[string]']['minlength'].should.equal "is too short (minimum is 5 characters)"
+    end
+  end
   
   describe 'uniqueness'
     before

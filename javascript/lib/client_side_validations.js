@@ -67,7 +67,15 @@ ClientSideValidations = function(id, adapter, object_id) {
               value = true;
               break;
             case 'length':
-              if('minimum' in this.validations[attr][validation]) {
+              if ('minimum' in this.validations[attr][validation] && 'maximum' in this.validations[attr][validation]) {
+                minrule                 = 'minlength';
+                rules[name][minrule]    = this.validations[attr][validation]['minimum'];
+                messages[name][minrule] = this.validations[attr][validation]['message_min'];
+
+                rule  = 'maxlength';
+                value = this.validations[attr][validation]['maximum'];
+                this.validations[attr][validation]['message'] = this.validations[attr][validation]['message_max']
+              } else if('minimum' in this.validations[attr][validation]) {
                 rule  = 'minlength';
                 value = this.validations[attr][validation]['minimum'];
               } else if('maximum' in this.validations[attr][validation]) {
