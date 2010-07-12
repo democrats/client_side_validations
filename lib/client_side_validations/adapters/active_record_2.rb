@@ -27,26 +27,9 @@ module DNCLabs
         private
         
         def supported_validation?(validation)
-          [:validates_presence_of, :validates_format_of, :validates_length_of,
-           :validates_numericality_of, :validates_uniqueness_of,
-           :validates_confirmation_of, :validates_acceptance_of].include?(validation.macro.to_sym)
+          SupportedValidations.include?(validation.macro.to_s.match(/\w+_(\w+)_\w+/)[1].to_sym)
         end
         
-        def can_validate?(validation)
-          if on = validation.options[:on]
-            on = on.to_sym
-            (on == :save) ||
-            (on == :create && base.new_record?) ||
-            (on == :update && !base.new_record?)
-          elsif if_condition = validation.options[:if]
-            base.instance_eval(if_condition.to_s)
-          elsif unless_condition = validation.options[:unless]
-            !base.instance_eval(unless_condition.to_s)
-          else
-            true
-          end
-        end
-
         def get_validation_message(validation)
           default = case validation.macro.to_sym
           when :validates_presence_of
@@ -80,24 +63,8 @@ module DNCLabs
         end
 
         def get_validation_method(validation)
-          method = case validation.macro.to_sym
-          when :validates_presence_of
-            :presence
-          when :validates_format_of
-            :format
-          when :validates_numericality_of
-            :numericality
-          when :validates_length_of
-            :length
-          when :validates_uniqueness_of
-            :uniqueness
-          when :validates_confirmation_of
-            :confirmation
-          when :validates_acceptance_of
-            :acceptance
-          end
-          
-          method.to_s
+          method = validation.macro.to_s
+          method.match(/\w+_(\w+)_\w+/)[1]
         end
       end
     end

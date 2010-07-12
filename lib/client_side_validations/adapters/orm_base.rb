@@ -16,9 +16,12 @@ module DNCLabs
         end
         
         private
+
+        SupportedValidations = [:presence, :format, :length, :numericality, :uniqueness,
+          :confirmation, :acceptance]
         
         def build_validation_hash(validation, message_key = 'message')
-          if can_validate?(validation) && supported_validation?(validation)
+          if can_validate?(validation)
             validation_hash = {}
             message         = get_validation_message(validation)
             options         = get_validation_options(validation)
@@ -44,23 +47,20 @@ module DNCLabs
           end
         end
         
-        def supported_validation?(validation)
-          [:presence, :format, :length, :numericality, :uniqueness,
-            :confirmation, :acceptance ].include?(validation.kind.to_sym)
-        end
-        
         def can_validate?(validation)
-          if on = validation.options[:on]
-            on = on.to_sym
-            (on == :save) ||
-            (on == :create && base.new_record?) ||
-            (on == :update && !base.new_record?)
-          elsif if_condition = validation.options[:if]
-            base.instance_eval(if_condition.to_s)
-          elsif unless_condition = validation.options[:unless]
-            !base.instance_eval(unless_condition.to_s)
-          else
-            true
+          if supported_validation?(validation)
+            if on = validation.options[:on]
+              on = on.to_sym
+              (on == :save) ||
+              (on == :create && base.new_record?) ||
+              (on == :update && !base.new_record?)
+            elsif if_condition = validation.options[:if]
+              base.instance_eval(if_condition.to_s)
+            elsif unless_condition = validation.options[:unless]
+              !base.instance_eval(unless_condition.to_s)
+            else
+              true
+            end
           end
         end
 

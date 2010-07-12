@@ -16,6 +16,10 @@ module DNCLabs
         end
         
         private
+
+        def supported_validation?(validation)
+          SupportedValidations.include?(validation.kind.to_sym)
+        end
         
         def get_validation_message(validation)
           default = case validation.kind
