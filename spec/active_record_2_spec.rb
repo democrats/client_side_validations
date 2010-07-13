@@ -43,7 +43,7 @@ describe 'Validations' do
       result_hash_2.should == expected_hash_2
     end
   
-    it "should support minimum validates_length_of of" do
+    it "should support minimum validates_length_of_of of" do
       Klass.class_eval { validates_length_of :string, :minimum => 10 }
       instance      = Klass.new
       expected_hash = { "length" => { "message" => "is too short (minimum is 10 characters)", "minimum" => 10 } }
@@ -64,6 +64,14 @@ describe 'Validations' do
       instance      = Klass.new
       expected_hash = { "length" => { "message_min" => "is too short (minimum is 5 characters)", "minimum" => 5,
                                       "message_max" => "is too long (maximum is 10 characters)", "maximum" => 10 } }
+      result_hash   = instance.validation_to_hash(:string)
+      result_hash.should == expected_hash
+    end
+    
+    it "should alias validates_size_of to validates_length_of" do
+      Klass.class_eval { validates_size_of :string, :minimum => 10 }
+      instance      = Klass.new
+      expected_hash = { "length" => { "message" => "is too short (minimum is 10 characters)", "minimum" => 10 } }
       result_hash   = instance.validation_to_hash(:string)
       result_hash.should == expected_hash
     end

@@ -1,6 +1,11 @@
 require 'validation_reflection'
 require 'client_side_validations/adapters/orm_base'
 
+ActiveRecord::Base.class_eval do
+  ::ActiveRecordExtensions::ValidationReflection.reflected_validations << :validates_size_of
+  ::ActiveRecordExtensions::ValidationReflection.install(self)
+end
+
 module DNCLabs
   module ClientSideValidations
     module Adapters
@@ -19,6 +24,9 @@ module DNCLabs
         private
         
         def build_validation_hash(validation, message_key = 'message')
+          if validation.macro == :validates_size_of
+            validation.instance_variable_set('@macro', :validates_length_of)
+          end
           if validation.macro == :validates_length_of &&
             (range = (validation.options.delete(:within) || validation.options.delete(:in)))
             validation.options[:minimum] = range.first
