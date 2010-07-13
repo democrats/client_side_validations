@@ -16,6 +16,7 @@ Currently the following validations are supported:
 * validates_format_of
 * validates_numericality_of
 * validates_length_of
+* validates_size_of
 * validates_uniqueness_of
 * validates_confirmation_of
 * validatse_acceptance_of
