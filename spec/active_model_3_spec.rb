@@ -85,6 +85,10 @@ describe 'Validations' do
         validates_presence_of :string, :if => :need_string?
         validates_presence_of :string_2, :unless => :need_string?
         validates_presence_of :integer, :if => :need_integer?
+
+        validates_presence_of :string_3, :allow_validation => :need_string?
+        validates_presence_of :string_4, :skip_validation => :need_string?
+        validates_presence_of :integer_2, :allow_validation => :need_integer?
       
         def need_string?
           true
@@ -108,6 +112,18 @@ describe 'Validations' do
       expected_hash_3 = { }
       result_hash_3   = instance.validation_to_hash(:integer)
       result_hash_3.should == expected_hash_3
+
+      expected_hash_4 = { "presence" => { "message" => "can't be blank" } }
+      result_hash_4   = instance.validation_to_hash(:string_3)
+      result_hash_4.should == expected_hash_4
+    
+      expected_hash_5 = { }
+      result_hash_5   = instance.validation_to_hash(:string_4)
+      result_hash_5.should == expected_hash_5
+    
+      expected_hash_6 = { }
+      result_hash_6   = instance.validation_to_hash(:integer_2)
+      result_hash_6.should == expected_hash_6
     end
   
     it "should support validating the validates_numericality_of" do

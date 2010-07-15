@@ -54,9 +54,9 @@ module DNCLabs
               (on == :save) ||
               (on == :create && base.new_record?) ||
               (on == :update && !base.new_record?)
-            elsif if_condition = validation.options[:if]
+            elsif(if_condition = (validation.options[:if] || validation.options[:allow_validation]))
               base.instance_eval(if_condition.to_s)
-            elsif unless_condition = validation.options[:unless]
+            elsif(unless_condition = (validation.options[:unless] || validation.options[:skip_validation]))
               !base.instance_eval(unless_condition.to_s)
             else
               true
@@ -70,7 +70,7 @@ module DNCLabs
         def get_validation_options(validation)
           options = validation.options.clone
           options.symbolize_keys!
-          deleteable_keys = [:on, :tokenizer, :only_integer, :allow_nil, :case_sensitive, :accept, :if, :unless]
+          deleteable_keys = [:on, :tokenizer, :only_integer, :allow_nil, :case_sensitive, :accept, :if, :unless, :allow_validation]
           options.delete(:maximum) if options.has_key?(:minimum)
           options.delete_if { |k, v| deleteable_keys.include?(k) }
           if options[:with].kind_of?(Regexp)
