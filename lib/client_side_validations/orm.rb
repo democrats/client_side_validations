@@ -30,11 +30,17 @@ if defined?(ActiveModel)
   DNCLabs::ClientSideValidations::Adapter = DNCLabs::ClientSideValidations::Adapters::ActiveModel
   klass = ActiveModel::Validations
 
-elsif defined?(ActiveRecord)
+else defined?(ActiveRecord)
   if ActiveRecord::VERSION::MAJOR == 2
-    require 'client_side_validations/adapters/active_record_2'
-    DNCLabs::ClientSideValidations::Adapter = DNCLabs::ClientSideValidations::Adapters::ActiveRecord2
+    require 'validation_reflection/active_model'
+    require 'client_side_validations/adapters/active_model'
+    DNCLabs::ClientSideValidations::Adapter = DNCLabs::ClientSideValidations::Adapters::ActiveModel
     klass = ActiveRecord::Base
+    
+    ActiveRecord::Base.class_eval do
+      ::ActiveRecordExtensions::ValidationReflection.reflected_validations << :validates_size_of
+      ::ActiveRecordExtensions::ValidationReflection.install(self)
+    end
   end
 end
 
