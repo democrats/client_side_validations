@@ -81,30 +81,33 @@ ClientSideValidations = function(id, adapter, object_id) {
         messages[name] = {};
         for(var validation in this.validations[attr]) {
           rule = null;
+          required = false;
           switch(validation) {
             case 'presence':
-              rule  = 'required'
+              rule  = 'required';
               value = true;
               break;
             case 'format':
-              value = this.validations[attr][validation]['with'];
+              value    = this.validations[attr][validation]['with'];
+              required = !this.validations[attr][validation]['allow_blank'];
               break;
             case 'numericality':
-              rule  = 'digits';
-              value = true;
+              rule     = 'digits';
+              value    = true;
+              required = !this.validations[attr][validation]['allow_blank'];
               break;
             case 'length':
               if ('minimum' in this.validations[attr][validation] && 'maximum' in this.validations[attr][validation]) {
-                minrule                 = 'minlength';
-                rules[name][minrule]    = this.validations[attr][validation]['minimum'];
-                messages[name][minrule] = this.validations[attr][validation]['message_min'];
-
-                rule  = 'maxlength';
-                value = this.validations[attr][validation]['maximum'];
-                this.validations[attr][validation]['message'] = this.validations[attr][validation]['message_max']
+                maxrule                 = 'maxlength';
+                rules[name][maxrule]    = this.validations[attr][validation]['maximum'];
+                messages[name][maxrule] = this.validations[attr][validation]['message_max'];
+                
+                rule     = 'minlength';
+                value    = this.validations[attr][validation]['minimum'];
+                this.validations[attr][validation]['message'] = this.validations[attr][validation]['message_min']
               } else if('minimum' in this.validations[attr][validation]) {
-                rule  = 'minlength';
-                value = this.validations[attr][validation]['minimum'];
+                rule     = 'minlength';
+                value    = this.validations[attr][validation]['minimum'];
               } else if('maximum' in this.validations[attr][validation]) {
                 rule  = 'maxlength';
                 value = this.validations[attr][validation]['maximum'];
@@ -121,6 +124,7 @@ ClientSideValidations = function(id, adapter, object_id) {
                   return String(object_id);
                 }
               }
+              required = !this.validations[attr][validation]['allow_blank'];
               break;
             case 'confirmation':
               rule  = 'equalTo';
@@ -131,12 +135,14 @@ ClientSideValidations = function(id, adapter, object_id) {
               value = true;
               break;
             case 'inclusion':
-              rule  = 'inclusion';
-              value = this.validations[attr][validation]['in']
+              rule     = 'inclusion';
+              value    = this.validations[attr][validation]['in']
+              required = !this.validations[attr][validation]['allow_blank'];
               break;
             case 'exclusion':
-              rule  = 'exclusion';
-              value = this.validations[attr][validation]['in']
+              rule     = 'exclusion';
+              value    = this.validations[attr][validation]['in']
+              required = !this.validations[attr][validation]['allow_blank'];
               break;
 
             default:
@@ -144,8 +150,15 @@ ClientSideValidations = function(id, adapter, object_id) {
           if(rule == null) {
             rule = validation;
           }
-          rules[name][rule]    = value;
-          messages[name][rule] = this.validations[attr][validation]['message'];
+          
+          if (typeof(value) != 'undefined') {
+            rules[name][rule]    = value;
+            messages[name][rule] = this.validations[attr][validation]['message'];
+          }
+          if (required && rules[name]['required'] == null) {
+            rules[name].required    = true;
+            messages[name].required = this.validations[attr][validation]['message'];
+          }
         }
       }
 
