@@ -95,7 +95,7 @@ module DNCLabs
         
         def orm_error_interpolation(name)
           if defined?(::ActiveModel)
-            "%{name}"
+            "%{#{name}}"
             
           else # ActiveRecord 2.x
             "{{#{name}}}"
