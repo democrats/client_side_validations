@@ -7,7 +7,7 @@ begin
     gem.name        = "client_side_validations"
     gem.summary     = %Q{Client Side Validations}
     gem.description = %Q{Client Side Validations for Rails 2.x and 3.x}
-    gem.email       = "cardarellab@dnc.org"
+    gem.email       = "bcardarella@gmail.com"
     gem.homepage    = "http://github.com/dnclabs/client_side_validations"
     gem.authors     = ["Brian Cardarella"]
     gem.add_dependency 'validation_reflection-active_model', ' 0.2.0'
