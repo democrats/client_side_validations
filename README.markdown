@@ -39,7 +39,7 @@ This will copy client_side_validations.js to "public/javascripts"
 **This version of ClientSideValidations will also copy a patched version of jquery.validate.js to "public/javascript"**
 
 ### Rails 3
-Add "gem 'client_side_validations" to the Gemfile
+Add "gem 'client_side_validations'" to the Gemfile
 
 Then run the generator:
    > rails g client_side_validations
