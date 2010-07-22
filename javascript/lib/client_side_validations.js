@@ -37,28 +37,30 @@ if (typeof(jQuery) != "undefined") {
   
   $.extend($.fn, {
     clientSideValidations: function() {
-      var form      = this;
-      var object    = form.attr('object-csv');
-      var form_id   = form[0].id;
-      var object_id = null;
-      var adapter   = 'jquery.validate';
+      for (var i in this) {
+        var form      = $(this[i]);
+        var object    = form.attr('object-csv');
+        var form_id   = form.attr('id');
+        var object_id = null;
+        var adapter   = 'jquery.validate';
 
-      if (/edit/.test(form_id)) {
-        object_id = /edit_\w+_(\d+)/.exec(form_id)[1];
+        if (/edit/.test(form_id)) {
+          object_id = /edit_\w+_(\d+)/.exec(form_id)[1];
+        }
+
+        if (eval("typeof(" + object + "_validation_options)") != "undefined") {
+          var options = eval(object + '_validation_options');
+        } else {
+          var options = { }
+        }
+        var client       = new ClientSideValidations(object, adapter, object_id)
+        var rules        = eval(object + '_validation_rules');
+        var validations  = client.adaptValidations(rules);
+        options.rules    = validations.rules;
+        options.messages = validations.messages;
+        options.ignore   = ':hidden';
+        form.validate(options);
       }
-      
-      if (eval("typeof(" + object + "_validation_options)") != "undefined") {
-        var options = eval(object + '_validation_options');
-      } else {
-        var options = { }
-      }
-      var client       = new ClientSideValidations(object, adapter, object_id)
-      var rules        = eval(object + '_validation_rules');
-      var validations  = client.adaptValidations(rules);
-      options.rules    = validations.rules;
-      options.messages = validations.messages;
-      options.ignore   = ':hidden';
-      form.validate(options);
     }
   });
 
