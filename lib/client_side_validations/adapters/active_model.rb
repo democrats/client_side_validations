@@ -5,7 +5,7 @@ module DNCLabs
     module Adapters
       class ActiveModel < ORMBase
 
-        def validation_to_hash(attr)
+        def validations_to_hash(attr)
           base._validators[attr.to_sym].inject({}) do |hash, validation|
             hash.merge!(build_validation_hash(validation.clone))
           end
@@ -48,7 +48,9 @@ module DNCLabs
           when :format
             I18n.translate(i18n_prefix + 'errors.messages.invalid')
           when :length
-            if count = validation.options[:minimum]
+            if count = validation.options[:is]
+              I18n.translate(i18n_prefix + 'errors.messages.wrong_length').sub(orm_error_interpolation(:count), count.to_s)
+            elsif count = validation.options[:minimum]
               I18n.translate(i18n_prefix + 'errors.messages.too_short').sub(orm_error_interpolation(:count), count.to_s)
             elsif count = validation.options[:maximum]
               I18n.translate(i18n_prefix + 'errors.messages.too_long').sub(orm_error_interpolation(:count), count.to_s)

@@ -8,7 +8,7 @@ module DNCLabs
           self.base = base
         end
         
-        def validation_to_hash(attr)
+        def validations_to_hash(attr)
         end
         
         def validation_fields

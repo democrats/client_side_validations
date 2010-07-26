@@ -40,12 +40,5 @@ end
 
 desc 'Default: the full test suite.'
 task :default do
-  system('rake jspec')
   system('rake rspec')
-end
-
-desc 'JSpec tests'
-task :jspec do
-  puts 'Javascript'
-  system('jspec run javascript/jspec/rhino.js --rhino')
 end

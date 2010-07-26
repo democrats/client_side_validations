@@ -46,7 +46,7 @@ context 'Mongoid' do
     Klass.class_eval { validates_uniqueness_of :string }
     instance = Klass.new
     expected_hash = { "uniqueness" => { "message" => "is already taken" } }
-    result_hash   = instance.validation_to_hash(:string)
+    result_hash   = instance.validations_to_hash(:string)
     result_hash.should == expected_hash
   end
 end
