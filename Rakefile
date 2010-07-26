@@ -14,6 +14,16 @@ begin
     gem.add_dependency 'json', '1.4.3'
     gem.files       = Dir.glob("lib/**/*") + Dir.glob("javascript/lib/**/*") + Dir.glob("generators/**/*") + %w(LICENSE README.markdown)
     gem.test_files  = []
+    
+    gem.add_development_dependency 'jspec'
+    gem.add_development_dependency 'rspec'
+    gem.add_development_dependency 'activerecord', '2.3.8'
+    gem.add_development_dependency 'activemodel', '3.0.0.beta4'
+    gem.add_development_dependency 'bson_ext', '1.0.4'
+    gem.add_development_dependency 'mongoid', '2.0.0.beta11'
+    gem.add_development_dependency 'crack'
+    gem.add_development_dependency 'bourne'
+    gem.add_development_dependency 'rack-test'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
