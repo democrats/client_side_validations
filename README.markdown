@@ -1,5 +1,5 @@
 # Client Side Validations
-Now you can easily drop in client side validations in any Rails app. It will use validations defined in a given ActiveRecord (or ActiveModel) class for use with a Javascript form validator. (currently only [jquery.validate](http://bassistance.de/jquery-plugins/jquery-plugin-validation/) is supported)
+Now you can easily drop in client side validations in any Rails app. It will use validations defined in a given ActiveRecord (or ActiveModel) class for use with [jquery-validation](http://bassistance.de/jquery-plugins/jquery-plugin-validation/)
 
 For Rails 2 and Rails 3 example apps please see [client_side_validations_example](http://github.com/dnclabs/client_side_validations_examples)
 
@@ -36,7 +36,7 @@ Then run the generator:
 
 This will copy client_side_validations.js to "public/javascripts"
 
-**This version of ClientSideValidations will also copy a patched version of jquery.validate.js to "public/javascript"**
+**This version of ClientSideValidations will also copy a patched version of jquery-validation.js to "public/javascript"**
 
 ### Rails 3
 Add "gem 'client_side_validations'" to the Gemfile
@@ -46,11 +46,11 @@ Then run the generator:
 
 This will copy client_side_validations.js to "public/javascripts"
 
-**This version of ClientSideValidations will also copy a patched version of jquery.validate.js to "public/javascript"**
+**This version of ClientSideValidations will also copy a patched version of jquery-validation.js to "public/javascript"**
 
 ## Configuration
-#### *NOTE* This version of ClientSideValidations has a patched version of jquery.validate that will install automatically with the generator. *Do not* download the version listed below.
-Currently only [jquery.validate](http://bassistance.de/jquery-plugins/jquery-plugin-validation/) is supported so you will need to download [jQuery](http://docs.jquery.com/Downloading_jQuery) and the jQuery Validate plugin to "public/javascripts"
+#### *NOTE* This version of ClientSideValidations has a patched version of jquery-validation that will install automatically with the generator. *Do not* download the version listed below.
+Download [jQuery](http://docs.jquery.com/Downloading_jQuery) and [jQuery Validation](http://bassistance.de/jquery-plugins/jquery-plugin-validation/) plugin to "public/javascripts"
 
 ### Rack
 If you want to validate_uniqueness_of a call to the server must be made. You can do this with the ClidenSideValidations::Uniqueness middleware.
@@ -80,7 +80,7 @@ Validate your models as you normally would
 You currently need both jQuery and the jQuery Validate plugin loaded before you load Client Side Validations
 
     ...
-    <%= javascript_include_tag 'jquery', 'jquery.validate', 'client_side_validations' %>
+    <%= javascript_include_tag 'jquery', 'jquery-validation', 'client_side_validations' %>
     ...
    
 ### View
@@ -101,7 +101,7 @@ That should be it!
 ## Advanced Options
 
 ### Initialization
-[jquery.validate can be customized by setting various options](http://docs.jquery.com/Plugins/Validation/validate#toptions)
+[jquery-validation can be customized by setting various options](http://docs.jquery.com/Plugins/Validation/validate#toptions)
 
 Create config/initializers/client_side_validations.rb
 
