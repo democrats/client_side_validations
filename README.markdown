@@ -108,12 +108,10 @@ Create config/initializers/client_side_validations.rb
 An example set of default options can look like:
 
     ClientSideValidations.default_options = {
-      :onkeyup    => "false",
-      :errorClass => %{"validation_errors"}
+      :onkeyup    => false,
+      :errorClass => "validation_errors"
     }
     
-You'll notice that for :errorClass a string is being set inside of a string. This is necessary so everything gets translated to Javascript properly. (hopefully I can come up with something nicer soon)
-
 ### Model
 If you want to define only specific fields for client side validations just override the validation_fields method on each model
 
@@ -132,11 +130,9 @@ If you want to define only specific fields for client side validations just over
 ### View
 You can override the default options set in the initializer for each form:
 
-    <% form_for @book, :validations => { :options => { :errorClass => %{"bad-field"} } } do |b| %>
+    <% form_for @book, :validations => { :options => { :errorClass => "bad-field" } } do |b| %>
       ...
       
-Same rules apply of a string inside a string for proper conversion to Javascript.
-
 If you are not using an instance variable for form_for or for some reason want to use the validations from another class that can be done in two ways:
 
     <% form_for :book, :validations => Book %>
