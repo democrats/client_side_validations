@@ -171,4 +171,48 @@ shared_examples_for 'Numericality' do
     end
   end
 
+  context 'Odd' do
+    context 'default' do
+      before do
+        Klass.class_eval do
+          validates_numericality_of :number, :odd => true
+        end
+
+        @result = Klass.new.validate_options
+      end
+
+      it 'should translate the rule' do
+        @result['rules']['number']['odd'].should be_true
+        @result['rules']['number']['required'].should be_true
+      end
+
+      it 'should translate the message' do
+        @result['messages']['number']['odd'].should == "must be odd"
+        @result['messages']['number']['required'].should == "is not a number"
+      end
+    end
+  end
+
+  context 'Even' do
+    context 'default' do
+      before do
+        Klass.class_eval do
+          validates_numericality_of :number, :even => true
+        end
+
+        @result = Klass.new.validate_options
+      end
+
+      it 'should translate the rule' do
+        @result['rules']['number']['even'].should be_true
+        @result['rules']['number']['required'].should be_true
+      end
+
+      it 'should translate the message' do
+        @result['messages']['number']['even'].should == "must be even"
+        @result['messages']['number']['required'].should == "is not a number"
+      end
+    end
+  end
+
 end

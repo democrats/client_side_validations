@@ -36,6 +36,10 @@ module DNCLabs
           'less_than'
         elsif options['less_than_or_equal_to']
           'max'
+        elsif options['odd']
+          'odd'
+        elsif options['even']
+          'even'
         else
           'numericality'
         end
@@ -59,7 +63,7 @@ module DNCLabs
       validations.each do |kind, options|
         kind = convert_kind(kind, options)
         value = case kind
-        when 'acceptance', 'required', 'digits', 'numericality', 'greater_than', 'min', 'less_than', 'max'
+        when 'acceptance', 'required', 'digits', 'numericality', 'greater_than', 'min', 'less_than', 'max', 'odd', 'even'
           true
         when 'equalTo'
           %{[name="#{field}_confirmation"]}
@@ -127,7 +131,7 @@ module DNCLabs
 
         if required?(kind, options)
           unless messages['required']
-            if ['greater_than', 'min', 'less_than', 'max'].include?(kind)
+            if ['greater_than', 'min', 'less_than', 'max', 'odd', 'even'].include?(kind)
               messages['required'] = I18n.translate(i18n_prefix + 'errors.messages.not_a_number')
             else
               messages['required'] = options['message']
@@ -148,7 +152,7 @@ module DNCLabs
     
     def required?(kind, options)
       case kind
-      when 'digits', 'exclusion', 'inclusion', 'islength', 'minlength', 'remote', 'numericality', 'greater_than', 'min', 'less_than', 'max'
+      when 'digits', 'exclusion', 'inclusion', 'islength', 'minlength', 'remote', 'numericality', 'greater_than', 'min', 'less_than', 'max', 'even', 'odd'
         !options['allow_blank']
       when Array
         required?('minlength', options) if kind.include?('minlength')

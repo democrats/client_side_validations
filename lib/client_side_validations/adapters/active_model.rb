@@ -66,6 +66,10 @@ module DNCLabs
               I18n.translate(i18n_prefix + 'errors.messages.less_than').sub(orm_error_interpolation(:count), count.to_s)
             elsif count = validation.options[:less_than_or_equal_to]
               I18n.translate(i18n_prefix + 'errors.messages.less_than_or_equal_to').sub(orm_error_interpolation(:count), count.to_s)
+            elsif validation.options[:odd]
+              I18n.translate(i18n_prefix + 'errors.messages.odd')
+            elsif validation.options[:even]
+              I18n.translate(i18n_prefix + 'errors.messages.even')
             else
               I18n.translate(i18n_prefix + 'errors.messages.not_a_number')
             end

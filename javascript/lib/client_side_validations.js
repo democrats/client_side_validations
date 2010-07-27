@@ -2,6 +2,14 @@ jQuery.validator.addMethod("numericality", function(value, element) {
   return this.optional(element) || /^(\d+(\.|,)\d+|\d+)$/.test(value);
 }, jQuery.validator.format("Is not a number."));
 
+jQuery.validator.addMethod("odd", function(value, element) { 
+  return this.optional(element) || parseInt(number) % 2 == 1;
+}, jQuery.validator.format("Must be odd."));
+
+jQuery.validator.addMethod("even", function(value, element) { 
+  return this.optional(element) || parseInt(number) % 2 == 0;
+}, jQuery.validator.format("Must be even."));
+
 jQuery.validator.addMethod("format", function(value, element, params) { 
   var pattern = new RegExp(params, "i");
   return this.optional(element) || pattern.test(value);
