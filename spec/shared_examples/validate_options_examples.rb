@@ -20,8 +20,8 @@ shared_examples_for 'Validate Options' do
       end
 
       instance          = Klass.new
-      expected_rules    = {'number' => {'required' => true, 'digits' => true}}
-      expected_messages = {'number' => {'required' => "can't be blank", 'digits' => "is not a number"}}
+      expected_rules    = {'number' => {'required' => true, 'numericality' => true}}
+      expected_messages = {'number' => {'required' => "can't be blank", 'numericality' => "is not a number"}}
       expectation       = {'rules' => expected_rules, 'messages' => expected_messages}
       result            = instance.validate_options
       result.should == expectation
@@ -50,15 +50,15 @@ shared_examples_for 'Validate Options' do
       end
 
       instance          = Klass.new
-      expected_rules    = {'number_1' => {'required' => true, 'digits' => true}, 'number_2' => {'required' => true, 'digits' => true}}
-      expected_messages = {'number_1' => {'required' => "can't be blank", 'digits' => "is not a number"}, 'number_2' => {'required' => "can't be blank", 'digits' => "is not a number"}}
+      expected_rules    = {'number_1' => {'required' => true, 'numericality' => true}, 'number_2' => {'required' => true, 'numericality' => true}}
+      expected_messages = {'number_1' => {'required' => "can't be blank", 'numericality' => "is not a number"}, 'number_2' => {'required' => "can't be blank", 'numericality' => "is not a number"}}
       expectation       = {'rules' => expected_rules, 'messages' => expected_messages}
       result            = instance.validate_options
       result.should == expectation
     end
   end
   
-  %w{Acceptance Confirmation Digits Exclusion Inclusion Length Required Uniqueness}.each do |example|
+  %w{Acceptance Confirmation Numericality Exclusion Inclusion Length Required Uniqueness}.each do |example|
     it_should_behave_like example
   end
   

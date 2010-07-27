@@ -26,7 +26,19 @@ module DNCLabs
       when 'presence'
         'required'
       when 'numericality'
-        'digits'
+        if options['only_integer']
+          'digits'
+        elsif options['greater_than']
+          'greater_than'
+        elsif options['greater_than_or_equal_to']
+          'min'
+        elsif options['less_than']
+          'less_than'
+        elsif options['less_than_or_equal_to']
+          'max'
+        else
+          'numericality'
+        end
       when 'length'
         if options['is']
           'islength'
@@ -47,14 +59,10 @@ module DNCLabs
       validations.each do |kind, options|
         kind = convert_kind(kind, options)
         value = case kind
-        when 'acceptance'
+        when 'acceptance', 'required', 'digits', 'numericality', 'greater_than', 'min', 'less_than', 'max'
           true
         when 'equalTo'
           %{[name="#{field}_confirmation"]}
-        when 'required'
-          true
-        when 'digits'
-          true
         when 'exclusion', 'inclusion'
           options['in']
         when 'islength'
@@ -119,16 +127,28 @@ module DNCLabs
 
         if required?(kind, options)
           unless messages['required']
-            messages['required'] = options['message']
+            if ['greater_than', 'min', 'less_than', 'max'].include?(kind)
+              messages['required'] = I18n.translate(i18n_prefix + 'errors.messages.not_a_number')
+            else
+              messages['required'] = options['message']
+            end
           end
         end
       end
       messages
     end
+
+    def i18n_prefix
+      if defined?(::ActiveModel)
+        ''
+      else # ActiveRecord 2.x
+        'activerecord.'
+      end
+    end
     
     def required?(kind, options)
       case kind
-      when 'digits', 'exclusion', 'inclusion', 'islength', 'minlength', 'remote'
+      when 'digits', 'exclusion', 'inclusion', 'islength', 'minlength', 'remote', 'numericality', 'greater_than', 'min', 'less_than', 'max'
         !options['allow_blank']
       when Array
         required?('minlength', options) if kind.include?('minlength')

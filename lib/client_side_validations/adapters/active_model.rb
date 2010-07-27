@@ -56,7 +56,19 @@ module DNCLabs
               I18n.translate(i18n_prefix + 'errors.messages.too_long').sub(orm_error_interpolation(:count), count.to_s)
             end
           when :numericality
-            I18n.translate(i18n_prefix + 'errors.messages.not_a_number')
+            if validation.options[:only_integer]
+              I18n.translate(i18n_prefix + 'errors.messages.not_a_number')
+            elsif count = validation.options[:greater_than]
+              I18n.translate(i18n_prefix + 'errors.messages.greater_than').sub(orm_error_interpolation(:count), count.to_s)
+            elsif count = validation.options[:greater_than_or_equal_to]
+              I18n.translate(i18n_prefix + 'errors.messages.greater_than_or_equal_to').sub(orm_error_interpolation(:count), count.to_s)
+            elsif count = validation.options[:less_than]
+              I18n.translate(i18n_prefix + 'errors.messages.less_than').sub(orm_error_interpolation(:count), count.to_s)
+            elsif count = validation.options[:less_than_or_equal_to]
+              I18n.translate(i18n_prefix + 'errors.messages.less_than_or_equal_to').sub(orm_error_interpolation(:count), count.to_s)
+            else
+              I18n.translate(i18n_prefix + 'errors.messages.not_a_number')
+            end
           when :uniqueness
             if defined?(ActiveRecord) && base.kind_of?(ActiveRecord::Base)
               I18n.translate('activerecord.errors.messages.taken')

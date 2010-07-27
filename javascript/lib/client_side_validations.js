@@ -1,3 +1,7 @@
+jQuery.validator.addMethod("numericality", function(value, element) { 
+  return this.optional(element) || /^(\d+(\.|,)\d+|\d+)$/.test(value);
+}, jQuery.validator.format("Is not a number."));
+
 jQuery.validator.addMethod("format", function(value, element, params) { 
   var pattern = new RegExp(params, "i");
   return this.optional(element) || pattern.test(value);

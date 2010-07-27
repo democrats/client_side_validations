@@ -70,11 +70,14 @@ module DNCLabs
         def get_validation_options(validation)
           options = validation.options.clone
           options.symbolize_keys!
-          deleteable_keys = [:on, :tokenizer, :only_integer, :allow_nil, :case_sensitive, :accept, :if, :unless, :allow_validation]
+          deleteable_keys = [:on, :tokenizer, :allow_nil, :case_sensitive, :accept, :if, :unless, :allow_validation]
           options.delete(:maximum) if options.has_key?(:minimum)
           options.delete_if { |k, v| deleteable_keys.include?(k) }
           if options[:with].kind_of?(Regexp)
             options[:with] = options[:with].inspect.to_s.sub("\\A","^").sub("\\Z","$").sub(%r{^/},"").sub(%r{/i?$}, "")
+          end
+          if options[:only_integer] == false
+            options.delete(:only_integer)
           end
           options
         end
