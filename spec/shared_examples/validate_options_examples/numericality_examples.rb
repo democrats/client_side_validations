@@ -101,6 +101,7 @@ shared_examples_for 'Numericality' do
       it 'should translate the message' do
         @result['messages']['number']['greater_than'].should == "must be greater than 5"
         @result['messages']['number']['required'].should == "is not a number"
+        @result['messages']['number']['numericality'].should == "is not a number"
       end
     end
   end
@@ -118,11 +119,13 @@ shared_examples_for 'Numericality' do
       it 'should translate the rule' do
         @result['rules']['number']['min'].should be_true
         @result['rules']['number']['required'].should be_true
+        @result['rules']['number']['numericality'].should be_true
       end
 
       it 'should translate the message' do
         @result['messages']['number']['min'].should == "must be greater than or equal to 5"
         @result['messages']['number']['required'].should == "is not a number"
+        @result['messages']['number']['numericality'].should == "is not a number"
       end
     end
   end
@@ -140,11 +143,13 @@ shared_examples_for 'Numericality' do
       it 'should translate the rule' do
         @result['rules']['number']['less_than'].should be_true
         @result['rules']['number']['required'].should be_true
+        @result['rules']['number']['numericality'].should be_true
       end
 
       it 'should translate the message' do
         @result['messages']['number']['less_than'].should == "must be less than 5"
         @result['messages']['number']['required'].should == "is not a number"
+        @result['messages']['number']['numericality'].should == "is not a number"
       end
     end
   end
@@ -162,11 +167,13 @@ shared_examples_for 'Numericality' do
       it 'should translate the rule' do
         @result['rules']['number']['max'].should be_true
         @result['rules']['number']['required'].should be_true
+        @result['rules']['number']['numericality'].should be_true
       end
 
       it 'should translate the message' do
         @result['messages']['number']['max'].should == "must be less than or equal to 5"
         @result['messages']['number']['required'].should == "is not a number"
+        @result['messages']['number']['numericality'].should == "is not a number"
       end
     end
   end
@@ -184,11 +191,13 @@ shared_examples_for 'Numericality' do
       it 'should translate the rule' do
         @result['rules']['number']['odd'].should be_true
         @result['rules']['number']['required'].should be_true
+        @result['rules']['number']['numericality'].should be_true
       end
 
       it 'should translate the message' do
         @result['messages']['number']['odd'].should == "must be odd"
         @result['messages']['number']['required'].should == "is not a number"
+        @result['messages']['number']['numericality'].should == "is not a number"
       end
     end
   end
@@ -206,11 +215,13 @@ shared_examples_for 'Numericality' do
       it 'should translate the rule' do
         @result['rules']['number']['even'].should be_true
         @result['rules']['number']['required'].should be_true
+        @result['rules']['number']['numericality'].should be_true
       end
 
       it 'should translate the message' do
         @result['messages']['number']['even'].should == "must be even"
         @result['messages']['number']['required'].should == "is not a number"
+        @result['messages']['number']['numericality'].should == "is not a number"
       end
     end
   end

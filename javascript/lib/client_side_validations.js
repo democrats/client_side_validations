@@ -3,11 +3,11 @@ jQuery.validator.addMethod("numericality", function(value, element) {
 }, jQuery.validator.format("Is not a number."));
 
 jQuery.validator.addMethod("odd", function(value, element) { 
-  return this.optional(element) || parseInt(number) % 2 == 1;
+  return this.optional(element) || parseInt(value) % 2 == 1;
 }, jQuery.validator.format("Must be odd."));
 
 jQuery.validator.addMethod("even", function(value, element) { 
-  return this.optional(element) || parseInt(number) % 2 == 0;
+  return this.optional(element) || parseInt(value) % 2 == 0;
 }, jQuery.validator.format("Must be even."));
 
 jQuery.validator.addMethod("format", function(value, element, params) { 

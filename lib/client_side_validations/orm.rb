@@ -98,6 +98,12 @@ module DNCLabs
             rules[k] = special_rule
           end
         end
+        
+        if numericality?(kind)
+          unless rules['numericality'] || rules['digits']
+            rules['numericality'] = true
+          end
+        end
 
         if required?(kind, options)
           unless rules['required']
@@ -129,10 +135,14 @@ module DNCLabs
           end
         end
 
+        if numericality?(kind)
+          messages['numericality'] = I18n.translate(i18n_prefix + 'errors.messages.not_a_number')
+        end
+
         if required?(kind, options)
           unless messages['required']
             if ['greater_than', 'min', 'less_than', 'max', 'odd', 'even'].include?(kind)
-              messages['required'] = I18n.translate(i18n_prefix + 'errors.messages.not_a_number')
+              messages['required']     = I18n.translate(i18n_prefix + 'errors.messages.not_a_number')
             else
               messages['required'] = options['message']
             end
@@ -148,6 +158,10 @@ module DNCLabs
       else # ActiveRecord 2.x
         'activerecord.'
       end
+    end
+    
+    def numericality?(kind)
+      ['greater_than', 'min', 'less_than', 'max', 'even', 'odd'].include?(kind)
     end
     
     def required?(kind, options)
