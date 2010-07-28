@@ -4,6 +4,8 @@ require 'active_record'
 require 'client_side_validations'
 
 describe 'Validations' do
+  include ClientSideValidations::ORM
+
   before do
     define_abstract_ar(:Klass, ActiveRecord::Base)
   end

@@ -5,7 +5,7 @@ shared_examples_for 'ActiveModel' do
       Klass.class_eval { validates_presence_of :string }
       instance      = Klass.new
       expected_hash = { "presence" => { "message" => "can't be blank"} }
-      result_hash   = instance.validations_to_hash(:string)
+      result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
       result_hash.should == expected_hash
     end
 
@@ -13,7 +13,7 @@ shared_examples_for 'ActiveModel' do
       Klass.class_eval { validates_format_of :string, :with => /\A\d\Z/i }
       instance      = Klass.new
       expected_hash = { "format" => { "message" => "is invalid", "with" => "^\\d$" } }
-      result_hash   = instance.validations_to_hash(:string)
+      result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
       result_hash.should == expected_hash
     end
 
@@ -25,8 +25,8 @@ shared_examples_for 'ActiveModel' do
       instance        = Klass.new
       expected_hash_1 = { "format" => { "message" => "is invalid", "with" => "^\\d$" } }
       expected_hash_2 = { "format" => { "message" => "is invalid", "with" => "\\d" } }
-      result_hash_1   = instance.validations_to_hash(:string)
-      result_hash_2   = instance.validations_to_hash(:string_2)
+      result_hash_1   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
+      result_hash_2   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string_2)
       result_hash_1.should == expected_hash_1
       result_hash_2.should == expected_hash_2
     end
@@ -35,7 +35,7 @@ shared_examples_for 'ActiveModel' do
       Klass.class_eval { validates_length_of :string, :is => 10 }
       instance      = Klass.new
       expected_hash = { "length" => { "message" => "is the wrong length (should be 10 characters)", "is" => 10 } }
-      result_hash   = instance.validations_to_hash(:string)
+      result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
       result_hash.should == expected_hash
     end
 
@@ -43,7 +43,7 @@ shared_examples_for 'ActiveModel' do
       Klass.class_eval { validates_length_of :string, :minimum => 10 }
       instance      = Klass.new
       expected_hash = { "length" => { "message" => "is too short (minimum is 10 characters)", "minimum" => 10 } }
-      result_hash   = instance.validations_to_hash(:string)
+      result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
       result_hash.should == expected_hash
     end
 
@@ -51,7 +51,7 @@ shared_examples_for 'ActiveModel' do
       Klass.class_eval { validates_length_of :string, :maximum => 10 }
       instance      = Klass.new
       expected_hash = { "length" => { "message" => "is too long (maximum is 10 characters)", "maximum" => 10 } }
-      result_hash   = instance.validations_to_hash(:string)
+      result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
       result_hash.should == expected_hash
     end
 
@@ -60,7 +60,7 @@ shared_examples_for 'ActiveModel' do
       instance      = Klass.new
       expected_hash = { "length" => { "message_min" => "is too short (minimum is 5 characters)", "minimum" => 5,
                                       "message_max" => "is too long (maximum is 10 characters)", "maximum" => 10 } }
-      result_hash   = instance.validations_to_hash(:string)
+      result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
       result_hash.should == expected_hash
     end
   
@@ -68,7 +68,7 @@ shared_examples_for 'ActiveModel' do
       Klass.class_eval { validates_size_of :string, :minimum => 10 }
       instance      = Klass.new
       expected_hash = { "length" => { "message" => "is too short (minimum is 10 characters)", "minimum" => 10 } }
-      result_hash   = instance.validations_to_hash(:string)
+      result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
       result_hash.should == expected_hash
     end
 
@@ -76,7 +76,7 @@ shared_examples_for 'ActiveModel' do
       Klass.class_eval { validates_numericality_of :integer }
       instance      = Klass.new
       expected_hash = { "numericality" => { "message" => "is not a number" } }
-      result_hash   = instance.validations_to_hash(:integer)
+      result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:integer)
       result_hash.should == expected_hash
     end
   
@@ -84,7 +84,7 @@ shared_examples_for 'ActiveModel' do
       Klass.class_eval { validates_confirmation_of :string }
       instance      = Klass.new
       expected_hash = { "confirmation" => { "message" => "doesn't match confirmation" } }
-      result_hash   = instance.validations_to_hash(:string)
+      result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
       result_hash.should == expected_hash
     end
   
@@ -92,7 +92,7 @@ shared_examples_for 'ActiveModel' do
       Klass.class_eval { validates_inclusion_of :string, :in => ['hey'] }
       instance      = Klass.new
       expected_hash = { "inclusion" => { "message" => "is not included in the list", "in" => ['hey'] } }
-      result_hash   = instance.validations_to_hash(:string)
+      result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
       result_hash.should == expected_hash
     end
 
@@ -100,7 +100,7 @@ shared_examples_for 'ActiveModel' do
       Klass.class_eval { validates_inclusion_of :number, :in => (1..2) }
       instance      = Klass.new
       expected_hash = { "inclusion" => { "message" => "is not included in the list", "in" => [1,2] } }
-      result_hash   = instance.validations_to_hash(:number)
+      result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:number)
       result_hash.should == expected_hash
     end
 
@@ -108,7 +108,7 @@ shared_examples_for 'ActiveModel' do
       Klass.class_eval { validates_exclusion_of :string, :in => ['hey'] }
       instance      = Klass.new
       expected_hash = { "exclusion" => { "message" => "is reserved", "in" => ['hey'] } }
-      result_hash   = instance.validations_to_hash(:string)
+      result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
       result_hash.should == expected_hash
     end
 
@@ -116,7 +116,7 @@ shared_examples_for 'ActiveModel' do
       Klass.class_eval { validates_exclusion_of :number, :in => (1..2) }
       instance      = Klass.new
       expected_hash = { "exclusion" => { "message" => "is reserved", "in" => [1,2] } }
-      result_hash   = instance.validations_to_hash(:number)
+      result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:number)
       result_hash.should == expected_hash
     end
   
@@ -124,7 +124,7 @@ shared_examples_for 'ActiveModel' do
       Klass.class_eval { validates_acceptance_of :string }
       instance      = Klass.new
       expected_hash = { "acceptance" => { "message" => "must be accepted" } }
-      result_hash   = instance.validations_to_hash(:string)
+      result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
       result_hash.should == expected_hash
     end
 
@@ -138,7 +138,7 @@ shared_examples_for 'ActiveModel' do
       
       instance      = Klass.new
       expected_hash = { "presence" => { "message" => "can't be blank"} }
-      result_hash   = instance.validations_to_hash(:string)
+      result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
       result_hash.should == expected_hash
     end
 
@@ -151,7 +151,7 @@ shared_examples_for 'ActiveModel' do
       instance      = Klass.new
       expected_hash = { "presence" => { "message" => "can't be blank" },
                         "numericality" => { "message" => "is not a number" } }
-      result_hash   = instance.validations_to_hash(:integer)
+      result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:integer)
       result_hash.should == expected_hash
     end
 
@@ -172,14 +172,14 @@ shared_examples_for 'ActiveModel' do
       it 'should have a message of "String" for #string' do
         instance      = Klass.new
         expected_hash = { "presence" => { "message" => "String" } }
-        result_hash   = instance.validations_to_hash(:string)
+        result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
         result_hash.should == expected_hash
       end
 
       it 'should have a message of "String_2" for #string_2' do
         instance      = Klass.new
         expected_hash = { "presence" => { "message" => "String_2" } }
-        result_hash   = instance.validations_to_hash(:string_2)
+        result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string_2)
         result_hash.should == expected_hash
       end
     end
@@ -202,14 +202,14 @@ shared_examples_for 'ActiveModel' do
       it 'should result in "String-es" for Spanish translations' do
         instance      = Klass.new
         expected_hash = { "presence" => { "message" => "String-es" } }
-        result_hash   = instance.validations_to_hash(:string)
+        result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
         result_hash.should == expected_hash
       end
   
       it 'should result in "String-es" for Spanish translations when passed string "es" instead of symbol' do
         instance      = Klass.new
         expected_hash = { "presence" => { "message" => "String-es" } }
-        result_hash   = instance.validations_to_hash(:string)
+        result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
         result_hash.should == expected_hash
       end
     end
@@ -325,27 +325,27 @@ shared_examples_for 'ActiveModel' do
       instance        = Klass.new
 
       expected_hash_1 = { 'presence' => { 'message' => "can't be blank" } }
-      result_hash_1   = instance.validations_to_hash(:string)
+      result_hash_1   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
       result_hash_1.should == expected_hash_1
   
       expected_hash_2 = { }
-      result_hash_2   = instance.validations_to_hash(:string_2)
+      result_hash_2   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string_2)
       result_hash_2.should == expected_hash_2
   
       expected_hash_3 = { }
-      result_hash_3   = instance.validations_to_hash(:integer)
+      result_hash_3   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:integer)
       result_hash_3.should == expected_hash_3
 
       expected_hash_4 = { 'presence' => { 'message' => "can't be blank" } }
-      result_hash_4   = instance.validations_to_hash(:string_3)
+      result_hash_4   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string_3)
       result_hash_4.should == expected_hash_4
   
       expected_hash_5 = { }
-      result_hash_5   = instance.validations_to_hash(:string_4)
+      result_hash_5   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string_4)
       result_hash_5.should == expected_hash_5
   
       expected_hash_6 = { }
-      result_hash_6   = instance.validations_to_hash(:integer_2)
+      result_hash_6   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:integer_2)
       result_hash_6.should == expected_hash_6
     end
 
@@ -372,16 +372,18 @@ shared_examples_for 'ActiveModel' do
         instance_1 = Klass.new
         instance_2 = Klass2.new
       
-        instance_1.validations_to_hash(:string_1).should_not be_empty
-        instance_2.validations_to_hash(:string_1).should be_empty
+        ClientSideValidations::ORM::ValidateOptions.new(instance_1).validations_for(:string_1).should_not be_empty
+        ClientSideValidations::ORM::ValidateOptions.new(instance_1).validations_for(:string_1).should_not be_empty
+
+        ClientSideValidations::ORM::ValidateOptions.new(instance_2).validations_for(:string_1).should be_empty
       end
     
       it ':update' do
         instance_1 = Klass.new
         instance_2 = Klass2.new
       
-        instance_1.validations_to_hash(:string_2).should be_empty
-        instance_2.validations_to_hash(:string_2).should_not be_empty
+        ClientSideValidations::ORM::ValidateOptions.new(instance_1).validations_for(:string_2).should be_empty
+        ClientSideValidations::ORM::ValidateOptions.new(instance_2).validations_for(:string_2).should_not be_empty
       end
     end
   end
@@ -398,7 +400,7 @@ shared_examples_for 'ActiveModel' do
     end
 
     it 'should not add unsupported validations' do
-      Klass.new.validations_to_hash(:string).should == { }
+      ClientSideValidations::ORM::ValidateOptions.new(Klass.new).validations_for(:string).should == { }
     end
   end
 end

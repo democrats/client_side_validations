@@ -32,12 +32,8 @@ end
 
 desc 'RSpec tests'
 task :rspec do
-  puts 'ActiveRecord 2.x'
-  system('spec spec/active_record_2_spec.rb')
-  
-  puts 'ActiveModel 3.x'
-  system('spec spec/active_model_3_spec.rb')
-  
+  system('rake orm')
+
   puts 'ActionView 2.x'
   system('spec spec/action_view_2_spec.rb')
 
@@ -46,6 +42,15 @@ task :rspec do
   
   puts 'Middleware'
   system('spec spec/middleware_spec.rb')
+end
+
+desc 'ORM Specs'
+task :orm do
+  puts 'ActiveRecord 2.x'
+  system('spec spec/active_record_2_spec.rb')
+  
+  puts 'ActiveModel 3.x'
+  system('spec spec/active_model_3_spec.rb')
 end
 
 desc 'Default: the full test suite.'

@@ -6,6 +6,8 @@ require 'active_record'
 require 'mongoid'
 
 describe 'Validations' do
+  include ClientSideValidations::ORM
+  
   before do
     class Klass
       include ActiveModel::Validations
@@ -20,6 +22,8 @@ describe 'Validations' do
 end
 
 context 'ActiveRecord' do
+  include ClientSideValidations::ORM
+  
   before do
     define_abstract_ar(:Klass, ActiveRecord::Base)
   end
@@ -32,6 +36,8 @@ context 'ActiveRecord' do
 end
   
 context 'Mongoid' do
+  include ClientSideValidations::ORM
+  
   before do
     class Klass
       include Mongoid::Document
@@ -46,7 +52,7 @@ context 'Mongoid' do
     Klass.class_eval { validates_uniqueness_of :string }
     instance = Klass.new
     expected_hash = { "uniqueness" => { "message" => "is already taken" } }
-    result_hash   = instance.validations_to_hash(:string)
+    result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
     result_hash.should == expected_hash
   end
 end

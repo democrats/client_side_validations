@@ -3,7 +3,7 @@ shared_examples_for 'ActiveRecord' do
     Klass.class_eval { validates_uniqueness_of :string }
     instance = Klass.new
     expected_hash = { "uniqueness" => { "message" => "has already been taken" } }
-    result_hash   = instance.validations_to_hash(:string)
+    result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
     result_hash.should == expected_hash
   end
 end
