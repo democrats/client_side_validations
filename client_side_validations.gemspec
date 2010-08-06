@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brian Cardarella"]
-  s.date = %q{2010-07-27}
+  s.date = %q{2010-08-06}
   s.description = %q{Client Side Validations for Rails 2.x and 3.x}
   s.email = %q{bcardarella@gmail.com}
   s.extra_rdoc_files = [
@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
      "lib/client_side_validations/adapters/active_model.rb",
      "lib/client_side_validations/adapters/orm_base.rb",
      "lib/client_side_validations/orm.rb",
+     "lib/client_side_validations/rails.rb",
      "lib/client_side_validations/template.rb",
      "lib/generators/client_side_validations_generator.rb"
   ]

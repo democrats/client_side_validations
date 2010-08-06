@@ -1,8 +1,6 @@
 require 'rubygems'
 require 'json'
 require 'cgi'
-require 'client_side_validations/orm'
-require 'client_side_validations/template'
 
 module ClientSideValidations
   def self.default_options=(options)
@@ -56,3 +54,7 @@ module ClientSideValidations
     end
   end
 end
+
+require 'client_side_validations/orm'
+require 'client_side_validations/template'
+require 'client_side_validations/rails' if defined?(Rails)
