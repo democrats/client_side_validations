@@ -1,4 +1,6 @@
-= v2.9.0 =
+# Changelog
+
+## v2.9.0
 
 - The Uniqueness middleware is automatically setup as a middleware via a Rails Engine
 - Cleaned up ActiveRecord::Base method pollution
