@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{client_side_validations}
-  s.version = "2.8.0"
+  s.version = "2.9.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brian Cardarella"]
-  s.date = %q{2010-08-06}
+  s.date = %q{2010-08-07}
   s.description = %q{Client Side Validations for Rails 2.x and 3.x}
   s.email = %q{bcardarella@gmail.com}
   s.extra_rdoc_files = [
