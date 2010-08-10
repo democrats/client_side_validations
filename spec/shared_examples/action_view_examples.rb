@@ -8,7 +8,7 @@ share_examples_for 'extended form_for' do
   
     it 'should retain default behavior' do
       no_data_csv = attributes.gsub(/data-csv="\w+"\s/,'')
-      should be_form(@options, %{<form action="/books" #{no_data_csv}method="post">#{content}</form>})
+      should be_form(@options, %{<form #{charset}action="/books" #{no_data_csv}method="post">#{content}</form>})
     end
   end
   
@@ -18,7 +18,7 @@ share_examples_for 'extended form_for' do
     end
   
     it 'should generate the proper javascript' do
-      should be_form(@options, %{<form action="/books" #{attributes}method="post">#{content}</form>#{js_vars}})
+      should be_form(@options, %{<form #{charset}action="/books" #{attributes}method="post">#{content}</form>#{js_vars}})
     end
   end
   
@@ -30,7 +30,7 @@ share_examples_for 'extended form_for' do
     end
     
     it 'should generate the proper javascript' do
-      should be_form(@options, %{<form action="/books" #{attributes}method="post">#{content}</form>#{js_vars}})
+      should be_form(@options, %{<form #{charset}action="/books" #{attributes}method="post">#{content}</form>#{js_vars}})
     end
   end
   
@@ -46,7 +46,7 @@ share_examples_for 'extended form_for' do
   
     it 'should generate the proper javascript' do
       test_book_attributes = attributes.gsub(/data-csv="\w+"\s/,'data-csv="test_book" ')
-      should be_form(@options, %{<form action="/books" #{test_book_attributes}method="post">#{content}</form><script type='text/javascript'>var test_book_validate_options={"messages":{},"rules":{}};</script>})
+      should be_form(@options, %{<form #{charset}action="/books" #{test_book_attributes}method="post">#{content}</form><script type='text/javascript'>var test_book_validate_options={"messages":{},"rules":{}};</script>})
     end
   end
   
@@ -63,7 +63,7 @@ share_examples_for 'extended form_for' do
       end
       
       it 'should generate book_options JSON object' do
-        should be_form(@options, %{<form action="/books" #{attributes}method="post">#{content}</form>#{js_vars}})
+        should be_form(@options, %{<form #{charset}action="/books" #{attributes}method="post">#{content}</form>#{js_vars}})
       end
     end
     
@@ -74,7 +74,7 @@ share_examples_for 'extended form_for' do
       end
       
       it 'should generate book_options JSON object' do
-        should be_form(@options, %{<form action="/books" #{attributes}method="post">#{content}</form>#{js_vars}})
+        should be_form(@options, %{<form #{charset}action="/books" #{attributes}method="post">#{content}</form>#{js_vars}})
       end
     end
   end

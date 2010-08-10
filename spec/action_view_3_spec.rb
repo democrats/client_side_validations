@@ -6,6 +6,8 @@ require 'action_controller'
 require 'client_side_validations'
 
 describe 'ActionView 3.x Form Helper' do
+  let(:charset) { %{accept-charset="UTF-8" } }
+  
   context 'ActionView::Base' do
     before do
       class Book; end
@@ -22,7 +24,7 @@ describe 'ActionView 3.x Form Helper' do
       let(:object)      { 'book' }
       let(:object_name) { object }
       let(:attributes)  { %{data-csv="#{object_name}" } }
-      let(:content)     { nil }
+      let(:content)     { %{<div style="margin:0;padding:0;display:inline"><input name="_snowman" type="hidden" value="&#9731;" /></div>} }
       it_should_behave_like 'extended form_for'
     end
     
@@ -42,7 +44,7 @@ describe 'ActionView 3.x Form Helper' do
         let(:object)      { @book }
         let(:object_name) { 'new_book' }
         let(:attributes)  { %{class="new_book" data-csv="#{object_name}" id="#{object_name}" } }
-        let(:content)     { nil }
+        let(:content)     { %{<div style="margin:0;padding:0;display:inline"><input name="_snowman" type="hidden" value="&#9731;" /></div>} }
         it_should_behave_like 'extended form_for'
       end
       
@@ -55,7 +57,7 @@ describe 'ActionView 3.x Form Helper' do
         let(:object)      { @book }
         let(:object_name) { 'book_1'}
         let(:attributes)  { %{class="edit_book" data-csv="#{object_name}" id="edit_#{object_name}" } }
-        let(:content)     { %{<div style="margin:0;padding:0;display:inline"><input name="_method" type="hidden" value="put" /></div>} }
+        let(:content)     { %{<div style="margin:0;padding:0;display:inline"><input name="_snowman" type="hidden" value="&#9731;" /><input name="_method" type="hidden" value="put" /></div>} }
         it_should_behave_like 'extended form_for'
       end
 
@@ -66,7 +68,7 @@ describe 'ActionView 3.x Form Helper' do
         let(:object)      { [@book] }
         let(:object_name) { 'new_book' }
         let(:attributes)  { %{class="new_book" data-csv="#{object_name}" id="#{object_name}" } }
-        let(:content)     { nil }
+        let(:content)     { %{<div style="margin:0;padding:0;display:inline"><input name="_snowman" type="hidden" value="&#9731;" /></div>} }
         it_should_behave_like 'extended form_for'
       end
     end
@@ -80,7 +82,7 @@ describe 'ActionView 3.x Form Helper' do
         let(:object)      { 'book' }
         let(:object_name) { object }
         let(:attributes)  { %{data-csv="#{object_name}" } }
-        let(:content)     { nil }
+        let(:content)     { %{<div style="margin:0;padding:0;display:inline"><input name="_snowman" type="hidden" value="&#9731;" /></div>} }
         it_should_behave_like 'extended form_for'
       end
 
@@ -99,7 +101,7 @@ describe 'ActionView 3.x Form Helper' do
         let(:object)      { 'book' }
         let(:object_name) { object }
         let(:attributes)  { %{data-csv="#{object_name}" } }
-        let(:content)     { nil }
+        let(:content)     { %{<div style="margin:0;padding:0;display:inline"><input name="_snowman" type="hidden" value="&#9731;" /></div>} }
         it_should_behave_like 'extended form_for'
       end
     end

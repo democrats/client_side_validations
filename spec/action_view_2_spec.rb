@@ -6,6 +6,8 @@ require 'action_controller'
 require 'client_side_validations'
 
 describe 'ActionView 2.x Form Helper' do
+  let(:charset) { nil }
+
   before do
     class Book; end
     Book.any_instance.stubs(:validate_options).returns({"messages" => {}, "rules" => {}})

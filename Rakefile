@@ -17,10 +17,10 @@ begin
     
     gem.add_development_dependency 'jspec'
     gem.add_development_dependency 'rspec'
-    gem.add_development_dependency 'activerecord', '2.3.8'
-    gem.add_development_dependency 'activemodel', '3.0.0.beta4'
+    gem.add_development_dependency 'actionpack', '3.0.0.rc'
+    gem.add_development_dependency 'activerecord', '3.0.0.rc'
     gem.add_development_dependency 'bson_ext', '1.0.4'
-    gem.add_development_dependency 'mongoid', '2.0.0.beta11'
+    gem.add_development_dependency 'mongoid', '2.0.0.beta.16'
     gem.add_development_dependency 'crack'
     gem.add_development_dependency 'bourne'
     gem.add_development_dependency 'rack-test'

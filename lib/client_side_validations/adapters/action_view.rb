@@ -128,7 +128,11 @@ module DNCLabs
             when Class
               get_object_name(object.new)
             else
-              ActionController::RecordIdentifier.singular_class_name(object)
+              if rails3?
+                ActiveModel::Naming.singular(object)
+              else
+                ActionController::RecordIdentifier.singular_class_name(object)
+              end
             end
           end
         end # BaseMethods
