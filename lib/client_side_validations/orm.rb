@@ -36,7 +36,7 @@ module ClientSideValidations
 
       def convert_kind(kind, options = nil)
         case kind
-        when 'acceptance', 'exclusion', 'inclusion'
+        when 'acceptance', 'exclusion', 'inclusion', 'format'
           kind
         when 'confirmation'
           'equalTo'
@@ -82,6 +82,8 @@ module ClientSideValidations
           value = case kind
           when 'acceptance', 'required', 'digits', 'numericality', 'greater_than', 'min', 'less_than', 'max', 'odd', 'even'
             true
+          when 'format'
+            options['with']
           when 'equalTo'
             %{[name="#{field}_confirmation"]}
           when 'exclusion', 'inclusion'
@@ -183,7 +185,7 @@ module ClientSideValidations
 
       def required?(kind, options)
         case kind
-        when 'digits', 'exclusion', 'inclusion', 'islength', 'minlength', 'remote', 'numericality', 'greater_than', 'min', 'less_than', 'max', 'even', 'odd'
+        when 'digits', 'exclusion', 'inclusion', 'islength', 'minlength', 'remote', 'numericality', 'greater_than', 'min', 'less_than', 'max', 'even', 'odd', 'format'
           !options['allow_blank']
         when Array
           required?('minlength', options) if kind.include?('minlength')

@@ -58,7 +58,7 @@ shared_examples_for 'Validate Options' do
     end
   end
   
-  %w{Acceptance Confirmation Numericality Exclusion Inclusion Length Required Uniqueness}.each do |example|
+  %w{Acceptance Confirmation Numericality Exclusion Inclusion Length Required Uniqueness Format}.each do |example|
     it_should_behave_like example
   end
   
