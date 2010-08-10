@@ -9,7 +9,7 @@ shared_examples_for 'Format' do
     end
     
     it 'should translate the rule' do
-      @result['rules']['string']['format'].should == /\w/.inspect
+      @result['rules']['string']['format'].should == %{\\w}
       @result['rules']['string']['required'].should be_true
     end
     
@@ -29,7 +29,7 @@ shared_examples_for 'Format' do
     end
     
     it 'should translate the rule' do
-      @result['rules']['string']['format'].should == /\w/.inspect
+      @result['rules']['string']['format'].should == %{\\w}
       @result['rules']['string']['required'].should be_true
     end
     
@@ -49,7 +49,7 @@ shared_examples_for 'Format' do
     end
     
     it 'should translate the rule' do
-      @result['rules']['string']['format'].should == /\w/.inspect
+      @result['rules']['string']['format'].should == %{\\w}
       @result['rules']['string']['required'].should be_nil
     end
     

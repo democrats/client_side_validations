@@ -12,7 +12,7 @@ shared_examples_for 'ActiveModel' do
     it "should support validates_format_of of" do
       Klass.class_eval { validates_format_of :string, :with => /\A\d\Z/i }
       instance      = Klass.new
-      expected_hash = { "format" => { "message" => "is invalid", "with" => "/^\\d$/" } }
+      expected_hash = { "format" => { "message" => "is invalid", "with" => "^\\d$" } }
       result_hash   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
       result_hash.should == expected_hash
     end
@@ -23,8 +23,8 @@ shared_examples_for 'ActiveModel' do
         validates_format_of :string_2, :with => /\d/
       end
       instance        = Klass.new
-      expected_hash_1 = { "format" => { "message" => "is invalid", "with" => "/^\\d$/" } }
-      expected_hash_2 = { "format" => { "message" => "is invalid", "with" => "/\\d/" } }
+      expected_hash_1 = { "format" => { "message" => "is invalid", "with" => "^\\d$" } }
+      expected_hash_2 = { "format" => { "message" => "is invalid", "with" => "\\d" } }
       result_hash_1   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
       result_hash_2   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string_2)
       result_hash_1.should == expected_hash_1
