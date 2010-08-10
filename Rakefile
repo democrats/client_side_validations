@@ -42,6 +42,9 @@ task :rspec do
   
   puts 'Middleware'
   system('spec spec/middleware_spec.rb')
+  
+  puts 'Options'
+  system('spec spec/options_spec.rb')
 end
 
 desc 'ORM Specs'
