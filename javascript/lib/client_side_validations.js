@@ -56,6 +56,9 @@ $.extend($.fn, {
       var form                        = $(this[i]);
       var object                      = form.attr('data-csv');
       var validate_options            = eval(object + "_validate_options");
+      if (typeof(validate_options['options']) == 'undefined') {
+        validate_options['options'] = { };
+      }
       validate_options.options.ignore = ':hidden';
       form.validate(validate_options);
     }
