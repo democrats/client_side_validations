@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.9.1
+## v2.9.3
 
 - Fixed bug with confirmation validations... probably the result of the refactor from v2.6.3
 
