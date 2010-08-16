@@ -9,11 +9,11 @@ shared_examples_for 'Confirmation' do
     end
     
     it 'should translate the rule' do
-      @result['rules']['string']['equalTo'].should == %{[name="string_confirmation"]}
+      @result['rules']['string']['confirmation'].should == true
     end
     
     it 'should translate the message' do
-      @result['messages']['string']['equalTo'].should == "doesn't match confirmation"
+      @result['messages']['string']['confirmation'].should == "doesn't match confirmation"
     end
   end
 end

@@ -1,3 +1,18 @@
+jQuery.validator.addMethod("confirmation", function(value, element) { 
+  name                 = element.name.match(/\w+\[(\w+)\]/)[1];
+  confirmation_name    = element.name.replace(name, name + '_confirmation')
+  confirmation_element = $('[name="'+ confirmation_name +'"]');
+  confirmation_element.rules('add', {
+    confirmer: $(element)
+  })
+  return this.optional(element) || value == confirmation_element.attr('value');
+}, jQuery.validator.format("Must match confirmation."));
+
+jQuery.validator.addMethod("confirmer", function(value, element, original_element) { 
+  original_element.valid();
+  return true;
+}, jQuery.validator.format(""));
+
 jQuery.validator.addMethod("numericality", function(value, element) { 
   return this.optional(element) || /^(\d+(\.|,)\d+|\d+)$/.test(value);
 }, jQuery.validator.format("Is not a number."));

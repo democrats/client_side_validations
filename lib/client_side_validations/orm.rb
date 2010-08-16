@@ -36,10 +36,8 @@ module ClientSideValidations
 
       def convert_kind(kind, options = nil)
         case kind
-        when 'acceptance', 'exclusion', 'inclusion', 'format'
+        when 'acceptance', 'exclusion', 'inclusion', 'format', 'confirmation'
           kind
-        when 'confirmation'
-          'equalTo'
         when 'presence'
           'required'
         when 'numericality'
@@ -80,12 +78,10 @@ module ClientSideValidations
         validations.each do |kind, options|
           kind = convert_kind(kind, options)
           value = case kind
-          when 'acceptance', 'required', 'digits', 'numericality', 'greater_than', 'min', 'less_than', 'max', 'odd', 'even'
+          when 'acceptance', 'required', 'digits', 'numericality', 'greater_than', 'min', 'less_than', 'max', 'odd', 'even', 'confirmation'
             true
           when 'format'
             options['with']
-          when 'equalTo'
-            %{[name="#{field}_confirmation"]}
           when 'exclusion', 'inclusion'
             options['in']
           when 'islength'
