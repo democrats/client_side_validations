@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.9.4
+
+- Fixes for Rails 3.0.0 Final
+
 ## v2.9.3
 
 - Fixed bug with confirmation validations... probably the result of the refactor from v2.6.3
