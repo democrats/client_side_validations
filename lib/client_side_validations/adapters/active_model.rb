@@ -6,7 +6,8 @@ module ClientSideValidations
 
       def validations_to_hash(attr)
         base._validators[attr.to_sym].inject({}) do |hash, validation|
-          hash.merge!(build_validation_hash(validation.clone))
+          validation.instance_variable_set('@options', validation.options.dup)
+          hash.merge!(build_validation_hash(validation.dup))
         end
       end
       
