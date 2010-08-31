@@ -21,14 +21,18 @@ shared_examples_for 'ActiveModel' do
       Klass.class_eval do
         validates_format_of :string, :with => /^\d$/i
         validates_format_of :string_2, :with => /\d/
+        validates_format_of :string_3, :with => /\A\d{5}\Z|\A\d{5}-\d{4}\Z/
       end
       instance        = Klass.new
       expected_hash_1 = { "format" => { "message" => "is invalid", "with" => "^\\d$" } }
       expected_hash_2 = { "format" => { "message" => "is invalid", "with" => "\\d" } }
+      expected_hash_3 = { "format" => { "message" => "is invalid", "with" => "^\\d{5}$|^\\d{5}-\\d{4}$" } }
       result_hash_1   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string)
       result_hash_2   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string_2)
+      result_hash_3   = ClientSideValidations::ORM::ValidateOptions.new(instance).validations_for(:string_3)
       result_hash_1.should == expected_hash_1
       result_hash_2.should == expected_hash_2
+      result_hash_3.should == expected_hash_3
     end
 
     it "should support is validates_length_of" do
