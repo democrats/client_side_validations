@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.9.5
+
+- Better Javascript Regular Expression conversion
+
 ## v2.9.4
 
 - Fixes for Rails 3.0.0 Final
