@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.9.8
+
+- Support for the Rails 3 form_for :as option
+
 ## v2.9.7
 
 - Ruby 1.9.2 support

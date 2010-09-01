@@ -26,6 +26,7 @@ describe 'ActionView 3.x Form Helper' do
       let(:attributes)  { %{data-csv="#{object_name}" } }
       let(:content)     { %{<div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>} }
       it_should_behave_like 'extended form_for'
+      it_should_behave_like 'rails 3 form_for'
     end
     
     context 'record' do
@@ -46,6 +47,7 @@ describe 'ActionView 3.x Form Helper' do
         let(:attributes)  { %{class="new_book" data-csv="#{object_name}" id="#{object_name}" } }
         let(:content)     { %{<div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>} }
         it_should_behave_like 'extended form_for'
+        it_should_behave_like 'rails 3 form_for'
       end
       
       context 'existing' do
@@ -70,6 +72,7 @@ describe 'ActionView 3.x Form Helper' do
         let(:attributes)  { %{class="new_book" data-csv="#{object_name}" id="#{object_name}" } }
         let(:content)     { %{<div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>} }
         it_should_behave_like 'extended form_for'
+        it_should_behave_like 'rails 3 form_for'
       end
     end
     
@@ -94,6 +97,7 @@ describe 'ActionView 3.x Form Helper' do
         let(:attributes)  { %{data-csv="#{object_name}" } }
         let(:content)     { %{<div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>} }
         it_should_behave_like 'extended form_for'
+        it_should_behave_like 'rails 3 form_for'
       end
 
       context 'new record' do
@@ -113,6 +117,7 @@ describe 'ActionView 3.x Form Helper' do
         let(:attributes)  { %{data-csv="#{object_name}" } }
         let(:content)     { %{<div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>} }
         it_should_behave_like 'extended form_for'
+        it_should_behave_like 'rails 3 form_for'
       end
     end
 
