@@ -60,7 +60,7 @@ describe 'ActionView 3.x Form Helper' do
         let(:content)     { %{<div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="_method" type="hidden" value="put" /></div>} }
         it_should_behave_like 'extended form_for'
       end
-
+    
       context 'array' do
         before do
           @book.stubs(:to_key).returns(nil)
@@ -74,10 +74,20 @@ describe 'ActionView 3.x Form Helper' do
     end
     
     context 'With validate options' do
+      before do
+        if ruby18?
+          @options             = ActiveSupport::OrderedHash.new
+          @options['rules']    = {'name' => {'required' => true}}
+          @options['messages'] = {'name' => {'required' => 'Must be present'}}
+        else
+          @options = {'rules' => {'name' => {'required' => true}}, 'messages' => {'name' => {'required' => 'Must be present'}}}
+        end
+      end
+      
       context 'on a name' do
         before do
-          Book.any_instance.stubs(:validate_options).returns({'rules' => {'name' => {'required' => true}}, 'messages' => {'name' => {'required' => 'Must be present'}}})
-          @validate_options = %'{"messages":{"book[name]":{"required":"Must be present"}},"rules":{"book[name]":{"required":true}}}'
+          Book.any_instance.stubs(:validate_options).returns(@options)
+          @validate_options = %'{"rules":{"book[name]":{"required":true}},"messages":{"book[name]":{"required":"Must be present"}}}'
         end
         let(:object)      { 'book' }
         let(:object_name) { object }
@@ -88,8 +98,8 @@ describe 'ActionView 3.x Form Helper' do
 
       context 'new record' do
         before do
-          Book.any_instance.stubs(:validate_options).returns({'rules' => {'name' => {'required' => true}}, 'messages' => {'name' => {'required' => 'Must be present'}}})
-          @validate_options = %'{"messages":{"book[name]":{"required":"Must be present"}},"rules":{"book[name]":{"required":true}}}'
+          Book.any_instance.stubs(:validate_options).returns(@options)
+          @validate_options = %'{"rules":{"book[name]":{"required":true}},"messages":{"book[name]":{"required":"Must be present"}}}'
 
           model_name = 'Book'
           model_name.stubs(:singular).returns('book')

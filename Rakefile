@@ -47,6 +47,11 @@ task :rspec do
   system('spec spec/options_spec.rb')
 end
 
+desc 'Run the test suite against ree-1.8.7-2010.01 and 1.9.2-p0'
+task :multitest do
+  system('rvm ree-1.8.7-2010.01@client_side_validations,1.9.2-p0@client_side_validations rake rspec')
+end
+
 desc 'ORM Specs'
 task :orm do
   puts 'ActiveRecord 2.x'

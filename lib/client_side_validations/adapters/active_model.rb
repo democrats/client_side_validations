@@ -73,7 +73,11 @@ module ClientSideValidations
           if defined?(ActiveRecord) && base.kind_of?(ActiveRecord::Base)
             I18n.translate('activerecord.errors.messages.taken')
           elsif defined?(Mongoid) && base.class.included_modules.include?(Mongoid::Document)
-            I18n.translate('errors.messages.taken')
+            if ruby18?
+              I18n.translate('errors.messages.taken')
+            else
+              I18n.translate('activemodel.errors.messages.taken')
+            end
           end
         when :confirmation
           I18n.translate(i18n_prefix + 'errors.messages.confirmation')
@@ -97,6 +101,18 @@ module ClientSideValidations
 
       def get_validation_method(validation)
         validation.kind.to_s
+      end
+      
+      def ruby18?
+        ruby_split[0] == '1' && ruby_split[1] == '8'
+      end
+
+      def ruby19?
+        ruby_split[0] == '1' && ruby_split[1] == '9'
+      end
+
+      def ruby_split
+        RUBY_VERSION.split('.')
       end
       
       def i18n_prefix

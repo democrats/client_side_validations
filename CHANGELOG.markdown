@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.9.7
+
+- Ruby 1.9.2 support
+
+## v2.9.6
+
+- Fix for numericality's greater_than and less_than
+
 ## v2.9.5
 
 - Better Javascript Regular Expression conversion

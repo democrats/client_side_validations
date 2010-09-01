@@ -83,8 +83,15 @@ describe 'ActionView 2.x Form Helper' do
     context 'Validations' do
       context 'with rules and messages' do
         before do
-          Book.any_instance.stubs(:validate_options).returns({'rules' => {'name' => {'required' => true}}, 'messages' => {'name' => {'required' => 'Must be present'}}})
-          @validate_options = %'{"messages":{"book[name]":{"required":"Must be present"}},"rules":{"book[name]":{"required":true}}}'
+          if ruby18?
+            options             = ActiveSupport::OrderedHash.new
+            options['rules']    = {'name' => {'required' => true}}
+            options['messages'] = {'name' => {'required' => 'Must be present'}}
+          else
+            options = {'rules' => {'name' => {'required' => true}}, 'messages' => {'name' => {'required' => 'Must be present'}}}
+          end
+          Book.any_instance.stubs(:validate_options).returns(options)
+          @validate_options = %'{"rules":{"book[name]":{"required":true}},"messages":{"book[name]":{"required":"Must be present"}}}'
         end
         let(:object)      { 'book' }
         let(:object_name) { object }

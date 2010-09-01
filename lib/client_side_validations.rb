@@ -29,7 +29,7 @@ module ClientSideValidations
         # the first element of the array for id, even if it is nil
         id                  = [params["#{resource}[id]"]].flatten.first
         body                = is_unique?(resource, attribute, value, id).to_s
-        [200, {'Content-Type' => 'application/json', 'Content-Length' => "#{body.length}"}, body]
+        [200, {'Content-Type' => 'application/json', 'Content-Length' => "#{body.length}"}, [body]]
       else
         @app.call(env)
       end

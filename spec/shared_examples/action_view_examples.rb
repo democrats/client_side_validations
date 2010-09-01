@@ -24,8 +24,16 @@ share_examples_for 'extended form_for' do
   
   context 'with validate options' do
     before do
-      Book.any_instance.stubs(:validate_options).returns({'rules' => {'name' => {'required' => true}}, 'messages' => {'name' => {'required' => 'Must be present'}}})
-      @validate_options = %'{"messages":{"book[name]":{"required":"Must be present"}},"rules":{"book[name]":{"required":true}}}'
+      if ruby18?
+        return_options             = ActiveSupport::OrderedHash.new
+        return_options['rules']    = {'name' => {'required' => true}}
+        return_options['messages'] = {'name' => {'required' => 'Must be present'}}
+      else
+        return_options = {'rules' => {'name' => {'required' => true}}, 'messages' => {'name' => {'required' => 'Must be present'}}}
+      end
+      
+      Book.any_instance.stubs(:validate_options).returns(return_options)
+      @validate_options = %'{"rules":{"book[name]":{"required":true}},"messages":{"book[name]":{"required":"Must be present"}}}'
       @options = [object, {:url => '/books', :validations => true}]
     end
     

@@ -7,7 +7,7 @@ describe 'Client Side Validations Middleware' do
   include Rack::Test::Methods
   
   def app
-    app = Proc.new {|env| [200,{},"successfully hit rails app"]}
+    app = Proc.new {|env| [200,{},["successfully hit rails app"]]}
     ClientSideValidations::Uniqueness.new(app)
   end
   
