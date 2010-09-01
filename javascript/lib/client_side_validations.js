@@ -17,6 +17,14 @@ jQuery.validator.addMethod("numericality", function(value, element) {
   return this.optional(element) || /^(\d+(\.|,)\d+|\d+)$/.test(value);
 }, jQuery.validator.format("Is not a number."));
 
+jQuery.validator.addMethod("greater_than", function(value, element, params) {
+  return this.optional(element) || parseFloat(value) > params;
+}, jQuery.validator.format("Wrong number."));
+
+jQuery.validator.addMethod("less_than", function(value, element, params) {
+  return this.optional(element) || parseFloat(value) < params;
+}, jQuery.validator.format("Wrong number."));
+
 jQuery.validator.addMethod("odd", function(value, element) { 
   return this.optional(element) || parseInt(value) % 2 == 1;
 }, jQuery.validator.format("Must be odd."));
