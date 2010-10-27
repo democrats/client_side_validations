@@ -43,7 +43,11 @@ module ClientSideValidations
       instance = klass.send("find_by_#{attribute}", value)
     
       if instance
-        return instance.id.to_i == id.to_i
+        if defined?(ActiveRecord) && instance.kind_of?(ActiveRecord::Base)
+          return instance.id.to_i == id.to_i
+        elsif defined?(Mongoid) && instance.class.included_modules.include?(Mongoid::Document)
+          return instance.id.to_s == id.to_s
+        end
       else
         return true
       end
