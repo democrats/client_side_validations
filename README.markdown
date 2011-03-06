@@ -1,3 +1,7 @@
+# STOP!! #
+
+## This repo is dead! Please [follow the v3.0 rewrite](https://github.com/bcardarella/client_side_validations) ##
+
 # Client Side Validations
 Now you can easily drop in client side validations in any Rails app. It will use validations defined in a given ActiveRecord (or ActiveModel) class for use with [jquery-validation](http://bassistance.de/jquery-plugins/jquery-plugin-validation/)
 
