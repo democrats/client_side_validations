@@ -23,6 +23,8 @@ module ClientSideValidations
       when %r{^/validations/uniqueness.json}
         params              = {}.merge!(CGI::parse(env['QUERY_STRING']))
         field               = params.keys.first
+        # request has been sent with no query parameters and is invalid
+        return [400, {'Content-Type' => 'application/json'}, []] unless field
         resource, attribute = field.split(/[^\w]/)
         value               = params[field][0]
         # Because params returns an array for each field value we want to always grab
